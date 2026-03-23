@@ -28,9 +28,11 @@ namespace SocketGameProtocal {
             "bCKrAQoITWFpblBhY2sSNQoMcmVxdWVzdF9jb2RlGAEgASgOMh8uU29ja2V0",
             "R2FtZVByb3RvY2FsLlJlcXVlc3RDb2RlEjMKC2FjdGlvbl9jb2RlGAIgASgO",
             "Mh4uU29ja2V0R2FtZVByb3RvY2FsLkFjdGlvbkNvZGUSMwoLcmV0dXJuX2Nv",
-            "ZGUYAyABKA4yHi5Tb2NrZXRHYW1lUHJvdG9jYWwuUmV0dXJuQ29kZSobCgtS",
-            "ZXF1ZXN0Q29kZRIMCghSRVFfTk9ORRAAKhoKCkFjdGlvbkNvZGUSDAoIQUNU",
-            "X05PTkUQACoaCgpSZXR1cm5Db2RlEgwKCFJFVF9OT05FEABiBnByb3RvMw=="));
+            "ZGUYAyABKA4yHi5Tb2NrZXRHYW1lUHJvdG9jYWwuUmV0dXJuQ29kZSokCgtS",
+            "ZXF1ZXN0Q29kZRILCgdSZXFOb25lEAASCAoEVXNlchABKjAKCkFjdGlvbkNv",
+            "ZGUSCwoHQWN0Tm9uZRAAEgoKBlNpZ25VcBABEgkKBUxvZ2luEAIqNAoKUmV0",
+            "dXJuQ29kZRILCgdSZXROb25lEAASDQoJU3VjY2VlZGVkEAESCgoGRmFpbGVk",
+            "EAJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::SocketGameProtocal.RequestCode), typeof(global::SocketGameProtocal.ActionCode), typeof(global::SocketGameProtocal.ReturnCode), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -42,15 +44,35 @@ namespace SocketGameProtocal {
   }
   #region Enums
   public enum RequestCode {
-    [pbr::OriginalName("REQ_NONE")] ReqNone = 0,
+    [pbr::OriginalName("ReqNone")] ReqNone = 0,
+    /// <summary>
+    ///用户
+    /// </summary>
+    [pbr::OriginalName("User")] User = 1,
   }
 
   public enum ActionCode {
-    [pbr::OriginalName("ACT_NONE")] ActNone = 0,
+    [pbr::OriginalName("ActNone")] ActNone = 0,
+    /// <summary>
+    ///注册
+    /// </summary>
+    [pbr::OriginalName("SignUp")] SignUp = 1,
+    /// <summary>
+    ///登录
+    /// </summary>
+    [pbr::OriginalName("Login")] Login = 2,
   }
 
   public enum ReturnCode {
-    [pbr::OriginalName("RET_NONE")] RetNone = 0,
+    [pbr::OriginalName("RetNone")] RetNone = 0,
+    /// <summary>
+    ///连接成功
+    /// </summary>
+    [pbr::OriginalName("Succeeded")] Succeeded = 1,
+    /// <summary>
+    ///连接失败
+    /// </summary>
+    [pbr::OriginalName("Failed")] Failed = 2,
   }
 
   #endregion

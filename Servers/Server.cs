@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
+using MultiplayerGameServer.Controller;
 
 namespace MultiplayerGameServer.Servers
 {
@@ -12,12 +13,15 @@ namespace MultiplayerGameServer.Servers
     {
         private Socket socket;
         private List<Client> clientList = new List<Client>();
+        private ControllerManager controllerManager;
 
         Server(int port)
         {
+            controllerManager = new ControllerManager(this);
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socket.Bind(new IPEndPoint(IPAddress.Any, port));
             socket.Listen(0);
+            StartAccept();
         }
 
         void StartAccept()
