@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Sockets;
+﻿using MultiplayerGameServer.Controller;
+using SocketGameProtocal;
 using System.Net;
-using MultiplayerGameServer.Controller;
+using System.Net.Sockets;
 
 namespace MultiplayerGameServer.Servers
 {
@@ -15,11 +11,11 @@ namespace MultiplayerGameServer.Servers
         private List<Client> clientList = new List<Client>();
         private ControllerManager controllerManager;
 
-        Server(int port)
+        Server(int _port)
         {
             controllerManager = new ControllerManager(this);
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            socket.Bind(new IPEndPoint(IPAddress.Any, port));
+            socket.Bind(new IPEndPoint(IPAddress.Any, _port));
             socket.Listen(0);
             StartAccept();
         }
@@ -29,11 +25,16 @@ namespace MultiplayerGameServer.Servers
             socket.BeginAccept(AcceptCallback, null);
         }
 
-        void AcceptCallback(IAsyncResult result)
+        void AcceptCallback(IAsyncResult _result)
         {
-            Socket client = socket.EndAccept(result);
-            clientList.Add(new Client(client));
+            Socket _client = socket.EndAccept(_result);
+            clientList.Add(new Client(_client));
             StartAccept();
+        }
+
+        public bool SignUp(Client _client, MainPack _pack)
+        {
+            return _client.GetUserDatabase.SignUp(_pack);
         }
     }
 }

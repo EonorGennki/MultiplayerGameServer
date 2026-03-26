@@ -14,8 +14,9 @@ namespace MultiplayerGameServer.Controller
         private Dictionary<RequestCode, BaseController> controlDic = new Dictionary<RequestCode, BaseController>();
         private Server server;
         
-        public ControllerManager()
+        public ControllerManager(Server _server)
         {
+            server = _server;
             UserController userController = new UserController();
             controlDic.Add(userController.GetRequestCode, userController);
         }
@@ -27,7 +28,7 @@ namespace MultiplayerGameServer.Controller
         /// <param name="client">发送消息的客户端对象</param>
         public void HandleRequest(MainPack pack, Client client)
         {
-            if (controlDic.TryGetValue(pack.RequestCode, out BaseController controller))
+            if (controlDic.TryGetValue(pack.RequestCode, out BaseController? controller))
             {
                 string methodName = pack.ActionCode.ToString();
                 MethodInfo? method = controller.GetType().GetMethod(methodName);
@@ -38,10 +39,10 @@ namespace MultiplayerGameServer.Controller
                 }
 
                 object[] obj = new object[] { server, client, pack };
-                object ret = method.Invoke(controller, obj);
+                object? ret = method.Invoke(controller, obj);
                 if (ret is not null)
                 {
-                    
+                    client.Send((MainPack)ret);
                 }
             }
             else

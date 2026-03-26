@@ -28,27 +28,27 @@ namespace MultiplayerGameServer.Tool
             get { return buffer.Length - startIndex; }
         }
 
-        public void ReadBuffer(int len)
+        public void ReadBuffer(int _len)
         {
-            startIndex += len;
+            startIndex += _len;
 
             if (startIndex <= 4)
             {
                 return;
             }
 
-            int count = BitConverter.ToInt32(buffer, 0);
+            int _count = BitConverter.ToInt32(buffer, 0);
 
-            while (startIndex >= count + 4)
+            while (startIndex >= _count + 4)
             {
-                MainPack pack = (MainPack)MainPack.Descriptor.Parser.ParseFrom(buffer, 4, count);
-                Array.Copy(buffer, count + 4, buffer, 0, startIndex - count - 4);
-                startIndex -= count + 4;
+                MainPack pack = (MainPack)MainPack.Descriptor.Parser.ParseFrom(buffer, 4, _count);
+                Array.Copy(buffer, _count + 4, buffer, 0, startIndex - _count - 4);
+                startIndex -= _count + 4;
             }
 
             while (true)
             {
-                if (startIndex >= count + 4)
+                if (startIndex >= _count + 4)
                 {
                     //执行一段代码
                 }
@@ -57,6 +57,13 @@ namespace MultiplayerGameServer.Tool
                     break;
                 }
             }
+        }
+
+        public static byte[] PackData(MainPack pack)
+        {
+            byte[] _data = pack.ToByteArray(); //包体
+            byte[] _head = BitConverter.GetBytes(_data.Length); //包头
+            return _head.Concat(_data).ToArray();
         }
     }
 }

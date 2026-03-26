@@ -1,4 +1,6 @@
-﻿using MultiplayerGameServer.Tool;
+﻿using MultiplayerGameServer.DAO;
+using MultiplayerGameServer.Tool;
+using SocketGameProtocal;
 using System.Net.Sockets;
 
 namespace MultiplayerGameServer.Servers
@@ -7,11 +9,20 @@ namespace MultiplayerGameServer.Servers
     {
         private Socket socket;
         private Message message;
+        private UserDatabase userDatabase;
 
-        public Client(Socket socket)
+        public UserDatabase GetUserDatabase
         {
-            this.socket = socket;
+            get { return userDatabase; }
+        }
+
+        public Client(Socket _socket)
+        {
+            socket = _socket;
             message = new Message();
+            userDatabase = new UserDatabase();
+
+            StartReceive();
         }
 
         void StartReceive()
@@ -19,28 +30,33 @@ namespace MultiplayerGameServer.Servers
             socket.BeginReceive(message.Buffer, message.StartIndex, message.RemSize, SocketFlags.None, ReceiveCallback, null);
         }
 
-        void ReceiveCallback(IAsyncResult result)
+        void ReceiveCallback(IAsyncResult _result)
         {
             try
             {
-                if (socket == null || socket.Connected == false)
+                if (socket is null || !socket.Connected)
                 {
                     return;
                 }
-                int len = socket.EndReceive(result);
+                int _len = socket.EndReceive(_result);
 
-                if (len == 0)
+                if (_len == 0)
                 {
                     return;
                 }
 
-                message.ReadBuffer(len);
+                message.ReadBuffer(_len);
                 StartReceive();
             }
             catch
             {
 
             }
+        }
+
+        public void Send(MainPack _pack)
+        {
+            socket.Send(Message.PackData(_pack));
         }
     }
 }
