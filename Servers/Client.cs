@@ -1,5 +1,6 @@
 ﻿using MultiplayerGameServer.DAO;
 using MultiplayerGameServer.Tool;
+using Org.BouncyCastle.Tls;
 using SocketGameProtocal;
 using System.Net.Sockets;
 
@@ -8,6 +9,7 @@ namespace MultiplayerGameServer.Servers
     internal class Client
     {
         private Socket socket;
+        private Server server;
         private Message message;
         private UserDatabase userDatabase;
 
@@ -15,9 +17,10 @@ namespace MultiplayerGameServer.Servers
         {
             get { return userDatabase; }
         }
-
-        public Client(Socket _socket)
+         
+        public Client(Socket _socket, Server _server)
         {
+            server = _server;
             socket = _socket;
             message = new Message();
             userDatabase = new UserDatabase();
@@ -45,7 +48,7 @@ namespace MultiplayerGameServer.Servers
                     return;
                 }
 
-                message.ReadBuffer(_len);
+                message.ReadBuffer(_len, HandleRequest);
                 StartReceive();
             }
             catch
@@ -57,6 +60,11 @@ namespace MultiplayerGameServer.Servers
         public void Send(MainPack _pack)
         {
             socket.Send(Message.PackData(_pack));
+        }
+
+        void HandleRequest(MainPack _pack)
+        {
+            server.HandleRequest(_pack, this);
         }
     }
 }

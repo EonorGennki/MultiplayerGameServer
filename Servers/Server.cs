@@ -28,13 +28,18 @@ namespace MultiplayerGameServer.Servers
         void AcceptCallback(IAsyncResult _result)
         {
             Socket _client = socket.EndAccept(_result);
-            clientList.Add(new Client(_client));
+            clientList.Add(new Client(_client, this));
             StartAccept();
         }
 
         public bool SignUp(Client _client, MainPack _pack)
         {
             return _client.GetUserDatabase.SignUp(_pack);
+        }
+
+        public void HandleRequest(MainPack _pack, Client _client)
+        {
+            controllerManager.HandleRequest(_pack, _client);
         }
     }
 }

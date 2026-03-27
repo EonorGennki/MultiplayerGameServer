@@ -28,7 +28,12 @@ namespace MultiplayerGameServer.Tool
             get { return buffer.Length - startIndex; }
         }
 
-        public void ReadBuffer(int _len)
+        /// <summary>
+        /// 解析消息
+        /// </summary>
+        /// <param name="_len"></param>
+        /// <param name="HandleRequest"></param>
+        public void ReadBuffer(int _len, Action<MainPack> HandleRequest)
         {
             startIndex += _len;
 
@@ -41,24 +46,18 @@ namespace MultiplayerGameServer.Tool
 
             while (startIndex >= _count + 4)
             {
-                MainPack pack = (MainPack)MainPack.Descriptor.Parser.ParseFrom(buffer, 4, _count);
+                MainPack _pack = (MainPack)MainPack.Descriptor.Parser.ParseFrom(buffer, 4, _count);
+                HandleRequest(_pack);
                 Array.Copy(buffer, _count + 4, buffer, 0, startIndex - _count - 4);
                 startIndex -= _count + 4;
             }
-
-            while (true)
-            {
-                if (startIndex >= _count + 4)
-                {
-                    //执行一段代码
-                }
-                else
-                {
-                    break;
-                }
-            }
         }
 
+        /// <summary>
+        /// 包装数据
+        /// </summary>
+        /// <param name="pack"></param>
+        /// <returns></returns>
         public static byte[] PackData(MainPack pack)
         {
             byte[] _data = pack.ToByteArray(); //包体
