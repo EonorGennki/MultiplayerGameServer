@@ -1,18 +1,23 @@
-﻿using MultiplayerGameServer.Controller;
+﻿using MultiplayerGameServer.Logic;
+using MultiplayerGameServer.DAO;
 using SocketGameProtocal;
 using System.Net;
 using System.Net.Sockets;
 
-namespace MultiplayerGameServer.Servers
+namespace MultiplayerGameServer.Network
 {
     internal class Server
     {
         private Socket socket;
         private List<Client> clientList = new List<Client>();
         private ControllerManager controllerManager;
+        public UserDatabase userDatabase;
+        private DatabaseConnectionFactory databaseConnectionFactory;
 
-        Server(int _port)
+        public Server(int _port)
         {
+            databaseConnectionFactory = new DatabaseConnectionFactory();
+            userDatabase = new UserDatabase(databaseConnectionFactory);
             controllerManager = new ControllerManager(this);
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socket.Bind(new IPEndPoint(IPAddress.Any, _port));
@@ -32,14 +37,14 @@ namespace MultiplayerGameServer.Servers
             StartAccept();
         }
 
-        public bool SignUp(Client _client, MainPack _pack)
-        {
-            return _client.GetUserDatabase.SignUp(_pack);
-        }
-
         public void HandleRequest(MainPack _pack, Client _client)
         {
             controllerManager.HandleRequest(_pack, _client);
+        }
+
+        public void RemoveClient(Client _client)
+        {
+            clientList.Remove(_client);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MultiplayerGameServer.Controller
+namespace MultiplayerGameServer.Logic
 {
     abstract class BaseController
     {

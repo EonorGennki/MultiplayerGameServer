@@ -1,29 +1,20 @@
-﻿using MultiplayerGameServer.DAO;
-using MultiplayerGameServer.Tool;
-using Org.BouncyCastle.Tls;
+﻿using MultiplayerGameServer.Tool;
 using SocketGameProtocal;
 using System.Net.Sockets;
 
-namespace MultiplayerGameServer.Servers
+namespace MultiplayerGameServer.Network
 {
     internal class Client
     {
         private Socket socket;
         private Server server;
         private Message message;
-        private UserDatabase userDatabase;
 
-        public UserDatabase GetUserDatabase
-        {
-            get { return userDatabase; }
-        }
-         
         public Client(Socket _socket, Server _server)
         {
             server = _server;
             socket = _socket;
             message = new Message();
-            userDatabase = new UserDatabase();
 
             StartReceive();
         }
@@ -39,12 +30,15 @@ namespace MultiplayerGameServer.Servers
             {
                 if (socket is null || !socket.Connected)
                 {
+                    Close();
                     return;
                 }
+
                 int _len = socket.EndReceive(_result);
 
                 if (_len == 0)
                 {
+                    Close();
                     return;
                 }
 
@@ -53,7 +47,7 @@ namespace MultiplayerGameServer.Servers
             }
             catch
             {
-
+                Close();
             }
         }
 
@@ -65,6 +59,15 @@ namespace MultiplayerGameServer.Servers
         void HandleRequest(MainPack _pack)
         {
             server.HandleRequest(_pack, this);
+        }
+
+        private void Close()
+        {
+            server.RemoveClient(this);
+            if (socket is not null)
+            {
+                socket.Close();
+            }
         }
     }
 }

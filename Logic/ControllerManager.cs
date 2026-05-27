@@ -1,4 +1,4 @@
-﻿using MultiplayerGameServer.Servers;
+﻿using MultiplayerGameServer.Network;
 using SocketGameProtocal;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MultiplayerGameServer.Controller
+namespace MultiplayerGameServer.Logic
 {
     internal class ControllerManager
     {

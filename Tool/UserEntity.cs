@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MultiplayerGameServer.DAO
+namespace MultiplayerGameServer.Tool
 {
     public class UserEntity
     {
@@ -14,7 +14,7 @@ namespace MultiplayerGameServer.DAO
         public string Salt { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true;
         public DateTime SignUpDate { get; set; }
-        public DateTime LastLoginDate { get; set; }
+        public DateTime? LastLoginDate { get; set; }
         public DateTime UpdateTime { get; set; }
     }
 }

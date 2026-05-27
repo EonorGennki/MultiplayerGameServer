@@ -1,4 +1,4 @@
-﻿using MultiplayerGameServer.Servers;
+﻿using MultiplayerGameServer.Network;
 using SocketGameProtocal;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MultiplayerGameServer.Controller
+namespace MultiplayerGameServer.Logic
 {
     internal class UserController : BaseController
     {
@@ -24,7 +24,7 @@ namespace MultiplayerGameServer.Controller
         /// <returns></returns>
         public MainPack SignUp(Server _server, Client _client, MainPack _pack)
         {
-            if (_server.SignUp(_client, _pack))
+            if (_server.userDatabase.SignUp(_pack))
             {
                 _pack.ReturnCode = ReturnCode.Succeeded;
             }
@@ -45,7 +45,7 @@ namespace MultiplayerGameServer.Controller
         /// <returns></returns>
         public MainPack Login(Server _server, Client _client, MainPack _pack)
         {
-            return null;
+            return _pack;
         }
     }
 
