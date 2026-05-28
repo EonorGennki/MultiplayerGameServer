@@ -18,34 +18,34 @@ namespace MultiplayerGameServer.Logic
         /// <summary>
         /// 注册
         /// </summary>
-        /// <param name="_server"></param>
-        /// <param name="_client"></param>
-        /// <param name="_pack"></param>
+        /// <param name="server"></param>
+        /// <param name="client"></param>
+        /// <param name="pack"></param>
         /// <returns></returns>
-        public MainPack SignUp(Server _server, Client _client, MainPack _pack)
+        public MainPack SignUp(Server server, Client client, MainPack pack)
         {
-            if (_server.userDatabase.SignUp(_pack))
+            if (server.userDatabase.SignUp(pack))
             {
-                _pack.ReturnCode = ReturnCode.Succeeded;
+                pack.ReturnCode = ReturnCode.Succeeded;
             }
             else
             {
-                _pack.ReturnCode = ReturnCode.Failed;
+                pack.ReturnCode = ReturnCode.Failed;
             }
 
-            return _pack;
+            return pack;
         }
 
         /// <summary>
         /// 登录
         /// </summary>
-        /// <param name="_server"></param>
-        /// <param name="_client"></param>
-        /// <param name="_pack"></param>
+        /// <param name="server"></param>
+        /// <param name="client"></param>
+        /// <param name="pack"></param>
         /// <returns></returns>
-        public MainPack Login(Server _server, Client _client, MainPack _pack)
+        public MainPack Login(Server server, Client client, MainPack pack)
         {
-            return _pack;
+            return pack;
         }
     }
 

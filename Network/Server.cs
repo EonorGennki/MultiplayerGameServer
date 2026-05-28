@@ -14,13 +14,13 @@ namespace MultiplayerGameServer.Network
         public UserDatabase userDatabase;
         private DatabaseConnectionFactory databaseConnectionFactory;
 
-        public Server(int _port)
+        public Server(int port)
         {
             databaseConnectionFactory = new DatabaseConnectionFactory();
             userDatabase = new UserDatabase(databaseConnectionFactory);
             controllerManager = new ControllerManager(this);
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            socket.Bind(new IPEndPoint(IPAddress.Any, _port));
+            socket.Bind(new IPEndPoint(IPAddress.Any, port));
             socket.Listen(0);
             StartAccept();
         }
@@ -30,21 +30,21 @@ namespace MultiplayerGameServer.Network
             socket.BeginAccept(AcceptCallback, null);
         }
 
-        void AcceptCallback(IAsyncResult _result)
+        void AcceptCallback(IAsyncResult result)
         {
-            Socket _client = socket.EndAccept(_result);
-            clientList.Add(new Client(_client, this));
+            Socket client = socket.EndAccept(result);
+            clientList.Add(new Client(client, this));
             StartAccept();
         }
 
-        public void HandleRequest(MainPack _pack, Client _client)
+        public void HandleRequest(MainPack pack, Client client)
         {
-            controllerManager.HandleRequest(_pack, _client);
+            controllerManager.HandleRequest(pack, client);
         }
 
-        public void RemoveClient(Client _client)
+        public void RemoveClient(Client client)
         {
-            clientList.Remove(_client);
+            clientList.Remove(client);
         }
     }
 }

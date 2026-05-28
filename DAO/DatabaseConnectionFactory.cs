@@ -17,9 +17,9 @@ namespace MultiplayerGameServer.DAO
         {
             try
             {
-                MySqlConnection _connection = new MySqlConnection(DatabaseConfig.ConnectionString);
-                _connection.Open();
-                return _connection;
+                MySqlConnection connection = new MySqlConnection(DatabaseConfig.ConnectionString);
+                connection.Open();
+                return connection;
             }
             catch (Exception ex)
             {

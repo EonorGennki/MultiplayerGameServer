@@ -31,25 +31,25 @@ namespace MultiplayerGameServer.Tool
         /// <summary>
         /// 解析消息
         /// </summary>
-        /// <param name="_len"></param>
+        /// <param name="len"></param>
         /// <param name="HandleRequest"></param>
-        public void ReadBuffer(int _len, Action<MainPack> HandleRequest)
+        public void ReadBuffer(int len, Action<MainPack> HandleRequest)
         {
-            startIndex += _len;
+            startIndex += len;
 
             if (startIndex <= 4)
             {
                 return;
             }
 
-            int _count = BitConverter.ToInt32(buffer, 0);
+            int count = BitConverter.ToInt32(buffer, 0);
 
-            while (startIndex >= _count + 4)
+            while (startIndex >= count + 4)
             {
-                MainPack _pack = (MainPack)MainPack.Descriptor.Parser.ParseFrom(buffer, 4, _count);
-                HandleRequest(_pack);
-                Array.Copy(buffer, _count + 4, buffer, 0, startIndex - _count - 4);
-                startIndex -= _count + 4;
+                MainPack pack = (MainPack)MainPack.Descriptor.Parser.ParseFrom(buffer, 4, count);
+                HandleRequest(pack);
+                Array.Copy(buffer, count + 4, buffer, 0, startIndex - count - 4);
+                startIndex -= count + 4;
             }
         }
 
@@ -60,9 +60,9 @@ namespace MultiplayerGameServer.Tool
         /// <returns></returns>
         public static byte[] PackData(MainPack pack)
         {
-            byte[] _data = pack.ToByteArray(); //包体
-            byte[] _head = BitConverter.GetBytes(_data.Length); //包头
-            return _head.Concat(_data).ToArray();
+            byte[] data = pack.ToByteArray(); //包体
+            byte[] head = BitConverter.GetBytes(data.Length); //包头
+            return head.Concat(data).ToArray();
         }
     }
 }

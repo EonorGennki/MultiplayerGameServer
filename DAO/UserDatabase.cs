@@ -11,39 +11,39 @@ namespace MultiplayerGameServer.DAO
     {
         public readonly DatabaseConnectionFactory factory;
 
-        public UserDatabase(DatabaseConnectionFactory _factory)
+        public UserDatabase(DatabaseConnectionFactory factory)
         {
-            this.factory = _factory;
+            this.factory = factory;
         }
 
         /// <summary>
         /// 用户注册
         /// </summary>
-        /// <param name="_pack"></param>
+        /// <param name="pack"></param>
         /// <returns></returns>
-        public bool SignUp(MainPack _pack)
+        public bool SignUp(MainPack pack)
         {
-            string _username = _pack.LoginPack.Username;
-            string _password = _pack.LoginPack.Password;
+            string username = pack.LoginPack.Username;
+            string password = pack.LoginPack.Password;
 
-            string _salt = GenerateSalt();
-            string _passwordHash = HashPassword(_password, _salt);
+            string salt = GenerateSalt();
+            string passwordHash = HashPassword(password, salt);
 
-            if (GetUserByUsername(_username) is not null)
+            if (GetUserByUsername(username) is not null)
             {
                 Console.WriteLine("用户名已存在！");
                 return false;
             }
             else
             {
-                using (MySqlConnection? _connection = factory.ConnectMysql())
+                using (MySqlConnection? connection = factory.ConnectMysql())
                 {
                     string _sql = "INSERT INTO users (user_name, user_password_hash, user_salt) VALUES(@_username, @_passwordHash, @_salt)";
-                    using (MySqlCommand cmd = new MySqlCommand(_sql, _connection))
+                    using (MySqlCommand cmd = new MySqlCommand(_sql, connection))
                     {
-                        cmd.Parameters.AddWithValue("@_username", _username);
-                        cmd.Parameters.AddWithValue("@_passwordHash", _passwordHash);
-                        cmd.Parameters.AddWithValue("@_salt", _salt);
+                        cmd.Parameters.AddWithValue("@_username", username);
+                        cmd.Parameters.AddWithValue("@_passwordHash", passwordHash);
+                        cmd.Parameters.AddWithValue("@_salt", salt);
                         cmd.ExecuteNonQuery();
                         return true;
                     }
@@ -55,14 +55,14 @@ namespace MultiplayerGameServer.DAO
         /// <summary>
         /// 密码哈希生成
         /// </summary>
-        /// <param name="_password"></param>
-        /// <param name="_salt"></param>
+        /// <param name="password"></param>
+        /// <param name="salt"></param>
         /// <returns></returns>
-        private string HashPassword(string _password, string _salt)
+        private string HashPassword(string password, string salt)
         {
             using (SHA256 sha256 = SHA256.Create())
             {
-                string saltedPassword = _password + _salt;
+                string saltedPassword = password + salt;
                 byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(saltedPassword));
                 return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
             }
@@ -74,12 +74,12 @@ namespace MultiplayerGameServer.DAO
         /// <returns></returns>
         private string GenerateSalt()
         {
-            byte[] _saltBytes = new byte[32];
+            byte[] saltBytes = new byte[32];
             using (var rng = RandomNumberGenerator.Create())
             {
-                rng.GetBytes(_saltBytes);
+                rng.GetBytes(saltBytes);
             }
-            return Convert.ToBase64String(_saltBytes);
+            return Convert.ToBase64String(saltBytes);
         }
 
         /// <summary>
@@ -89,10 +89,10 @@ namespace MultiplayerGameServer.DAO
         /// <returns></returns>
         public UserEntity? GetUserByUsername(string username)
         {
-            using (MySqlConnection? _connection = factory.ConnectMysql())
+            using (MySqlConnection? connection = factory.ConnectMysql())
             {
                 string _sql = "SELECT * FROM users WHERE user_name = @username";
-                using (MySqlCommand cmd = new MySqlCommand(_sql, _connection))
+                using (MySqlCommand cmd = new MySqlCommand(_sql, connection))
                 {
                     cmd.Parameters.AddWithValue("@username", username);
                     using (MySqlDataReader reader = cmd.ExecuteReader())

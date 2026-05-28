@@ -10,10 +10,10 @@ namespace MultiplayerGameServer.Network
         private Server server;
         private Message message;
 
-        public Client(Socket _socket, Server _server)
+        public Client(Socket socket, Server server)
         {
-            server = _server;
-            socket = _socket;
+            this.server = server;
+            this.socket = socket;
             message = new Message();
 
             StartReceive();
@@ -24,7 +24,7 @@ namespace MultiplayerGameServer.Network
             socket.BeginReceive(message.Buffer, message.StartIndex, message.RemSize, SocketFlags.None, ReceiveCallback, null);
         }
 
-        void ReceiveCallback(IAsyncResult _result)
+        void ReceiveCallback(IAsyncResult result)
         {
             try
             {
@@ -34,15 +34,15 @@ namespace MultiplayerGameServer.Network
                     return;
                 }
 
-                int _len = socket.EndReceive(_result);
+                int len = socket.EndReceive(result);
 
-                if (_len == 0)
+                if (len == 0)
                 {
                     Close();
                     return;
                 }
 
-                message.ReadBuffer(_len, HandleRequest);
+                message.ReadBuffer(len, HandleRequest);
                 StartReceive();
             }
             catch
@@ -51,14 +51,14 @@ namespace MultiplayerGameServer.Network
             }
         }
 
-        public void Send(MainPack _pack)
+        public void Send(MainPack pack)
         {
-            socket.Send(Message.PackData(_pack));
+            socket.Send(Message.PackData(pack));
         }
 
-        void HandleRequest(MainPack _pack)
+        void HandleRequest(MainPack pack)
         {
-            server.HandleRequest(_pack, this);
+            server.HandleRequest(pack, this);
         }
 
         private void Close()

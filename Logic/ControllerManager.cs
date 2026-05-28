@@ -14,9 +14,9 @@ namespace MultiplayerGameServer.Logic
         private Dictionary<RequestCode, BaseController> controlDic = new Dictionary<RequestCode, BaseController>();
         private Server server;
         
-        public ControllerManager(Server _server)
+        public ControllerManager(Server server)
         {
-            server = _server;
+            this.server = server;
             UserController userController = new UserController();
             controlDic.Add(userController.GetRequestCode, userController);
         }
@@ -24,30 +24,30 @@ namespace MultiplayerGameServer.Logic
         /// <summary>
         /// 根据请求码和行为码，调用对应的controller方法
         /// </summary>
-        /// <param name="_pack">消息包</param>
-        /// <param name="_client">发送消息的客户端对象</param>
-        public void HandleRequest(MainPack _pack, Client _client)
+        /// <param name="pack">消息包</param>
+        /// <param name="client">发送消息的客户端对象</param>
+        public void HandleRequest(MainPack pack, Client client)
         {
-            if (controlDic.TryGetValue(_pack.RequestCode, out BaseController? controller))
+            if (controlDic.TryGetValue(pack.RequestCode, out BaseController? controller))
             {
-                string methodName = _pack.ActionCode.ToString();
+                string methodName = pack.ActionCode.ToString();
                 MethodInfo? method = controller.GetType().GetMethod(methodName);
                 if (method is null)
                 {
-                    Console.WriteLine("未找到指定方法：" + _pack.ActionCode.ToString());
+                    Console.WriteLine("未找到指定方法：" + pack.ActionCode.ToString());
                     return;
                 }
 
-                object[] obj = new object[] { server, _client, _pack };
+                object[] obj = new object[] { server, client, pack };
                 object? ret = method.Invoke(controller, obj);
                 if (ret is not null)
                 {
-                    _client.Send((MainPack)ret);
+                    client.Send((MainPack)ret);
                 }
             }
             else
             {
-                Console.WriteLine("未找到指定controller："+ _pack.RequestCode.ToString());
+                Console.WriteLine("未找到指定controller："+ pack.RequestCode.ToString());
             }
         }
     }
