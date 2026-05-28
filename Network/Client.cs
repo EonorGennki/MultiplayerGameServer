@@ -64,7 +64,7 @@ namespace MultiplayerGameServer.Network
         private void Close()
         {
             server.RemoveClient(this);
-            if (socket is not null)
+            if (socket is not null && socket.Connected)
             {
                 socket.Close();
             }
