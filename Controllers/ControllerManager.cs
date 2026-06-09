@@ -1,4 +1,5 @@
 ﻿using MultiplayerGameServer.Network;
+using MultiplayerGameServer.Service;
 using SocketGameProtocal;
 using System;
 using System.Collections.Generic;
@@ -7,18 +8,20 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MultiplayerGameServer.Logic
+namespace MultiplayerGameServer.Controllers
 {
     internal class ControllerManager
     {
         private Dictionary<RequestCode, BaseController> controlDic = new Dictionary<RequestCode, BaseController>();
         private Server server;
         
-        public ControllerManager(Server server)
+        public ControllerManager(Server server, ServiceGroup services)
         {
             this.server = server;
-            UserController userController = new UserController();
-            controlDic.Add(userController.GetRequestCode, userController);
+            UserController userController = new UserController(services.userService);
+            RoomController roomController = new RoomController(services.roomService);
+            controlDic.Add(userController.RequestCode, userController);
+            controlDic.Add(roomController.RequestCode, roomController);
         }
 
         /// <summary>

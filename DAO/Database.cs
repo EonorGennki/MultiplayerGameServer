@@ -1,0 +1,85 @@
+﻿using MultiplayerGameServer.Tool;
+using MySql.Data.MySqlClient;
+using SocketGameProtocal;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace MultiplayerGameServer.DAO
+{
+    internal class Database
+    {
+        public readonly DatabaseConnectionFactory factory;
+
+        public Database(DatabaseConnectionFactory factory)
+        {
+            this.factory = factory;
+        }
+
+        /// <summary>
+        /// 注册新用户
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="passwordHash"></param>
+        /// <param name="salt"></param>
+        public void InsertUser(string username, string passwordHash, string salt)
+        {
+            using (MySqlConnection? connection = factory.ConnectMysql())
+            {
+                string _sql = "INSERT INTO users (user_name, user_password_hash, user_salt) VALUES(@_username, @_passwordHash, @_salt)";
+                using (MySqlCommand cmd = new MySqlCommand(_sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@_username", username);
+                    cmd.Parameters.AddWithValue("@_passwordHash", passwordHash);
+                    cmd.Parameters.AddWithValue("@_salt", salt);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 根据用户名查询用户
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public UserEntity? GetUserByUsername(string username)
+        {
+            using (MySqlConnection? connection = factory.ConnectMysql())
+            {
+                string _sql = "SELECT * FROM users WHERE user_name = @username";
+                using (MySqlCommand cmd = new MySqlCommand(_sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@username", username);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return MapToUserEntity(reader);
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 获取user对象
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        private UserEntity MapToUserEntity(MySqlDataReader reader)
+        {
+            return new UserEntity
+            {
+                UserId = Convert.ToInt32(reader["user_id"]),
+                UserName = reader["user_name"].ToString()!,
+                PasswordHash = reader["user_password_hash"].ToString()!,
+                Salt = reader["user_salt"].ToString()!,
+                IsActive = Convert.ToBoolean(reader["user_is_active"]),
+                LastLoginDate = reader["user_last_login_date"] == DBNull.Value ? null : Convert.ToDateTime(reader["user_last_login_time"]),
+                SignUpDate = Convert.ToDateTime(reader["user_signup_date"]),
+                UpdateTime = Convert.ToDateTime(reader["user_update_date"])
+            };
+        }
+    }
+}

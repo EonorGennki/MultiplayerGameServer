@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MultiplayerGameServer.Logic
+namespace MultiplayerGameServer.Controllers
 {
     abstract class BaseController
     {
         protected RequestCode requestCode = RequestCode.ReqNone;
 
-        public RequestCode GetRequestCode
+        public RequestCode RequestCode
         {
             get { return requestCode; }
         }

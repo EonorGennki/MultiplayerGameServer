@@ -1,5 +1,6 @@
-﻿using MultiplayerGameServer.Logic;
+﻿using MultiplayerGameServer.Controllers;
 using MultiplayerGameServer.DAO;
+using MultiplayerGameServer.Service;
 using SocketGameProtocal;
 using System.Net;
 using System.Net.Sockets;
@@ -10,15 +11,18 @@ namespace MultiplayerGameServer.Network
     {
         private Socket socket;
         private List<Client> clientList = new List<Client>();
+        private List<Room> roomList = new List<Room>();
         private ControllerManager controllerManager;
-        public UserDatabase userDatabase;
+        private ServiceGroup serviceGroup;
         private DatabaseConnectionFactory databaseConnectionFactory;
+        private Database database;
 
         public Server(int port)
         {
             databaseConnectionFactory = new DatabaseConnectionFactory();
-            userDatabase = new UserDatabase(databaseConnectionFactory);
-            controllerManager = new ControllerManager(this);
+            database = new Database(databaseConnectionFactory);
+            serviceGroup = new ServiceGroup(database, roomList);
+            controllerManager = new ControllerManager(this, serviceGroup);
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socket.Bind(new IPEndPoint(IPAddress.Any, port));
             socket.Listen(0);
