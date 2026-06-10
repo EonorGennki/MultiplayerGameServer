@@ -1,6 +1,6 @@
 ﻿using MultiplayerGameServer.Controllers;
 using MultiplayerGameServer.DAO;
-using MultiplayerGameServer.Service;
+using MultiplayerGameServer.Logic.Service;
 using SocketGameProtocal;
 using System.Net;
 using System.Net.Sockets;

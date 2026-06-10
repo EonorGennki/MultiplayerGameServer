@@ -1,6 +1,6 @@
 ﻿using MultiplayerGameServer.DAO;
 
-namespace MultiplayerGameServer.Service
+namespace MultiplayerGameServer.Logic.Service
 {
     internal class BaseService
     {

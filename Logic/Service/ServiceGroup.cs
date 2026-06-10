@@ -1,6 +1,6 @@
 ﻿using MultiplayerGameServer.DAO;
 
-namespace MultiplayerGameServer.Service
+namespace MultiplayerGameServer.Logic.Service
 {
     internal class ServiceGroup
     {
@@ -15,7 +15,7 @@ namespace MultiplayerGameServer.Service
         public ServiceGroup(Database database, List<Room> roomList)
         {
             userService = new UserService(database);
-            roomService = new RoomService(roomList);
+            roomService = new RoomService(userService, roomList);
         }
     }
 }

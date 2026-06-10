@@ -1,5 +1,5 @@
-﻿using MultiplayerGameServer.Network;
-using MultiplayerGameServer.Service;
+﻿using MultiplayerGameServer.Logic.Service;
+using MultiplayerGameServer.Network;
 using SocketGameProtocal;
 using System;
 using System.Collections.Generic;
@@ -26,17 +26,20 @@ namespace MultiplayerGameServer.Controllers
         /// <param name="client"></param>
         /// <param name="pack"></param>
         /// <returns></returns>
-        public MainPack Register(Server server, Client client, MainPack pack)
+        public MainPack Register(Client client, MainPack pack)
         {
             string username = pack.AuthPack.Username;
             string password = pack.AuthPack.Password;
-            if (userService.Register(username, password))
+
+            ServiceResult result = userService.Register(username, password);
+            if (result.IsSuccess)
             {
                 pack.ReturnCode = ReturnCode.Success;
             }
             else
             {
                 pack.ReturnCode = ReturnCode.Failure;
+                pack.ErrorCode = (ErrorCode)result.ErrorCode;
             }
 
             return pack;
@@ -49,17 +52,21 @@ namespace MultiplayerGameServer.Controllers
         /// <param name="client"></param>
         /// <param name="pack"></param>
         /// <returns></returns>
-        public MainPack Login(Server server, Client client, MainPack pack)
+        public MainPack Login(Client client, MainPack pack)
         {
             string username = pack.AuthPack.Username;
             string password = pack.AuthPack.Password;
-            if (userService.Login(username, password))
+
+            ServiceResult result = userService.Login(username, password);
+            if (result.IsSuccess)
             {
+                client.userId = result.GetValue<int>();
                 pack.ReturnCode = ReturnCode.Success;
             }
             else
             {
                 pack.ReturnCode = ReturnCode.Failure;
+                pack.ErrorCode = (ErrorCode)result.ErrorCode;
             }
 
                 return pack;

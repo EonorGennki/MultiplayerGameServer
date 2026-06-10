@@ -1,11 +1,11 @@
 ﻿using MultiplayerGameServer.DAO;
-using MultiplayerGameServer.Tool;
+using MultiplayerGameServer.Logic.Interface;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace MultiplayerGameServer.Service
+namespace MultiplayerGameServer.Logic.Service
 {
-    internal class UserService : BaseService
+    internal class UserService : BaseService, IUserService
     {
         public UserService(Database database) : base(database)
         {
@@ -17,21 +17,25 @@ namespace MultiplayerGameServer.Service
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public bool Register(string username, string password)
+        public ServiceResult Register(string username, string password)
         {
             string salt = GenerateSalt();
             string passwordHash = HashPassword(password, salt);
 
             if (database.GetUserByUsername(username) is not null)
             {
-                return false;
-            }
-            else
-            {
-                database.InsertUser(username, passwordHash, salt);
+                return ServiceResult.Failure(ServiceErrorCode.AlreadyExists);
             }
 
-            return false;
+            try
+            {
+                database.InsertUser(username, passwordHash, salt);
+                return ServiceResult.Success();
+            }
+            catch
+            {
+                return ServiceResult.Failure(ServiceErrorCode.DatabaseError);
+            }
         }
 
         /// <summary>
@@ -40,20 +44,24 @@ namespace MultiplayerGameServer.Service
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public bool Login(string username, string password)
+        public ServiceResult Login(string username, string password)
         {
             UserEntity? user = database.GetUserByUsername(username);
-
-            if (user is not null)
+            if (user == null)
             {
-                string passwordHash = HashPassword(password, user.Salt);
-                if (passwordHash == user.PasswordHash)
-                {
-                    return true;
-                }
+                return ServiceResult.Failure(ServiceErrorCode.DatabaseError);
             }
 
-            return false;
+            string passwordHash = HashPassword(password, user.Salt);
+            if (passwordHash != user.PasswordHash)
+            {
+                ServiceResult result = ServiceResult.Failure(ServiceErrorCode.InvalidPassword);
+                result.Data = user.UserId;
+                return result;
+            }
+
+            database.SetActive(user.UserId, true);
+            return ServiceResult.Success();
         }
 
         /// <summary>
@@ -84,6 +92,22 @@ namespace MultiplayerGameServer.Service
                 rng.GetBytes(saltBytes);
             }
             return Convert.ToBase64String(saltBytes);
+        }
+
+        /// <summary>
+        /// 获取用户名
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public string GetUsername(int userId)
+        {
+            UserEntity? user = database.GetUserByUserId(userId);
+            if (user is not null)
+            {
+                return user.UserName;
+            }
+
+            return string.Empty;
         }
     }
 }

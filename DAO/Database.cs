@@ -1,8 +1,4 @@
-﻿using MultiplayerGameServer.Tool;
-using MySql.Data.MySqlClient;
-using SocketGameProtocal;
-using System.Security.Cryptography;
-using System.Text;
+﻿using MySql.Data.MySqlClient;
 
 namespace MultiplayerGameServer.DAO
 {
@@ -25,8 +21,8 @@ namespace MultiplayerGameServer.DAO
         {
             using (MySqlConnection? connection = factory.ConnectMysql())
             {
-                string _sql = "INSERT INTO users (user_name, user_password_hash, user_salt) VALUES(@_username, @_passwordHash, @_salt)";
-                using (MySqlCommand cmd = new MySqlCommand(_sql, connection))
+                string sql = "INSERT INTO users (user_name, user_password_hash, user_salt) VALUES(@_username, @_passwordHash, @_salt)";
+                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
                 {
                     cmd.Parameters.AddWithValue("@_username", username);
                     cmd.Parameters.AddWithValue("@_passwordHash", passwordHash);
@@ -45,10 +41,36 @@ namespace MultiplayerGameServer.DAO
         {
             using (MySqlConnection? connection = factory.ConnectMysql())
             {
-                string _sql = "SELECT * FROM users WHERE user_name = @username";
-                using (MySqlCommand cmd = new MySqlCommand(_sql, connection))
+                string sql = "SELECT * FROM users WHERE user_name = @username";
+                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
                 {
                     cmd.Parameters.AddWithValue("@username", username);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return MapToUserEntity(reader);
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 根据用户id查询用户
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public UserEntity? GetUserByUserId(int userId)
+        {
+            using (MySqlConnection? connection = factory.ConnectMysql())
+            {
+                string sql = "SELECT * FROM users WHERE user_id = @userId";
+                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@userId", userId);
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
@@ -80,6 +102,25 @@ namespace MultiplayerGameServer.DAO
                 SignUpDate = Convert.ToDateTime(reader["user_signup_date"]),
                 UpdateTime = Convert.ToDateTime(reader["user_update_date"])
             };
+        }
+
+        /// <summary>
+        /// 设置用户活跃状态
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="isActive"></param>
+        public void SetActive(int userId, bool isActive)
+        {
+            using (MySqlConnection? connection = factory.ConnectMysql())
+            {
+                string sql = "UPDATE users SET user_is_active = @isActive WHERE user_id = @userId";
+                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@isActive", isActive);
+                    cmd.Parameters.AddWithValue("@userId", userId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }
