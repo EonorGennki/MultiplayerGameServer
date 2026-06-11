@@ -43,11 +43,12 @@ namespace SocketGameProtocal {
             "b2dpbhACEg4KCkNyZWF0ZVJvb20QAxIOCgpTZWFyY2hSb29tEAQSDAoISm9p",
             "blJvb20QBRINCglMZWF2ZVJvb20QBhINCglMZWF2ZUdhbWUQBxIPCgtTaG93",
             "UGxheWVycxAIKjMKClJldHVybkNvZGUSCwoHUmV0Tm9uZRAAEgsKB1N1Y2Nl",
-            "c3MQARILCgdGYWlsdXJlEAIqxQEKCUVycm9yQ29kZRILCgdFcnJOb25lEAAS",
-            "EQoMVW5rbm93bkVycm9yEOgHEhEKDEFscmVhZHlFeGl0cxDpBxINCghOb3RG",
-            "b3VuZBDqBxISCg1EYXRhYmFzZUVycm9yENEPEhoKFUludmFsaWRVc2VybmFt",
-            "ZUZvcm1hdBDSDxIaChVJbnZhbGlkUGFzc3dvcmRGb3JtYXQQ0w8SFAoPSW52",
-            "YWxpZFVzZXJuYW1lENQPEhQKD0ludmFsaWRQYXNzd29yZBDVDyo+CglTdGF0",
+            "c3MQARILCgdGYWlsdXJlEAIq8gEKCUVycm9yQ29kZRINCglFcnJvck5vbmUQ",
+            "ABIRCgxVbmtub3duRXJyb3IQ6AcSEgoNQWxyZWFkeUV4aXN0cxDpBxINCghO",
+            "b3RGb3VuZBDqBxISCg1EYXRhYmFzZUVycm9yENEPEhoKFUludmFsaWRVc2Vy",
+            "bmFtZUZvcm1hdBDSDxIaChVJbnZhbGlkUGFzc3dvcmRGb3JtYXQQ0w8SFAoP",
+            "SW52YWxpZFVzZXJuYW1lENQPEhQKD0ludmFsaWRQYXNzd29yZBDVDxIXChJH",
+            "YW1lQWxyZWFkeVN0YXJ0ZWQQuRcSDwoKUm9vbUlzRnVsbBC6Fyo+CglTdGF0",
             "ZUNvZGUSDQoJU3RhdGVOb25lEAASCwoHV2FpdGluZxABEgsKB1BsYXlpbmcQ",
             "AhIICgRGdWxsEANiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
@@ -90,7 +91,7 @@ namespace SocketGameProtocal {
     /// </summary>
     [pbr::OriginalName("CreateRoom")] CreateRoom = 3,
     /// <summary>
-    ///搜索房间
+    ///搜索房间 
     /// </summary>
     [pbr::OriginalName("SearchRoom")] SearchRoom = 4,
     /// <summary>
@@ -124,21 +125,21 @@ namespace SocketGameProtocal {
   }
 
   public enum ErrorCode {
-    [pbr::OriginalName("ErrNone")] ErrNone = 0,
+    [pbr::OriginalName("ErrorNone")] ErrorNone = 0,
     /// <summary>
-    ///未知错误
+    ///通用错误码
     /// </summary>
     [pbr::OriginalName("UnknownError")] UnknownError = 1000,
     /// <summary>
     ///已存在
     /// </summary>
-    [pbr::OriginalName("AlreadyExits")] AlreadyExits = 1001,
+    [pbr::OriginalName("AlreadyExists")] AlreadyExists = 1001,
     /// <summary>
     ///不存在
     /// </summary>
     [pbr::OriginalName("NotFound")] NotFound = 1002,
     /// <summary>
-    ///数据库错误
+    ///用户类错误码
     /// </summary>
     [pbr::OriginalName("DatabaseError")] DatabaseError = 2001,
     /// <summary>
@@ -157,6 +158,14 @@ namespace SocketGameProtocal {
     ///密码
     /// </summary>
     [pbr::OriginalName("InvalidPassword")] InvalidPassword = 2005,
+    /// <summary>
+    ///房间类错误码
+    /// </summary>
+    [pbr::OriginalName("GameAlreadyStarted")] GameAlreadyStarted = 3001,
+    /// <summary>
+    ///房间已满
+    /// </summary>
+    [pbr::OriginalName("RoomIsFull")] RoomIsFull = 3002,
   }
 
   public enum StateCode {
@@ -515,6 +524,9 @@ namespace SocketGameProtocal {
     /// <summary>Field number for the "state_Code" field.</summary>
     public const int StateCodeFieldNumber = 4;
     private global::SocketGameProtocal.StateCode stateCode_ = global::SocketGameProtocal.StateCode.StateNone;
+    /// <summary>
+    ///房间状态码
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::SocketGameProtocal.StateCode StateCode {
@@ -1027,7 +1039,7 @@ namespace SocketGameProtocal {
 
     /// <summary>Field number for the "error_code" field.</summary>
     public const int ErrorCodeFieldNumber = 4;
-    private global::SocketGameProtocal.ErrorCode errorCode_ = global::SocketGameProtocal.ErrorCode.ErrNone;
+    private global::SocketGameProtocal.ErrorCode errorCode_ = global::SocketGameProtocal.ErrorCode.ErrorNone;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::SocketGameProtocal.ErrorCode ErrorCode {
@@ -1103,7 +1115,7 @@ namespace SocketGameProtocal {
       if (RequestCode != global::SocketGameProtocal.RequestCode.ReqNone) hash ^= RequestCode.GetHashCode();
       if (ActionCode != global::SocketGameProtocal.ActionCode.ActNone) hash ^= ActionCode.GetHashCode();
       if (ReturnCode != global::SocketGameProtocal.ReturnCode.RetNone) hash ^= ReturnCode.GetHashCode();
-      if (ErrorCode != global::SocketGameProtocal.ErrorCode.ErrNone) hash ^= ErrorCode.GetHashCode();
+      if (ErrorCode != global::SocketGameProtocal.ErrorCode.ErrorNone) hash ^= ErrorCode.GetHashCode();
       if (authPack_ != null) hash ^= AuthPack.GetHashCode();
       hash ^= roomPack_.GetHashCode();
       hash ^= playerPack_.GetHashCode();
@@ -1137,7 +1149,7 @@ namespace SocketGameProtocal {
         output.WriteRawTag(24);
         output.WriteEnum((int) ReturnCode);
       }
-      if (ErrorCode != global::SocketGameProtocal.ErrorCode.ErrNone) {
+      if (ErrorCode != global::SocketGameProtocal.ErrorCode.ErrorNone) {
         output.WriteRawTag(32);
         output.WriteEnum((int) ErrorCode);
       }
@@ -1169,7 +1181,7 @@ namespace SocketGameProtocal {
         output.WriteRawTag(24);
         output.WriteEnum((int) ReturnCode);
       }
-      if (ErrorCode != global::SocketGameProtocal.ErrorCode.ErrNone) {
+      if (ErrorCode != global::SocketGameProtocal.ErrorCode.ErrorNone) {
         output.WriteRawTag(32);
         output.WriteEnum((int) ErrorCode);
       }
@@ -1198,7 +1210,7 @@ namespace SocketGameProtocal {
       if (ReturnCode != global::SocketGameProtocal.ReturnCode.RetNone) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ReturnCode);
       }
-      if (ErrorCode != global::SocketGameProtocal.ErrorCode.ErrNone) {
+      if (ErrorCode != global::SocketGameProtocal.ErrorCode.ErrorNone) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ErrorCode);
       }
       if (authPack_ != null) {
@@ -1227,7 +1239,7 @@ namespace SocketGameProtocal {
       if (other.ReturnCode != global::SocketGameProtocal.ReturnCode.RetNone) {
         ReturnCode = other.ReturnCode;
       }
-      if (other.ErrorCode != global::SocketGameProtocal.ErrorCode.ErrNone) {
+      if (other.ErrorCode != global::SocketGameProtocal.ErrorCode.ErrorNone) {
         ErrorCode = other.ErrorCode;
       }
       if (other.authPack_ != null) {

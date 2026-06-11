@@ -29,10 +29,7 @@ namespace MultiplayerGameServer.Network
             StartAccept();
         }
 
-        void StartAccept()
-        {
-            socket.BeginAccept(AcceptCallback, null);
-        }
+        void StartAccept() => socket.BeginAccept(AcceptCallback, null);
 
         void AcceptCallback(IAsyncResult result)
         {
@@ -41,14 +38,25 @@ namespace MultiplayerGameServer.Network
             StartAccept();
         }
 
-        public void HandleRequest(MainPack pack, Client client)
-        {
-            controllerManager.HandleRequest(pack, client);
-        }
+        public void HandleRequest(MainPack pack, Client client) => controllerManager.HandleRequest(this, client, pack);
 
-        public void RemoveClient(Client client)
+        public void RemoveClient(Client client) => clientList.Remove(client);
+
+        /// <summary>
+        /// 广播
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="pack"></param>
+        public void Broadcast(Client client, MainPack pack)
         {
-            clientList.Remove(client);
+            foreach (Client Client in clientList)
+            {
+                if (Client.Equals(client))
+                {
+                    continue;
+                }
+                Client.Send(pack);
+            }
         }
     }
 }

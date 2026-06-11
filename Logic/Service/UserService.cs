@@ -7,8 +7,11 @@ namespace MultiplayerGameServer.Logic.Service
 {
     internal class UserService : BaseService, IUserService
     {
-        public UserService(Database database) : base(database)
+        private Database database;
+
+        public UserService(Database database) : base()
         {
+            this.database = database;
         }
 
         /// <summary>
@@ -99,15 +102,16 @@ namespace MultiplayerGameServer.Logic.Service
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public string GetUsername(int userId)
+        public PlayerInfo GetPlayerInfo(int userId)
         {
             UserEntity? user = database.GetUserByUserId(userId);
-            if (user is not null)
+            if (user is null)
             {
-                return user.UserName;
+                throw new ArgumentException($"用户 {userId} 不存在");
             }
 
-            return string.Empty;
+            PlayerInfo playerInfo = new PlayerInfo(user.UserName);
+            return playerInfo;
         }
     }
 }

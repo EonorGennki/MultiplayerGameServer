@@ -1,4 +1,4 @@
-﻿using MultiplayerGameServer.DAO;
+﻿using MultiplayerGameServer.Logic.Service;
 using MultiplayerGameServer.Tool;
 using SocketGameProtocal;
 using System.Net.Sockets;
@@ -10,11 +10,8 @@ namespace MultiplayerGameServer.Network
         private Socket socket;
         private Server server;
         private Message message;
-        public int userId
-        {
-            get { return userId; }
-            set { userId = value; }
-        }
+        public int UserId { get; set; }
+        public Room? CurrentRoom { get; set; }
 
         public Client(Socket socket, Server server)
         {

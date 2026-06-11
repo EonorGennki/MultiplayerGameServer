@@ -21,7 +21,7 @@ namespace MultiplayerGameServer.Controllers
         /// <param name="client"></param>
         /// <param name="pack"></param>
         /// <returns></returns>
-        public MainPack CreateRoom(Client client, MainPack pack)
+        public MainPack CreateRoom(Server server, Client client, MainPack pack)
         {
             RoomInfo roomInfo = ParseCreateRoomRequest(pack);
 
@@ -31,49 +31,13 @@ namespace MultiplayerGameServer.Controllers
         }
 
         /// <summary>
-        /// 打包
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="pack"></param>
-        /// <param name="success"></param>
-        /// <returns></returns>
-        private MainPack BuildCreateRoomResponse(Client client, MainPack pack, ServiceResult result)
-        {
-            if (result.IsSuccess)
-            {
-                pack.PlayerPack[0].PlayerName = roomService.GetUsername(client);
-                pack.RoomPack[0].StateCode = StateCode.Waiting;
-                pack.ReturnCode = ReturnCode.Success;
-            }
-            else
-            {
-                pack.ReturnCode = ReturnCode.Failure;
-                pack.ErrorCode = (ErrorCode)result.ErrorCode;
-            }
-            return pack;
-        }
-
-        /// <summary>
-        /// 解包
-        /// </summary>
-        /// <param name="pack"></param>
-        /// <returns></returns>
-        private static RoomInfo ParseCreateRoomRequest(MainPack pack)
-        {
-            PlayerPack playerList = new PlayerPack();
-            RoomPack host = pack.RoomPack[0];
-            RoomInfo roomInfo = new RoomInfo(host.RoomName, host.MaxNum, host.StateCode.ToString());
-            return roomInfo;
-        }
-
-        /// <summary>
         /// 搜索房间
         /// </summary>
         /// <param name="server"></param>
         /// <param name="client"></param>
         /// <param name="pack"></param>
         /// <returns></returns>
-        public MainPack SearchRoom(Client client, MainPack pack)
+        public MainPack SearchRoom(Server server, Client client, MainPack pack)
         {
             try
             {
@@ -89,19 +53,7 @@ namespace MultiplayerGameServer.Controllers
 
                 foreach (var room in roomList)
                 {
-                    RoomPack roomPack = new RoomPack();
-                    roomPack.RoomName = room.roomInfo.RoomName;
-                    roomPack.MaxNum = room.roomInfo.MaxNum;
-                    if (Enum.TryParse<StateCode>(room.roomInfo.State, out var statecode))
-                    {
-                        roomPack.StateCode = statecode;
-                    }
-                    else
-                    {
-                        roomPack.StateCode = StateCode.StateNone;
-                    }
-                        roomPack.StateCode = (StateCode)Enum.Parse(typeof(StateCode), room.roomInfo.State);
-                    pack.RoomPack.Add(roomPack);
+                    AddRoomPack(pack, room);
                 }
                 pack.ReturnCode = ReturnCode.Success;
             }
@@ -113,24 +65,175 @@ namespace MultiplayerGameServer.Controllers
             return pack;
         }
 
-        public MainPack JoinRoom(Client client, MainPack pack)
+        /// <summary>
+        /// 加入房间
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="pack"></param>
+        /// <returns></returns>
+        public MainPack JoinRoom(Server server, Client client, MainPack pack)
         {
-            bool success = roomService.JoinRoom(pack.RoomPack[0].RoomName);
+            ServiceResult result = roomService.JoinRoom(client, pack.RoomPack[0].RoomName);
+
+            return BuildJoinRoomResponse(server, client, pack, result);
+        }
+
+        /// <summary>
+        /// 离开房间
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="client"></param>
+        /// <param name="pack"></param>
+        /// <returns></returns>
+        public MainPack LeaveRoom(Server server, Client client, MainPack pack)
+        {
+            if (client.CurrentRoom is null)
+            {
+                pack.ReturnCode = ReturnCode.Failure;
+                pack.ErrorCode = ErrorCode.UnknownError;
+                return pack;
+            }
+
+            ServiceResult result = roomService.LeaveRoom(client);
+
+            return BuildLeaveRoomResponse(server, client, pack, result);
+        }
+
+        /// <summary>
+        /// 创建房间结果打包
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="pack"></param>
+        /// <param name="success"></param>
+        /// <returns></returns>
+        private MainPack BuildCreateRoomResponse(Client client, MainPack pack, ServiceResult result)
+        {
+            if (result.IsSuccess)
+            {
+                client.CurrentRoom = result.GetData<Room>()!;
+                PlayerInfo player = roomService.GetPlayerInfo(client.UserId);
+                AddPlayerPack(player, pack);
+                pack.RoomPack[0].StateCode = StateCode.Waiting;
+                pack.ReturnCode = ReturnCode.Success;
+            }
+            else
+            {
+                pack.ReturnCode = ReturnCode.Failure;
+                pack.ErrorCode = (ErrorCode)result.ErrorCode;
+            }
+            return pack;
+        }
+
+        /// <summary>
+        /// 创建房间请求解包
+        /// </summary>
+        /// <param name="pack"></param>
+        /// <returns></returns>
+        private static RoomInfo ParseCreateRoomRequest(MainPack pack)
+        {
+            PlayerPack playerList = new PlayerPack();
+            RoomPack host = pack.RoomPack[0];
+            RoomInfo roomInfo = new RoomInfo(host.RoomName, host.MaxNum, (int)host.StateCode);
+            return roomInfo;
+        }
+
+        /// <summary>
+        /// 加入房间结果打包
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="client"></param>
+        /// <param name="pack"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        private MainPack BuildJoinRoomResponse(Server server, Client client, MainPack pack, ServiceResult result)
+        {
+            if (result.IsSuccess)
+            {
+                Room room = result.GetData<Room>()!;
+                client.CurrentRoom = room;
+                AddRoomPack(pack, room);
+                foreach (PlayerInfo p in room.PlayerList)
+                {
+                    AddPlayerPack(p, pack);
+                }
+                pack.ReturnCode = ReturnCode.Success;
+                Broadcast(server, client, room);
+            }
+            else
+            {
+                pack.ReturnCode = ReturnCode.Failure;
+                pack.ErrorCode = (ErrorCode)result.ErrorCode;
+            }
 
             return pack;
         }
 
-        private ErrorCode GetErrorCode(int errorCode)
+        /// <summary>
+        /// 离开房间结果打包
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="client"></param>
+        /// <param name="pack"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        private MainPack BuildLeaveRoomResponse(Server server, Client client, MainPack pack, ServiceResult result)
         {
-            switch (errorCode)
+            if (result.IsSuccess)
             {
-                case 2001:
-                    return ErrorCode.AlreadyExits;
-                case 2002:
-                    return ErrorCode.NotFound;
-                default:
-                    return ErrorCode.ErrNone;
+                Room room = result.GetData<Room>()!;
+                pack.ReturnCode = ReturnCode.Success;
+                Broadcast(server, client, room);
             }
+            else
+            {
+                pack.ReturnCode = ReturnCode.Failure;
+                pack.ErrorCode = (ErrorCode)result.ErrorCode;
+            }
+
+            return pack;
+        }
+
+        /// <summary>
+        /// 打包广播
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="client"></param>
+        /// <param name="room"></param>
+        private void Broadcast(Server server, Client client, Room room)
+        {
+            MainPack pack = new MainPack();
+            pack.ActionCode = ActionCode.ShowPlayers;
+            foreach (PlayerInfo player in room.PlayerList)
+            {
+                AddPlayerPack(player, pack);
+            }
+            server.Broadcast(client, pack);
+        }
+
+        /// <summary>
+        /// 添加玩家包
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="pack"></param>
+        private void AddPlayerPack(PlayerInfo player, MainPack pack)
+        {
+            PlayerPack playerPack = new PlayerPack {};
+            playerPack.PlayerName = player.playerName;
+            pack.PlayerPack.Add(playerPack);
+        }
+
+        /// <summary>
+        /// 添加房间包
+        /// </summary>
+        /// <param name="pack"></param>
+        /// <param name="room"></param>
+        private static void AddRoomPack(MainPack pack, Room room)
+        {
+            RoomPack roomPack = new RoomPack();
+            roomPack.RoomName = room.RoomInfo.RoomName;
+            roomPack.MaxNum = room.RoomInfo.MaxNum;
+            roomPack.StateCode = (StateCode)room.RoomInfo.State;
+            pack.RoomPack.Add(roomPack);
         }
     }
 }

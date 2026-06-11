@@ -5,9 +5,9 @@
         public string RoomName { get; }
         public int currentNum { get; set; }
         public int MaxNum { get; }
-        public string State { get; }
+        public int State { get; }
 
-        public RoomInfo(string roomName, int maxNum, string state)
+        public RoomInfo(string roomName, int maxNum, int state)
         {
             RoomName = roomName;
             MaxNum = maxNum;

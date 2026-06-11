@@ -26,7 +26,7 @@ namespace MultiplayerGameServer.Controllers
         /// <param name="client"></param>
         /// <param name="pack"></param>
         /// <returns></returns>
-        public MainPack Register(Client client, MainPack pack)
+        public MainPack Register(Server server, Client client, MainPack pack)
         {
             string username = pack.AuthPack.Username;
             string password = pack.AuthPack.Password;
@@ -52,7 +52,7 @@ namespace MultiplayerGameServer.Controllers
         /// <param name="client"></param>
         /// <param name="pack"></param>
         /// <returns></returns>
-        public MainPack Login(Client client, MainPack pack)
+        public MainPack Login(Server server, Client client, MainPack pack)
         {
             string username = pack.AuthPack.Username;
             string password = pack.AuthPack.Password;
@@ -60,7 +60,7 @@ namespace MultiplayerGameServer.Controllers
             ServiceResult result = userService.Login(username, password);
             if (result.IsSuccess)
             {
-                client.userId = result.GetValue<int>();
+                client.UserId = result.GetValue<int>();
                 pack.ReturnCode = ReturnCode.Success;
             }
             else

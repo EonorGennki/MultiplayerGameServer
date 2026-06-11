@@ -27,7 +27,7 @@ namespace MultiplayerGameServer.Controllers
         /// </summary>
         /// <param name="pack">消息包</param>
         /// <param name="client">发送消息的客户端对象</param>
-        public void HandleRequest(MainPack pack, Client client)
+        public void HandleRequest(Server server, Client client, MainPack pack)
         {
             if (controlDic.TryGetValue(pack.RequestCode, out BaseController? controller))
             {
@@ -39,7 +39,7 @@ namespace MultiplayerGameServer.Controllers
                     return;
                 }
 
-                object[] obj = new object[] {client, pack };
+                object[] obj = new object[] {server, client, pack };
                 object? ret = method.Invoke(controller, obj);
                 if (ret is not null)
                 {

@@ -1,16 +1,14 @@
-﻿using MultiplayerGameServer.DAO;
-using MultiplayerGameServer.Network;
-
-namespace MultiplayerGameServer.Logic.Service
+﻿namespace MultiplayerGameServer.Logic.Service
 {
     internal class Room
     {
-        public RoomInfo roomInfo;
+        public RoomInfo RoomInfo { get; }
 
-        private List<Client> clientList = new List<Client>(); //房间内所有客户端
-        public List<Client> ClientList
+        //房间内所有玩家
+        private List<PlayerInfo> playerList = new List<PlayerInfo>();
+        public List<PlayerInfo> PlayerList
         {
-            get { return clientList; } 
+            get => playerList;
         }
 
         /// <summary>
@@ -20,22 +18,25 @@ namespace MultiplayerGameServer.Logic.Service
         /// <param name="roomName"></param>
         /// <param name="maxNum"></param>
         /// <param name="state"></param>
-        public Room(Client client, RoomInfo roomInfo)
+        public Room(RoomInfo roomInfo, PlayerInfo player)
         {
-            this.roomInfo = roomInfo;
-            clientList.Add(client);
-            this.roomInfo.currentNum = clientList.Count();
+            this.RoomInfo = roomInfo;
+            AddPlayer(player);
+            SetRoomInfo();
         }
 
-        /// <summary>
-        /// 搜索房间
-        /// </summary>
-        /// <param name="roomName"></param>
-        /// <param name="maxNum"></param>
-        /// <param name="state"></param>
-        public Room(RoomInfo roomInfo)
+        private void SetRoomInfo() => RoomInfo.currentNum = playerList.Count();
+
+        public void AddPlayer(PlayerInfo player)
         {
-            this.roomInfo = roomInfo;
+            playerList.Add(player);
+            SetRoomInfo();
+        }
+
+        public void RemovePlayer(PlayerInfo player)
+        {
+            playerList.Remove(player);
+            SetRoomInfo();
         }
     }
 }

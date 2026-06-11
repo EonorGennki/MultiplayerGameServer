@@ -4,11 +4,10 @@ namespace MultiplayerGameServer.Logic.Service
 {
     internal class BaseService
     {
-        protected Database database;
 
-        public BaseService(Database database)
+        public BaseService()
         {
-            this.database = database;
+            
         }
     }
 }

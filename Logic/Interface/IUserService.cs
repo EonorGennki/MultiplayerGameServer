@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MultiplayerGameServer.Logic.Service;
 
 namespace MultiplayerGameServer.Logic.Interface
 {
     public interface IUserService
     {
-        string GetUsername(int userId);
+        PlayerInfo GetPlayerInfo(int userId);
     }
 }
