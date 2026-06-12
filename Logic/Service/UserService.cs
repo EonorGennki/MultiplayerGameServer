@@ -58,13 +58,13 @@ namespace MultiplayerGameServer.Logic.Service
             string passwordHash = HashPassword(password, user.Salt);
             if (passwordHash != user.PasswordHash)
             {
-                ServiceResult result = ServiceResult.Failure(ServiceErrorCode.InvalidPassword);
-                result.Data = user.UserId;
-                return result;
+                return ServiceResult.Failure(ServiceErrorCode.InvalidPassword);
             }
 
             database.SetActive(user.UserId, true);
-            return ServiceResult.Success();
+            ServiceResult result = ServiceResult.Success();
+            result.Data = user.UserId;
+            return result;
         }
 
         /// <summary>

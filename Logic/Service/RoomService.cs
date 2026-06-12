@@ -30,7 +30,7 @@ namespace MultiplayerGameServer.Logic.Service
 
             try
             {
-                Room room = new Room(roomInfo, userService.GetPlayerInfo(client.UserId));
+                Room room = new Room(roomInfo);
                 roomList.Add(room);
                 room.AddPlayer(GetPlayerInfo(client.UserId));
                 ServiceResult result = ServiceResult.Success();
@@ -62,7 +62,7 @@ namespace MultiplayerGameServer.Logic.Service
         /// <returns></returns>
         public ServiceResult JoinRoom(Client client, string roomName)
         {
-            Room? room = client.CurrentRoom;
+            Room? room = roomList.FirstOrDefault(room => room.RoomInfo.RoomName.Equals(roomName));
             if (room is null)
             {
                 return ServiceResult.Failure(ServiceErrorCode.NotFound);
@@ -72,6 +72,7 @@ namespace MultiplayerGameServer.Logic.Service
             {
                 PlayerInfo player = GetPlayerInfo(client.UserId);
                 room.AddPlayer(player);
+                SetRoomState(room.RoomInfo);
                 ServiceResult result = ServiceResult.Success();
                 result.Data = room;
                 return result;
@@ -82,7 +83,7 @@ namespace MultiplayerGameServer.Logic.Service
             }
             else if (room.RoomInfo.State == 3)
             {
-                ServiceResult result = ServiceResult.Failure(ServiceErrorCode.NotFound);
+                ServiceResult result = ServiceResult.Failure(ServiceErrorCode.RoomIsFull);
             }
 
             return ServiceResult.Failure(ServiceErrorCode.UnknownError);
@@ -110,6 +111,18 @@ namespace MultiplayerGameServer.Logic.Service
             return result;
         }
 
-        public PlayerInfo GetPlayerInfo(int userId) => userService.GetPlayerInfo(userId);
+        private PlayerInfo GetPlayerInfo(int userId) => userService.GetPlayerInfo(userId);
+
+        private void SetRoomState(RoomInfo roomInfo)
+        {
+            if (roomInfo.CurrentNum < roomInfo.MaxNum)
+            {
+                roomInfo.State = 1;
+            }
+            else if (roomInfo.CurrentNum >= roomInfo.MaxNum)
+            {
+                roomInfo.State = 3;
+            }
+        }
     }
 }

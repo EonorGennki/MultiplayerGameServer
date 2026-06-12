@@ -42,7 +42,6 @@ namespace MultiplayerGameServer.Controllers
             try
             {
                 List<Room> roomList = roomService.SearchRoom().GetData<List<Room>>()!;
-                pack.RoomPack.Clear();
 
                 if (roomList.Count <= 0)
                 {
@@ -100,6 +99,19 @@ namespace MultiplayerGameServer.Controllers
         }
 
         /// <summary>
+        /// 创建房间请求解包
+        /// </summary>
+        /// <param name="pack"></param>
+        /// <returns></returns>
+        private RoomInfo ParseCreateRoomRequest(MainPack pack)
+        {
+            PlayerPack playerList = new PlayerPack();
+            RoomPack host = pack.RoomPack[0];
+            RoomInfo roomInfo = new RoomInfo(host.RoomName, host.MaxNum, (int)host.StateCode);
+            return roomInfo;
+        }
+
+        /// <summary>
         /// 创建房间结果打包
         /// </summary>
         /// <param name="client"></param>
@@ -110,10 +122,12 @@ namespace MultiplayerGameServer.Controllers
         {
             if (result.IsSuccess)
             {
-                client.CurrentRoom = result.GetData<Room>()!;
-                PlayerInfo player = roomService.GetPlayerInfo(client.UserId);
+                Room room = result.GetData<Room>()!;
+                client.CurrentRoom = room;
+                PlayerInfo player = room.PlayerList[0];
+                pack.RoomPack.Clear();
+                AddRoomPack(pack, room);
                 AddPlayerPack(player, pack);
-                pack.RoomPack[0].StateCode = StateCode.Waiting;
                 pack.ReturnCode = ReturnCode.Success;
             }
             else
@@ -122,19 +136,6 @@ namespace MultiplayerGameServer.Controllers
                 pack.ErrorCode = (ErrorCode)result.ErrorCode;
             }
             return pack;
-        }
-
-        /// <summary>
-        /// 创建房间请求解包
-        /// </summary>
-        /// <param name="pack"></param>
-        /// <returns></returns>
-        private static RoomInfo ParseCreateRoomRequest(MainPack pack)
-        {
-            PlayerPack playerList = new PlayerPack();
-            RoomPack host = pack.RoomPack[0];
-            RoomInfo roomInfo = new RoomInfo(host.RoomName, host.MaxNum, (int)host.StateCode);
-            return roomInfo;
         }
 
         /// <summary>
@@ -151,6 +152,7 @@ namespace MultiplayerGameServer.Controllers
             {
                 Room room = result.GetData<Room>()!;
                 client.CurrentRoom = room;
+                pack.RoomPack.Clear();
                 AddRoomPack(pack, room);
                 foreach (PlayerInfo p in room.PlayerList)
                 {
@@ -203,6 +205,7 @@ namespace MultiplayerGameServer.Controllers
         {
             MainPack pack = new MainPack();
             pack.ActionCode = ActionCode.ShowPlayers;
+            AddRoomPack(pack, room);
             foreach (PlayerInfo player in room.PlayerList)
             {
                 AddPlayerPack(player, pack);
@@ -217,7 +220,7 @@ namespace MultiplayerGameServer.Controllers
         /// <param name="pack"></param>
         private void AddPlayerPack(PlayerInfo player, MainPack pack)
         {
-            PlayerPack playerPack = new PlayerPack {};
+            PlayerPack playerPack = new PlayerPack { };
             playerPack.PlayerName = player.playerName;
             pack.PlayerPack.Add(playerPack);
         }
@@ -231,6 +234,7 @@ namespace MultiplayerGameServer.Controllers
         {
             RoomPack roomPack = new RoomPack();
             roomPack.RoomName = room.RoomInfo.RoomName;
+            roomPack.CurrentNum = room.RoomInfo.CurrentNum;
             roomPack.MaxNum = room.RoomInfo.MaxNum;
             roomPack.StateCode = (StateCode)room.RoomInfo.State;
             pack.RoomPack.Add(roomPack);

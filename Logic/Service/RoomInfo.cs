@@ -3,9 +3,9 @@
     internal class RoomInfo
     {
         public string RoomName { get; }
-        public int currentNum { get; set; }
+        public int CurrentNum { get; set; }
         public int MaxNum { get; }
-        public int State { get; }
+        public int State { get; set; }
 
         public RoomInfo(string roomName, int maxNum, int state)
         {

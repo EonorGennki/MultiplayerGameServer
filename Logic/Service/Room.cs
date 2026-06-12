@@ -11,21 +11,13 @@
             get => playerList;
         }
 
-        /// <summary>
-        /// 创建房间
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="roomName"></param>
-        /// <param name="maxNum"></param>
-        /// <param name="state"></param>
-        public Room(RoomInfo roomInfo, PlayerInfo player)
+        public Room(RoomInfo roomInfo)
         {
             this.RoomInfo = roomInfo;
-            AddPlayer(player);
             SetRoomInfo();
         }
 
-        private void SetRoomInfo() => RoomInfo.currentNum = playerList.Count();
+        private void SetRoomInfo() => RoomInfo.CurrentNum = playerList.Count();
 
         public void AddPlayer(PlayerInfo player)
         {

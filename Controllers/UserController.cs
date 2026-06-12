@@ -1,11 +1,6 @@
 ﻿using MultiplayerGameServer.Logic.Service;
 using MultiplayerGameServer.Network;
 using SocketGameProtocal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MultiplayerGameServer.Controllers
 {
@@ -69,7 +64,7 @@ namespace MultiplayerGameServer.Controllers
                 pack.ErrorCode = (ErrorCode)result.ErrorCode;
             }
 
-                return pack;
+            return pack;
         }
     }
 
