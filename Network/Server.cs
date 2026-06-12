@@ -49,13 +49,13 @@ namespace MultiplayerGameServer.Network
         /// <param name="pack"></param>
         public void Broadcast(Client client, MainPack pack)
         {
-            foreach (Client Client in clientList)
+            foreach (Client c in clientList)
             {
-                if (Client.Equals(client))
+                if (c.Equals(client))
                 {
                     continue;
                 }
-                Client.Send(pack);
+                c.Send(pack);
             }
         }
     }

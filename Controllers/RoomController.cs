@@ -84,7 +84,7 @@ namespace MultiplayerGameServer.Controllers
         /// <param name="client"></param>
         /// <param name="pack"></param>
         /// <returns></returns>
-        public MainPack LeaveRoom(Server server, Client client, MainPack pack)
+        public MainPack? LeaveRoom(Server server, Client client, MainPack pack)
         {
             if (client.CurrentRoom is null)
             {
@@ -94,6 +94,15 @@ namespace MultiplayerGameServer.Controllers
             }
 
             ServiceResult result = roomService.LeaveRoom(client);
+
+            //连接断开处理
+            if (client.isClosing == true)
+            {
+                Room room = result.GetData<Room>()!;
+                Broadcast(server, client, room);
+                return null;
+            }
+
 
             return BuildLeaveRoomResponse(server, client, pack, result);
         }
@@ -183,8 +192,8 @@ namespace MultiplayerGameServer.Controllers
             if (result.IsSuccess)
             {
                 Room room = result.GetData<Room>()!;
-                pack.ReturnCode = ReturnCode.Success;
                 Broadcast(server, client, room);
+                pack.ReturnCode = ReturnCode.Success;
             }
             else
             {
@@ -204,8 +213,17 @@ namespace MultiplayerGameServer.Controllers
         private void Broadcast(Server server, Client client, Room room)
         {
             MainPack pack = new MainPack();
-            pack.ActionCode = ActionCode.ShowPlayers;
+
+            if (room.PlayerList.Count <= 0)
+            {
+                pack.ActionCode = ActionCode.LeaveRoom;
+                server.Broadcast(client, pack);
+                return;
+            }
+
+            roomService.SetRoomState(room.RoomInfo);
             AddRoomPack(pack, room);
+            pack.ActionCode = ActionCode.ShowPlayers;
             foreach (PlayerInfo player in room.PlayerList)
             {
                 AddPlayerPack(player, pack);
@@ -220,7 +238,7 @@ namespace MultiplayerGameServer.Controllers
         /// <param name="pack"></param>
         private void AddPlayerPack(PlayerInfo player, MainPack pack)
         {
-            PlayerPack playerPack = new PlayerPack { };
+            PlayerPack playerPack = new PlayerPack();
             playerPack.PlayerName = player.playerName;
             pack.PlayerPack.Add(playerPack);
         }

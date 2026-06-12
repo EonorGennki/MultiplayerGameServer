@@ -79,11 +79,11 @@ namespace MultiplayerGameServer.Logic.Service
             }
             else if (room.RoomInfo.State == 2)
             {
-                ServiceResult result = ServiceResult.Failure(ServiceErrorCode.GameAlreadyStarted);
+                ServiceResult result = ServiceResult.Failure(ServiceErrorCode.RoomIsFull);
             }
             else if (room.RoomInfo.State == 3)
             {
-                ServiceResult result = ServiceResult.Failure(ServiceErrorCode.RoomIsFull);
+                ServiceResult result = ServiceResult.Failure(ServiceErrorCode.GameAlreadyStarted);
             }
 
             return ServiceResult.Failure(ServiceErrorCode.UnknownError);
@@ -102,7 +102,18 @@ namespace MultiplayerGameServer.Logic.Service
                 return ServiceResult.Failure(ServiceErrorCode.NotFound);
             }
 
-            PlayerInfo player = GetPlayerInfo(client.UserId);
+            PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.playerName == GetPlayerInfo(client.UserId).playerName);
+            if (player is null)
+            {
+                return ServiceResult.Failure(ServiceErrorCode.UnknownError);
+            }
+            
+            if (player == room.PlayerList[0])
+            {
+                room.PlayerList.Clear();
+                roomList.Remove(room);
+            }
+
             room.RemovePlayer(player);
             client.CurrentRoom = null;
 
@@ -111,17 +122,19 @@ namespace MultiplayerGameServer.Logic.Service
             return result;
         }
 
+
+
         private PlayerInfo GetPlayerInfo(int userId) => userService.GetPlayerInfo(userId);
 
-        private void SetRoomState(RoomInfo roomInfo)
+        public void SetRoomState(RoomInfo roomInfo)
         {
             if (roomInfo.CurrentNum < roomInfo.MaxNum)
             {
-                roomInfo.State = 1;
+                roomInfo.State = 1; //Waiting
             }
             else if (roomInfo.CurrentNum >= roomInfo.MaxNum)
             {
-                roomInfo.State = 3;
+                roomInfo.State = 2; //Full
             }
         }
     }

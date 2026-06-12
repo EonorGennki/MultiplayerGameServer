@@ -49,8 +49,8 @@ namespace SocketGameProtocal {
             "bmFtZUZvcm1hdBDSDxIaChVJbnZhbGlkUGFzc3dvcmRGb3JtYXQQ0w8SFAoP",
             "SW52YWxpZFVzZXJuYW1lENQPEhQKD0ludmFsaWRQYXNzd29yZBDVDxIXChJH",
             "YW1lQWxyZWFkeVN0YXJ0ZWQQuRcSDwoKUm9vbUlzRnVsbBC6Fyo+CglTdGF0",
-            "ZUNvZGUSDQoJU3RhdGVOb25lEAASCwoHV2FpdGluZxABEgsKB1BsYXlpbmcQ",
-            "AhIICgRGdWxsEANiBnByb3RvMw=="));
+            "ZUNvZGUSDQoJU3RhdGVOb25lEAASCwoHV2FpdGluZxABEggKBEZ1bGwQAhIL",
+            "CgdQbGF5aW5nEANiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::SocketGameProtocal.RequestCode), typeof(global::SocketGameProtocal.ActionCode), typeof(global::SocketGameProtocal.ReturnCode), typeof(global::SocketGameProtocal.ErrorCode), typeof(global::SocketGameProtocal.StateCode), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -175,13 +175,13 @@ namespace SocketGameProtocal {
     /// </summary>
     [pbr::OriginalName("Waiting")] Waiting = 1,
     /// <summary>
-    ///游戏中
-    /// </summary>
-    [pbr::OriginalName("Playing")] Playing = 2,
-    /// <summary>
     ///已满
     /// </summary>
-    [pbr::OriginalName("Full")] Full = 3,
+    [pbr::OriginalName("Full")] Full = 2,
+    /// <summary>
+    ///游戏中
+    /// </summary>
+    [pbr::OriginalName("Playing")] Playing = 3,
   }
 
   #endregion
