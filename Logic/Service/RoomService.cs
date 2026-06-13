@@ -1,5 +1,6 @@
 ﻿using MultiplayerGameServer.Logic.Interface;
 using MultiplayerGameServer.Network;
+using System.Diagnostics;
 
 namespace MultiplayerGameServer.Logic.Service
 {
@@ -107,7 +108,7 @@ namespace MultiplayerGameServer.Logic.Service
             {
                 return ServiceResult.Failure(ServiceErrorCode.UnknownError);
             }
-            
+
             if (player == room.PlayerList[0])
             {
                 room.PlayerList.Clear();
@@ -122,7 +123,15 @@ namespace MultiplayerGameServer.Logic.Service
             return result;
         }
 
+        public ServiceResult Chat(Client client, string text)
+        {
+            PlayerInfo playerInfo = GetPlayerInfo(client.UserId);
+            string chatText = playerInfo.playerName + "：" + text;
 
+            ServiceResult result = ServiceResult.Success();
+            result.Data = chatText;
+            return result;
+        }
 
         private PlayerInfo GetPlayerInfo(int userId) => userService.GetPlayerInfo(userId);
 

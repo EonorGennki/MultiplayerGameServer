@@ -107,6 +107,17 @@ namespace MultiplayerGameServer.Controllers
             return BuildLeaveRoomResponse(server, client, pack, result);
         }
 
+        public MainPack Chat(Server server, Client client, MainPack pack)
+        {
+            string text = pack.Text;
+            ServiceResult result = roomService.Chat(client, text);
+            pack.ReturnCode = ReturnCode.Success;
+            pack.Text = result.GetData<string>();
+
+            server.Broadcast(client, pack);
+            return pack;
+        }
+
         /// <summary>
         /// 创建房间请求解包
         /// </summary>

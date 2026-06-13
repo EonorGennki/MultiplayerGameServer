@@ -10,6 +10,7 @@ namespace MultiplayerGameServer
         static void Main(string[] args)
         {
             Server server = new Server(6666);
+            Console.WriteLine("服务端启动...");
             Console.Read();
         }
     }
