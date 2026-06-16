@@ -1,6 +1,4 @@
 ﻿using MultiplayerGameServer.Logic.Interface;
-using MultiplayerGameServer.Network;
-using System.Diagnostics;
 
 namespace MultiplayerGameServer.Logic.Service
 {
@@ -21,7 +19,7 @@ namespace MultiplayerGameServer.Logic.Service
         /// <param name="client"></param>
         /// <param name="roomInfo"></param>
         /// <returns></returns>
-        public ServiceResult CreateRoom(Client client, RoomInfo roomInfo)
+        public ServiceResult CreateRoom(int userId, RoomInfo roomInfo)
         {
             bool exists = roomList.Any(room => room.RoomInfo.RoomName.Equals(roomInfo.RoomName));
             if (exists)
@@ -33,7 +31,9 @@ namespace MultiplayerGameServer.Logic.Service
             {
                 Room room = new Room(roomInfo);
                 roomList.Add(room);
-                room.AddPlayer(GetPlayerInfo(client.UserId));
+                PlayerInfo player = GetPlayerInfo(userId);
+                player.SetIsReady(true);
+                room.AddPlayer(player);
                 ServiceResult result = ServiceResult.Success();
                 result.Data = room;
                 return result;
@@ -61,9 +61,9 @@ namespace MultiplayerGameServer.Logic.Service
         /// <param name="client"></param>
         /// <param name="roomName"></param>
         /// <returns></returns>
-        public ServiceResult JoinRoom(Client client, string roomName)
+        public ServiceResult JoinRoom(int userId, RoomInfo roomInfo)
         {
-            Room? room = roomList.FirstOrDefault(room => room.RoomInfo.RoomName.Equals(roomName));
+            Room? room = roomList.FirstOrDefault(room => room.RoomInfo.RoomName.Equals(roomInfo.RoomName));
             if (room is null)
             {
                 return ServiceResult.Failure(ServiceErrorCode.NotFound);
@@ -71,9 +71,10 @@ namespace MultiplayerGameServer.Logic.Service
 
             if (room.RoomInfo.State == 1)
             {
-                PlayerInfo player = GetPlayerInfo(client.UserId);
+                PlayerInfo player = GetPlayerInfo(userId);
+                player.SetIsReady(false);
                 room.AddPlayer(player);
-                SetRoomState(room.RoomInfo);
+                room.SetRoomState(room.RoomInfo);
                 ServiceResult result = ServiceResult.Success();
                 result.Data = room;
                 return result;
@@ -95,15 +96,14 @@ namespace MultiplayerGameServer.Logic.Service
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        public ServiceResult LeaveRoom(Client client)
+        public ServiceResult LeaveRoom(Room room, int userId)
         {
-            Room? room = client.CurrentRoom;
             if (room is null)
             {
                 return ServiceResult.Failure(ServiceErrorCode.NotFound);
             }
 
-            PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.playerName == GetPlayerInfo(client.UserId).playerName);
+            PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.playerName == GetPlayerInfo(userId).playerName);
             if (player is null)
             {
                 return ServiceResult.Failure(ServiceErrorCode.UnknownError);
@@ -115,36 +115,38 @@ namespace MultiplayerGameServer.Logic.Service
                 roomList.Remove(room);
             }
 
+            player.SetIsReady(false);
             room.RemovePlayer(player);
-            client.CurrentRoom = null;
-
+            room.SetRoomState(room.RoomInfo);
             ServiceResult result = ServiceResult.Success();
             result.Data = room;
             return result;
         }
 
-        public ServiceResult Chat(Client client, string text)
+        public ServiceResult Chat(int userId, string text)
         {
-            PlayerInfo playerInfo = GetPlayerInfo(client.UserId);
-            string chatText = playerInfo.playerName + "：" + text;
+            PlayerInfo player = GetPlayerInfo(userId);
+            string chatText = player.playerName + "：" + text;
 
             ServiceResult result = ServiceResult.Success();
             result.Data = chatText;
             return result;
         }
 
-        private PlayerInfo GetPlayerInfo(int userId) => userService.GetPlayerInfo(userId);
-
-        public void SetRoomState(RoomInfo roomInfo)
+        public ServiceResult StartGame()
         {
-            if (roomInfo.CurrentNum < roomInfo.MaxNum)
-            {
-                roomInfo.State = 1; //Waiting
-            }
-            else if (roomInfo.CurrentNum >= roomInfo.MaxNum)
-            {
-                roomInfo.State = 2; //Full
-            }
+            return ServiceResult.Success();
         }
+
+        public ServiceResult Ready(int userId)
+        {
+            PlayerInfo player = GetPlayerInfo(userId);
+            player.ToggleIsReady(player.isReady);
+            ServiceResult result = ServiceResult.Success();
+            result.Data = player;
+            return result;
+        }
+
+        private PlayerInfo GetPlayerInfo(int userId) => userService.GetPlayerInfo(userId);
     }
 }

@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MultiplayerGameServer.Logic.Service
+﻿namespace MultiplayerGameServer.Logic.Service
 {
     public class PlayerInfo
     {
         public string playerName { get; }
+        public bool isReady { get; private set; } = false;
 
         public PlayerInfo(string playerName)
         {
             this.playerName = playerName;
         }
+
+        public bool ToggleIsReady(bool isReady) => this.isReady = !isReady;
+        public void SetIsReady(bool isReady) => this.isReady = isReady;
     }
 }

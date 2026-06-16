@@ -23,9 +23,9 @@ namespace MultiplayerGameServer.Controllers
         /// <returns></returns>
         public MainPack CreateRoom(Server server, Client client, MainPack pack)
         {
-            RoomInfo roomInfo = ParseCreateRoomRequest(pack);
+            RoomInfo roomInfo = ExtractRoomInfo(pack);
 
-            ServiceResult result = roomService.CreateRoom(client, roomInfo);
+            ServiceResult result = roomService.CreateRoom(client.UserId, roomInfo);
 
             return BuildCreateRoomResponse(client, pack, result);
         }
@@ -72,7 +72,9 @@ namespace MultiplayerGameServer.Controllers
         /// <returns></returns>
         public MainPack JoinRoom(Server server, Client client, MainPack pack)
         {
-            ServiceResult result = roomService.JoinRoom(client, pack.RoomPack[0].RoomName);
+            RoomInfo roomInfo = ExtractRoomInfo(pack);
+
+            ServiceResult result = roomService.JoinRoom(client.UserId, roomInfo);
 
             return BuildJoinRoomResponse(server, client, pack, result);
         }
@@ -93,16 +95,20 @@ namespace MultiplayerGameServer.Controllers
                 return pack;
             }
 
-            ServiceResult result = roomService.LeaveRoom(client);
+            ServiceResult result = roomService.LeaveRoom(client.CurrentRoom, client.UserId);
+
+            if (result.IsSuccess)
+            {
+                client.CurrentRoom = null;
+            }
 
             //连接断开处理
             if (client.isClosing == true)
             {
                 Room room = result.GetData<Room>()!;
-                Broadcast(server, client, room);
+                UpdatePlayerList(server, client, room);
                 return null;
             }
-
 
             return BuildLeaveRoomResponse(server, client, pack, result);
         }
@@ -110,7 +116,7 @@ namespace MultiplayerGameServer.Controllers
         public MainPack Chat(Server server, Client client, MainPack pack)
         {
             string text = pack.Text;
-            ServiceResult result = roomService.Chat(client, text);
+            ServiceResult result = roomService.Chat(client.UserId, text);
             pack.ReturnCode = ReturnCode.Success;
             pack.Text = result.GetData<string>();
 
@@ -118,16 +124,34 @@ namespace MultiplayerGameServer.Controllers
             return pack;
         }
 
+        public MainPack StartGame(Server server, Client client, MainPack pack)
+        {
+            return pack;
+        }
+
+        public MainPack Ready(Server server, Client client, MainPack pack)
+        {
+            ServiceResult result = roomService.Ready(client.UserId);
+            PlayerInfo player = result.GetData<PlayerInfo>()!;
+            PlayerPack playerPack = new PlayerPack();
+            playerPack.PlayerName = player.playerName;
+            playerPack.IsReady = player.isReady;
+
+            server.Broadcast(client, pack);
+
+            return pack;
+        }
+
         /// <summary>
-        /// 创建房间请求解包
+        /// 提取房间信息
         /// </summary>
         /// <param name="pack"></param>
         /// <returns></returns>
-        private RoomInfo ParseCreateRoomRequest(MainPack pack)
+        private RoomInfo ExtractRoomInfo(MainPack pack)
         {
             PlayerPack playerList = new PlayerPack();
-            RoomPack host = pack.RoomPack[0];
-            RoomInfo roomInfo = new RoomInfo(host.RoomName, host.MaxNum, (int)host.StateCode);
+            RoomPack room = pack.RoomPack[0];
+            RoomInfo roomInfo = new RoomInfo(room.RoomName, room.MaxNum, (int)room.StateCode);
             return roomInfo;
         }
 
@@ -179,7 +203,7 @@ namespace MultiplayerGameServer.Controllers
                     AddPlayerPack(p, pack);
                 }
                 pack.ReturnCode = ReturnCode.Success;
-                Broadcast(server, client, room);
+                UpdatePlayerList(server, client, room);  //通知其他客户端刷新
             }
             else
             {
@@ -203,7 +227,7 @@ namespace MultiplayerGameServer.Controllers
             if (result.IsSuccess)
             {
                 Room room = result.GetData<Room>()!;
-                Broadcast(server, client, room);
+                UpdatePlayerList(server, client, room);
                 pack.ReturnCode = ReturnCode.Success;
             }
             else
@@ -221,7 +245,7 @@ namespace MultiplayerGameServer.Controllers
         /// <param name="server"></param>
         /// <param name="client"></param>
         /// <param name="room"></param>
-        private void Broadcast(Server server, Client client, Room room)
+        private void UpdatePlayerList(Server server, Client client, Room room)
         {
             MainPack pack = new MainPack();
 
@@ -232,7 +256,6 @@ namespace MultiplayerGameServer.Controllers
                 return;
             }
 
-            roomService.SetRoomState(room.RoomInfo);
             AddRoomPack(pack, room);
             pack.ActionCode = ActionCode.ShowPlayers;
             foreach (PlayerInfo player in room.PlayerList)
@@ -251,6 +274,7 @@ namespace MultiplayerGameServer.Controllers
         {
             PlayerPack playerPack = new PlayerPack();
             playerPack.PlayerName = player.playerName;
+            playerPack.IsReady = player.isReady;
             pack.PlayerPack.Add(playerPack);
         }
 

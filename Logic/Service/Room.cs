@@ -30,5 +30,17 @@
             playerList.Remove(player);
             SetRoomInfo();
         }
+
+        public void SetRoomState(RoomInfo roomInfo)
+        {
+            if (roomInfo.CurrentNum < roomInfo.MaxNum)
+            {
+                roomInfo.State = 1; //Waiting
+            }
+            else if (roomInfo.CurrentNum >= roomInfo.MaxNum)
+            {
+                roomInfo.State = 2; //Full
+            }
+        }
     }
 }
