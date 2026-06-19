@@ -8,6 +8,8 @@ namespace MultiplayerGameServer.Controllers
     {
         private RoomService roomService;
 
+        private Server? server;
+
         public RoomController(RoomService roomService)
         {
             requestCode = RequestCode.Room;
@@ -46,7 +48,7 @@ namespace MultiplayerGameServer.Controllers
                 if (roomList.Count <= 0)
                 {
                     pack.ReturnCode = ReturnCode.Failure;
-                    pack.ErrorCode = ErrorCode.NotFound;
+                    pack.ErrorCode = ErrorCode.RoomNotFound;
                     return pack;
                 }
 
@@ -88,13 +90,6 @@ namespace MultiplayerGameServer.Controllers
         /// <returns></returns>
         public MainPack? LeaveRoom(Server server, Client client, MainPack pack)
         {
-            if (client.CurrentRoom is null)
-            {
-                pack.ReturnCode = ReturnCode.Failure;
-                pack.ErrorCode = ErrorCode.UnknownError;
-                return pack;
-            }
-
             ServiceResult result = roomService.LeaveRoom(client.CurrentRoom, client.UserId);
 
             if (result.IsSuccess)
@@ -113,6 +108,13 @@ namespace MultiplayerGameServer.Controllers
             return BuildLeaveRoomResponse(server, client, pack, result);
         }
 
+        /// <summary>
+        /// 聊天
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="client"></param>
+        /// <param name="pack"></param>
+        /// <returns></returns>
         public MainPack Chat(Server server, Client client, MainPack pack)
         {
             string text = pack.Text;
@@ -124,20 +126,47 @@ namespace MultiplayerGameServer.Controllers
             return pack;
         }
 
-        public MainPack StartGame(Server server, Client client, MainPack pack)
+        /// <summary>
+        /// 准备游戏
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="client"></param>
+        /// <param name="pack"></param>
+        /// <returns></returns>
+        public MainPack Ready(Server server, Client client, MainPack pack)
         {
+            ServiceResult result = roomService.Ready(client.UserId, client.CurrentRoom);
+            PlayerInfo player = result.GetData<PlayerInfo>()!;
+            AddPlayerPack(player, pack);
+            server.Broadcast(client, pack);
+
             return pack;
         }
 
-        public MainPack Ready(Server server, Client client, MainPack pack)
+        /// <summary>
+        /// 开始游戏
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="client"></param>
+        /// <param name="pack"></param>
+        /// <returns></returns>
+        public MainPack StartGame(Server server, Client client, MainPack pack)
         {
-            ServiceResult result = roomService.Ready(client.UserId);
-            PlayerInfo player = result.GetData<PlayerInfo>()!;
-            PlayerPack playerPack = new PlayerPack();
-            playerPack.PlayerName = player.playerName;
-            playerPack.IsReady = player.isReady;
+            this.server = server;
 
-            server.Broadcast(client, pack);
+            roomService.OnCountDownTick += OnCountDownTick;
+            roomService.OnGameStart += OnGameStart;
+            ServiceResult result = roomService.StartGameCountDown(client.CurrentRoom);
+
+            if (result.IsSuccess)
+            {
+                pack.ReturnCode = ReturnCode.Success;
+            }
+            else
+            {
+                pack.ReturnCode = ReturnCode.Failure;
+                pack.ErrorCode = (ErrorCode)result.ErrorCode;
+            }
 
             return pack;
         }
@@ -240,7 +269,7 @@ namespace MultiplayerGameServer.Controllers
         }
 
         /// <summary>
-        /// 打包广播
+        /// 更新其他客户端玩家列表
         /// </summary>
         /// <param name="server"></param>
         /// <param name="client"></param>
@@ -273,6 +302,7 @@ namespace MultiplayerGameServer.Controllers
         private void AddPlayerPack(PlayerInfo player, MainPack pack)
         {
             PlayerPack playerPack = new PlayerPack();
+            playerPack.PlayerId = player.playerId;
             playerPack.PlayerName = player.playerName;
             playerPack.IsReady = player.isReady;
             pack.PlayerPack.Add(playerPack);
@@ -291,6 +321,36 @@ namespace MultiplayerGameServer.Controllers
             roomPack.MaxNum = room.RoomInfo.MaxNum;
             roomPack.StateCode = (StateCode)room.RoomInfo.State;
             pack.RoomPack.Add(roomPack);
+        }
+
+        private void OnCountDownTick(Room room, int seconds)
+        {
+            MainPack pack = new MainPack();
+            pack.ActionCode = ActionCode.Chat;
+            pack.Text = seconds.ToString() + "...";
+
+            server?.Broadcast(null, pack); //不可能为空
+        }
+
+        private void OnGameStart(Room room)
+        {
+            try
+            {
+                MainPack pack = new MainPack();
+                pack.ActionCode = ActionCode.Chat;
+                pack.Text = "游戏开始";
+
+                server?.Broadcast(null, pack); //不可能为空
+
+                pack.ActionCode = ActionCode.CanStart;
+                server?.Broadcast(null, pack);
+            }
+            finally
+            {
+                server = null;
+                roomService.OnCountDownTick += OnCountDownTick;
+                roomService.OnGameStart += OnGameStart;
+            }
         }
     }
 }

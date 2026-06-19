@@ -47,7 +47,7 @@ namespace MultiplayerGameServer.Network
         /// </summary>
         /// <param name="client"></param>
         /// <param name="pack"></param>
-        public void Broadcast(Client client, MainPack pack)
+        public void Broadcast(Client? client, MainPack pack)
         {
             foreach (Client c in clientList)
             {

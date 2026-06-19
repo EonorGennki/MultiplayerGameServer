@@ -65,23 +65,34 @@ namespace MultiplayerGameServer.DAO
         /// <returns></returns>
         public UserEntity? GetUserByUserId(int userId)
         {
-            using (MySqlConnection? connection = factory.ConnectMysql())
+            try
             {
-                string sql = "SELECT * FROM users WHERE user_id = @userId";
-                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                using (MySqlConnection? connection = factory.ConnectMysql())
                 {
-                    cmd.Parameters.AddWithValue("@userId", userId);
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    string sql = "SELECT * FROM users WHERE user_id = @userId";
+                    using (MySqlCommand cmd = new MySqlCommand(sql, connection))
                     {
-                        if (reader.Read())
+                        cmd.Parameters.AddWithValue("@userId", userId);
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            return MapToUserEntity(reader);
+                            if (reader.Read())
+                            {
+                                return MapToUserEntity(reader);
+                            }
                         }
                     }
                 }
-            }
 
-            return null;
+                return null;
+            }
+            catch (MySqlException)
+            {
+                return new UserEntity { UserId = -1 };
+            }
+            catch(Exception)
+            {
+                return new UserEntity { UserId = -2 };
+            }
         }
 
         /// <summary>

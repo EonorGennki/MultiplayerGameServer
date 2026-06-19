@@ -11,6 +11,8 @@
             get => playerList;
         }
 
+        public bool isGameRunning;
+
         public Room(RoomInfo roomInfo)
         {
             this.RoomInfo = roomInfo;

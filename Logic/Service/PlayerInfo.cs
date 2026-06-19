@@ -2,11 +2,13 @@
 {
     public class PlayerInfo
     {
+        public int playerId { get; }
         public string playerName { get; }
         public bool isReady { get; private set; } = false;
 
-        public PlayerInfo(string playerName)
+        public PlayerInfo(int playerId, string playerName)
         {
+            this.playerId = playerId;
             this.playerName = playerName;
         }
 

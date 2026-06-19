@@ -56,6 +56,7 @@ namespace MultiplayerGameServer.Controllers
             if (result.IsSuccess)
             {
                 client.UserId = result.GetValue<int>();
+                pack.AuthPack.UserId = client.UserId;
                 pack.ReturnCode = ReturnCode.Success;
             }
             else

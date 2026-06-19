@@ -27,7 +27,7 @@ namespace MultiplayerGameServer.Logic.Service
 
             if (database.GetUserByUsername(username) is not null)
             {
-                return ServiceResult.Failure(ServiceErrorCode.AlreadyExists);
+                return ServiceResult.Failure(ServiceErrorCode.UserAlreadyExists);
             }
 
             try
@@ -50,9 +50,19 @@ namespace MultiplayerGameServer.Logic.Service
         public ServiceResult Login(string username, string password)
         {
             UserEntity? user = database.GetUserByUsername(username);
-            if (user == null)
+            if (user is null)
+            {
+                return ServiceResult.Failure(ServiceErrorCode.UserNotFound);
+            }
+
+            if (user.UserId == -1)
             {
                 return ServiceResult.Failure(ServiceErrorCode.DatabaseError);
+            }
+
+            if (user.UserId == -2)
+            {
+                return ServiceResult.Failure(ServiceErrorCode.UnknownError);
             }
 
             string passwordHash = HashPassword(password, user.Salt);
@@ -110,7 +120,7 @@ namespace MultiplayerGameServer.Logic.Service
                 throw new ArgumentException($"用户 {userId} 不存在");
             }
 
-            PlayerInfo playerInfo = new PlayerInfo(user.UserName);
+            PlayerInfo playerInfo = new PlayerInfo(userId, user.UserName);
             return playerInfo;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using MultiplayerGameServer.Logic.Interface;
+using System.Collections.Concurrent;
 
 namespace MultiplayerGameServer.Logic.Service
 {
@@ -6,6 +7,13 @@ namespace MultiplayerGameServer.Logic.Service
     {
         private readonly IUserService userService;
         private List<Room> roomList;
+
+        public event Action<Room, int>? OnCountDownTick;
+        public event Action<Room>? OnGameStart;
+
+        private ConcurrentDictionary<Room, System.Timers.Timer> timers = new ConcurrentDictionary<Room, System.Timers.Timer>();
+        //房间独立锁
+        private readonly ConcurrentDictionary<Room, object> roomLocks = new ConcurrentDictionary<Room, object>();
 
         public RoomService(IUserService userService, List<Room> roomList)
         {
@@ -24,7 +32,7 @@ namespace MultiplayerGameServer.Logic.Service
             bool exists = roomList.Any(room => room.RoomInfo.RoomName.Equals(roomInfo.RoomName));
             if (exists)
             {
-                return ServiceResult.Failure(ServiceErrorCode.AlreadyExists);
+                return ServiceResult.Failure(ServiceErrorCode.RoomAlreadyExists);
             }
 
             try
@@ -66,7 +74,7 @@ namespace MultiplayerGameServer.Logic.Service
             Room? room = roomList.FirstOrDefault(room => room.RoomInfo.RoomName.Equals(roomInfo.RoomName));
             if (room is null)
             {
-                return ServiceResult.Failure(ServiceErrorCode.NotFound);
+                return ServiceResult.Failure(ServiceErrorCode.RoomNotFound);
             }
 
             if (room.RoomInfo.State == 1)
@@ -96,11 +104,11 @@ namespace MultiplayerGameServer.Logic.Service
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        public ServiceResult LeaveRoom(Room room, int userId)
+        public ServiceResult LeaveRoom(Room? room, int userId)
         {
             if (room is null)
             {
-                return ServiceResult.Failure(ServiceErrorCode.NotFound);
+                return ServiceResult.Failure(ServiceErrorCode.RoomNotFound);
             }
 
             PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.playerName == GetPlayerInfo(userId).playerName);
@@ -123,6 +131,12 @@ namespace MultiplayerGameServer.Logic.Service
             return result;
         }
 
+        /// <summary>
+        /// 合成聊天消息
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public ServiceResult Chat(int userId, string text)
         {
             PlayerInfo player = GetPlayerInfo(userId);
@@ -133,18 +147,121 @@ namespace MultiplayerGameServer.Logic.Service
             return result;
         }
 
-        public ServiceResult StartGame()
+        /// <summary>
+        /// 准备游戏
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public ServiceResult Ready(int userId, Room? room)
         {
-            return ServiceResult.Success();
-        }
+            if (room is null)
+            {
+                return ServiceResult.Failure(ServiceErrorCode.RoomNotFound);
+            }
 
-        public ServiceResult Ready(int userId)
-        {
-            PlayerInfo player = GetPlayerInfo(userId);
+            PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.playerId == userId);
+
+            if (player is null)
+            {
+                return ServiceResult.Failure(ServiceErrorCode.UserNotFound);
+            }
+
             player.ToggleIsReady(player.isReady);
             ServiceResult result = ServiceResult.Success();
             result.Data = player;
             return result;
+        }
+
+        /// <summary>
+        /// 开始游戏倒计时
+        /// </summary>
+        /// <param name="room"></param>
+        /// <returns></returns>
+        public ServiceResult StartGameCountDown(Room? room)
+        {
+            if (room is null)
+            {
+                return ServiceResult.Failure(ServiceErrorCode.RoomNotFound);
+            }
+
+            if (room.PlayerList.Count <= 1)
+            {
+
+            }
+
+            foreach (var player in room.PlayerList)
+            {
+                if (!player.isReady)
+                {
+                    return ServiceResult.Failure(ServiceErrorCode.PlayerNotReady);
+                }
+            }
+
+            var roomLock = roomLocks.GetOrAdd(room, new object());
+
+            lock (roomLock)
+            {
+                if (room.isGameRunning)
+                {
+                    return ServiceResult.Failure(ServiceErrorCode.GameAlreadyStarted);
+                }
+
+                StopTimer(room);
+
+                System.Timers.Timer timer = new System.Timers.Timer(1000);
+                int seconds = 5;
+                OnCountDownTick?.Invoke(room, seconds);
+
+                timer.Elapsed += (sender, e) =>
+                {
+                    lock (roomLock)
+                    {
+                        seconds--;
+
+                        if (seconds > 0)
+                        {
+                            OnCountDownTick?.Invoke(room, seconds);
+                        }
+                        else
+                        {
+                            timer.Stop();
+                            timer.Dispose();
+                            timers.TryRemove(room, out _);
+
+                            StartGame(room);
+                        }
+
+                    }
+                };
+
+                timer.Start();
+                timers.AddOrUpdate(room, timer, (room, timer) => timer);
+            }
+            return ServiceResult.Success();
+        }
+
+        /// <summary>
+        /// 开始游戏
+        /// </summary>
+        /// <param name="room"></param>
+        private void StartGame(Room room)
+        {
+            room.isGameRunning = true;
+
+            OnGameStart?.Invoke(room);
+        }
+
+        /// <summary>
+        /// 销毁旧计时器
+        /// </summary>
+        /// <param name="room"></param>
+        private void StopTimer(Room room)
+        {
+            if (timers.TryRemove(room, out System.Timers.Timer? timer))
+            {
+                timer.Stop();
+                timer.Dispose();
+            }
         }
 
         private PlayerInfo GetPlayerInfo(int userId) => userService.GetPlayerInfo(userId);
