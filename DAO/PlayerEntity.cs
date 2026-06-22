@@ -9,6 +9,7 @@ namespace MultiplayerGameServer.DAO
     public class PlayerEntity
     {
         public long PlayerId { get; set; }
+        public string PlayerName { get; set; } = string.Empty;
         public bool isActive { get; set; }
     }
 }

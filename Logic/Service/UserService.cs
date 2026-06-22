@@ -80,7 +80,7 @@ namespace MultiplayerGameServer.Logic.Service
             if (user.Players.Count == 0)
             {
                 playerId = YitIdHelper.NextId();
-                database.InsertPlayer(playerId, user.UserId);
+                database.InsertPlayer(playerId, user.UserId, user.UserName);
                 database.SetPlayerActive(playerId, true);
             }
             else
@@ -137,17 +137,16 @@ namespace MultiplayerGameServer.Logic.Service
         /// <summary>
         /// 获取用户名
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="playerId"></param>
         /// <returns></returns>
-        public PlayerInfo GetPlayerInfo(int userId)
+        public PlayerInfo GetPlayerInfo(long playerId)
         {
-            UserEntity? user = database.GetUserByUserId(userId);
-            if (user is null)
+            PlayerEntity? player = database.GetPlayerByPlayerId(playerId);
+            if (player is null)
             {
-                throw new ArgumentException($"用户 {userId} 不存在");
+                throw new ArgumentException($"用户 {playerId} 不存在");
             }
-
-            PlayerInfo playerInfo = new PlayerInfo(userId, user.UserName);
+            PlayerInfo playerInfo = new PlayerInfo(playerId, player.PlayerName);
             return playerInfo;
         }
     }

@@ -32,17 +32,23 @@ namespace MultiplayerGameServer.DAO
             }
         }
 
-        public void InsertPlayer(long playerId, int userId)
+        /// <summary>
+        /// 注册新角色
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <param name="userId"></param>
+        public void InsertPlayer(long playerId, int userId, string playerName)
         {
             try
             {
                 using (MySqlConnection? connection = factory.ConnectMysql())
                 {
-                    string sql = "INSERT INTO players (player_id, user_id) VALUES(@playerId, @userId)";
+                    string sql = "INSERT INTO players (player_id, user_id, player_name) VALUES(@playerId, @userId, @playerName)";
                     using (MySqlCommand cmd = new MySqlCommand(sql, connection))
                     {
                         cmd.Parameters.AddWithValue("@playerId", playerId);
                         cmd.Parameters.AddWithValue("@userId", userId);
+                        cmd.Parameters.AddWithValue("@playerName", playerName);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -60,40 +66,15 @@ namespace MultiplayerGameServer.DAO
         /// <returns></returns>
         public UserEntity? GetUserByUsername(string username)
         {
-            using (MySqlConnection? connection = factory.ConnectMysql())
-            {
-                string sql = "SELECT * FROM users WHERE user_name = @username";
-                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
-                {
-                    cmd.Parameters.AddWithValue("@username", username);
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return MapToUserEntity(reader);
-                        }
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// 根据用户id查询用户
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public UserEntity? GetUserByUserId(int userId)
-        {
             try
             {
+
                 using (MySqlConnection? connection = factory.ConnectMysql())
                 {
-                    string sql = "SELECT * FROM users WHERE user_id = @userId";
+                    string sql = "SELECT * FROM users WHERE user_name = @username";
                     using (MySqlCommand cmd = new MySqlCommand(sql, connection))
                     {
-                        cmd.Parameters.AddWithValue("@userId", userId);
+                        cmd.Parameters.AddWithValue("@username", username);
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
                             if (reader.Read())
@@ -102,9 +83,8 @@ namespace MultiplayerGameServer.DAO
                             }
                         }
                     }
+                    return null;
                 }
-
-                return null;
             }
             catch (MySqlException)
             {
@@ -114,13 +94,40 @@ namespace MultiplayerGameServer.DAO
             {
                 return new UserEntity { UserId = -2 };
             }
+
         }
+
+        /// <summary>
+        /// 根据用户id查询用户
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
+        public PlayerEntity? GetPlayerByPlayerId(long playerId)
+        {
+            using (MySqlConnection? connection = factory.ConnectMysql())
+            {
+                string sql = "SELECT * FROM players WHERE player_id = @playerId";
+                using (MySqlCommand cmd = new(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@playerId", playerId);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return MapToPlayerEntity(reader);
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
 
         /// <summary>
         /// 查询用户拥有的角色
         /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
+        /// <param name="user"></param>
         public void GetPlayers(UserEntity user)
         {
             if (user is null)
@@ -176,6 +183,16 @@ namespace MultiplayerGameServer.DAO
                 LastLoginDate = reader["user_last_login_date"] == DBNull.Value ? null : Convert.ToDateTime(reader["user_last_login_time"]),
                 SignUpDate = Convert.ToDateTime(reader["user_signup_date"]),
                 UpdateTime = Convert.ToDateTime(reader["user_update_date"])
+            };
+        }
+
+        private PlayerEntity MapToPlayerEntity(MySqlDataReader reader)
+        {
+            return new PlayerEntity
+            {
+                PlayerId = Convert.ToInt64(reader["player_id"]),
+                PlayerName = reader["player_name"].ToString()!,
+                isActive = Convert.ToBoolean(reader["player_is_active"])
             };
         }
 

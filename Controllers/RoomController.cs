@@ -4,8 +4,6 @@ using SocketGameProtocal;
 
 namespace MultiplayerGameServer.Controllers
 {
-    
-
     internal class RoomController : BaseController
     {
         private RoomService roomService;
@@ -29,7 +27,7 @@ namespace MultiplayerGameServer.Controllers
         {
             RoomInfo roomInfo = ExtractRoomInfo(pack);
 
-            ServiceResult result = roomService.CreateRoom(client.UserId, roomInfo);
+            ServiceResult result = roomService.CreateRoom(client.PlayerId, roomInfo);
 
             return BuildCreateRoomResponse(client, pack, result);
         }
@@ -78,7 +76,7 @@ namespace MultiplayerGameServer.Controllers
         {
             RoomInfo roomInfo = ExtractRoomInfo(pack);
 
-            ServiceResult result = roomService.JoinRoom(client.UserId, roomInfo);
+            ServiceResult result = roomService.JoinRoom(client.PlayerId, roomInfo);
 
             return BuildJoinRoomResponse(server, client, pack, result);
         }
@@ -92,7 +90,7 @@ namespace MultiplayerGameServer.Controllers
         /// <returns></returns>
         public MainPack? LeaveRoom(Server server, Client client, MainPack pack)
         {
-            ServiceResult result = roomService.LeaveRoom(client.CurrentRoom, client.UserId);
+            ServiceResult result = roomService.LeaveRoom(client.CurrentRoom, client.PlayerId);
 
             if (result.IsSuccess)
             {
@@ -120,7 +118,7 @@ namespace MultiplayerGameServer.Controllers
         public MainPack Chat(Server server, Client client, MainPack pack)
         {
             string text = pack.Text;
-            ServiceResult result = roomService.Chat(client.UserId, text);
+            ServiceResult result = roomService.Chat(client.PlayerId, text);
             pack.ReturnCode = ReturnCode.Success;
             pack.Text = result.GetData<string>();
 
@@ -137,7 +135,7 @@ namespace MultiplayerGameServer.Controllers
         /// <returns></returns>
         public MainPack Ready(Server server, Client client, MainPack pack)
         {
-            ServiceResult result = roomService.Ready(client.UserId, client.CurrentRoom);
+            ServiceResult result = roomService.Ready(client.PlayerId, client.CurrentRoom);
             PlayerInfo player = result.GetData<PlayerInfo>()!;
             AddPlayerPack(player, pack);
             server.Broadcast(client, pack);
@@ -299,7 +297,7 @@ namespace MultiplayerGameServer.Controllers
         /// <summary>
         /// 添加玩家包
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="player"></param>
         /// <param name="pack"></param>
         private void AddPlayerPack(PlayerInfo player, MainPack pack)
         {

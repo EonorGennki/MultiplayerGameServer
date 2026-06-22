@@ -27,7 +27,7 @@ namespace MultiplayerGameServer.Logic.Service
         /// <param name="client"></param>
         /// <param name="roomInfo"></param>
         /// <returns></returns>
-        public ServiceResult CreateRoom(int userId, RoomInfo roomInfo)
+        public ServiceResult CreateRoom(long playerId, RoomInfo roomInfo)
         {
             bool exists = roomList.Any(room => room.RoomInfo.RoomName.Equals(roomInfo.RoomName));
             if (exists)
@@ -39,9 +39,8 @@ namespace MultiplayerGameServer.Logic.Service
             {
                 Room room = new Room(roomInfo);
                 roomList.Add(room);
-                PlayerInfo player = GetPlayerInfo(userId);
+                PlayerInfo player = GetPlayerInfo(playerId);
                 player.SetIsReady(true);
-                room.AddPlayer(player);
                 ServiceResult result = ServiceResult.Success();
                 result.Data = room;
                 return result;
@@ -66,10 +65,10 @@ namespace MultiplayerGameServer.Logic.Service
         /// <summary>
         /// 加入房间
         /// </summary>
-        /// <param name="client"></param>
-        /// <param name="roomName"></param>
+        /// <param name="playerId"></param>
+        /// <param name="roomInfo"></param>
         /// <returns></returns>
-        public ServiceResult JoinRoom(int userId, RoomInfo roomInfo)
+        public ServiceResult JoinRoom(long playerId, RoomInfo roomInfo)
         {
             Room? room = roomList.FirstOrDefault(room => room.RoomInfo.RoomName.Equals(roomInfo.RoomName));
             if (room is null)
@@ -79,7 +78,7 @@ namespace MultiplayerGameServer.Logic.Service
 
             if (room.RoomInfo.State == 1)
             {
-                PlayerInfo player = GetPlayerInfo(userId);
+                PlayerInfo player = GetPlayerInfo(playerId);
                 player.SetIsReady(false);
                 room.AddPlayer(player);
                 room.SetRoomState(room.RoomInfo);
@@ -102,16 +101,17 @@ namespace MultiplayerGameServer.Logic.Service
         /// <summary>
         /// 离开房间
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="room"></param>
+        /// <param name="playerId"></param>
         /// <returns></returns>
-        public ServiceResult LeaveRoom(Room? room, int userId)
+        public ServiceResult LeaveRoom(Room? room, long playerId)
         {
             if (room is null)
             {
                 return ServiceResult.Failure(ServiceErrorCode.RoomNotFound);
             }
 
-            PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.playerName == GetPlayerInfo(userId).playerName);
+            PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.playerName == GetPlayerInfo(playerId).playerName);
             if (player is null)
             {
                 return ServiceResult.Failure(ServiceErrorCode.UnknownError);
@@ -134,12 +134,12 @@ namespace MultiplayerGameServer.Logic.Service
         /// <summary>
         /// 合成聊天消息
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="playerId"></param>
         /// <param name="text"></param>
         /// <returns></returns>
-        public ServiceResult Chat(int userId, string text)
+        public ServiceResult Chat(long playerId, string text)
         {
-            PlayerInfo player = GetPlayerInfo(userId);
+            PlayerInfo player = GetPlayerInfo(playerId);
             string chatText = player.playerName + "：" + text;
 
             ServiceResult result = ServiceResult.Success();
@@ -150,16 +150,16 @@ namespace MultiplayerGameServer.Logic.Service
         /// <summary>
         /// 准备游戏
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="playerId"></param>
         /// <returns></returns>
-        public ServiceResult Ready(int userId, Room? room)
+        public ServiceResult Ready(long playerId, Room? room)
         {
             if (room is null)
             {
                 return ServiceResult.Failure(ServiceErrorCode.RoomNotFound);
             }
 
-            PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.playerId == userId);
+            PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.playerId == playerId);
 
             if (player is null)
             {
@@ -264,6 +264,6 @@ namespace MultiplayerGameServer.Logic.Service
             }
         }
 
-        private PlayerInfo GetPlayerInfo(int userId) => userService.GetPlayerInfo(userId);
+        private PlayerInfo GetPlayerInfo(long playerId) => userService.GetPlayerInfo(playerId);
     }
 }

@@ -2,11 +2,11 @@
 {
     public class PlayerInfo
     {
-        public int playerId { get; }
+        public long playerId { get; }
         public string playerName { get; }
         public bool isReady { get; private set; } = false;
 
-        public PlayerInfo(int playerId, string playerName)
+        public PlayerInfo(long playerId, string playerName)
         {
             this.playerId = playerId;
             this.playerName = playerName;
