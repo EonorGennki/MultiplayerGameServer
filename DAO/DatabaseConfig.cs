@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Microsoft.Extensions.Configuration;
+using MySql.Data.MySqlClient;
 
 namespace MultiplayerGameServer.DAO
 {
@@ -10,13 +11,19 @@ namespace MultiplayerGameServer.DAO
         {
             try
             {
-                string jsonContent = File.ReadAllText("appsettings.json");
-                using JsonDocument doc = JsonDocument.Parse(jsonContent);
-                return ConnectionString =
-                    doc.RootElement
-                    .GetProperty("ConnectionStrings")
-                    .GetProperty("DefaultStrings")
-                    .GetString() ?? string.Empty;
+                var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").AddUserSecrets<Program>().Build();
+
+                var dbConfig = config.GetSection("Database").Get<DatabaseOptions>();
+
+                var bulider = new MySqlConnectionStringBuilder
+                {
+                    Server = dbConfig.Server,
+                    Database = dbConfig.Database,
+                    UserID = dbConfig.UserId,
+                    Password = dbConfig.Password
+                };
+
+                return bulider.ConnectionString;
             }
             catch (Exception ex)
             {
