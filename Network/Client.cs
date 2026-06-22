@@ -12,6 +12,7 @@ namespace MultiplayerGameServer.Network
         private Message message;
         public bool isClosing { get; private set; }
         public int UserId { get; set; }
+        public long PlayerId { get; set; }
         public Room? CurrentRoom { get; set; }
 
         public Client(Socket socket, Server server)

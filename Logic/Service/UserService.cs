@@ -2,6 +2,7 @@
 using MultiplayerGameServer.Logic.Interface;
 using System.Security.Cryptography;
 using System.Text;
+using Yitter.IdGenerator;
 
 namespace MultiplayerGameServer.Logic.Service
 {
@@ -71,9 +72,34 @@ namespace MultiplayerGameServer.Logic.Service
                 return ServiceResult.Failure(ServiceErrorCode.InvalidPassword);
             }
 
-            database.SetActive(user.UserId, true);
+            database.SetUserActive(user.UserId, true);
             ServiceResult result = ServiceResult.Success();
-            result.Data = user.UserId;
+            database.GetPlayers(user);
+            long playerId = 0;
+            if (user.Players.Count == 0)
+            {
+                playerId = YitIdHelper.NextId();
+                database.InsertPlayer(user.UserId, playerId);
+                database.SetPlayerActive(playerId, true);
+            }
+            else
+            {
+                foreach (var player in user.Players)
+                {
+                    if (player.isActive)
+                    {
+                        playerId = player.PlayerId;
+                        break;
+                    }
+                }
+            }
+
+            result.Data = new UserData
+            {
+                UserId = user.UserId,
+                PlayerId = playerId
+            };
+
             return result;
         }
 

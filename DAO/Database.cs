@@ -21,12 +21,26 @@ namespace MultiplayerGameServer.DAO
         {
             using (MySqlConnection? connection = factory.ConnectMysql())
             {
-                string sql = "INSERT INTO users (user_name, user_password_hash, user_salt) VALUES(@_username, @_passwordHash, @_salt)";
+                string sql = "INSERT INTO users (user_name, user_password_hash, user_salt) VALUES(@username, @passwordHash, @salt)";
                 using (MySqlCommand cmd = new MySqlCommand(sql, connection))
                 {
-                    cmd.Parameters.AddWithValue("@_username", username);
-                    cmd.Parameters.AddWithValue("@_passwordHash", passwordHash);
-                    cmd.Parameters.AddWithValue("@_salt", salt);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@passwordHash", passwordHash);
+                    cmd.Parameters.AddWithValue("@salt", salt);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void InsertPlayer(int playerId, long userId)
+        {
+            using (MySqlConnection? connection = factory.ConnectMysql())
+            {
+                string sql = "INSERT INTO players (player_id, user_id) VALUES(@playerId, @userId)";
+                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@playerId", playerId);
+                    cmd.Parameters.AddWithValue("@_userId", userId);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -89,9 +103,43 @@ namespace MultiplayerGameServer.DAO
             {
                 return new UserEntity { UserId = -1 };
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return new UserEntity { UserId = -2 };
+            }
+        }
+
+        /// <summary>
+        /// 查询用户拥有的角色
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public void GetPlayers(UserEntity user)
+        {
+            if (user is null)
+            {
+                return;
+            }
+
+            using (MySqlConnection? connection = factory.ConnectMysql())
+            {
+                string sql = "SELECT * FROM players WHERE user_id = @user_id";
+                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@userId", user.UserId);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            PlayerEntity playerEntity = new PlayerEntity
+                            {
+                                PlayerId = Convert.ToInt32(reader["player_id"]),
+                            };
+
+                            user.Players.Add(playerEntity);
+                        }
+                    }
+                }
             }
         }
 
@@ -120,7 +168,7 @@ namespace MultiplayerGameServer.DAO
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="isActive"></param>
-        public void SetActive(int userId, bool isActive)
+        public void SetUserActive(int userId, bool isActive)
         {
             using (MySqlConnection? connection = factory.ConnectMysql())
             {
@@ -129,6 +177,25 @@ namespace MultiplayerGameServer.DAO
                 {
                     cmd.Parameters.AddWithValue("@isActive", isActive);
                     cmd.Parameters.AddWithValue("@userId", userId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 设置玩家角色激活状态
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <param name="isActive"></param>
+        public void SetPlayerActive(long playerId, bool isActive)
+        {
+            using (MySqlConnection? connection = factory.ConnectMysql())
+            {
+                string sql = "UPDATE players SET player_is_active = @isActive WHERE player_id = @playerId";
+                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@isActive", isActive);
+                    cmd.Parameters.AddWithValue("@playerId", playerId);
                     cmd.ExecuteNonQuery();
                 }
             }

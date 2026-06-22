@@ -55,9 +55,12 @@ namespace MultiplayerGameServer.Controllers
             ServiceResult result = userService.Login(username, password);
             if (result.IsSuccess)
             {
-                client.UserId = result.GetValue<int>();
-                pack.AuthPack.UserId = client.UserId;
+                UserData userData = result.GetData<UserData>()!;
+                client.UserId = userData.UserId;
+                client.PlayerId = userData.PlayerId;
                 pack.ReturnCode = ReturnCode.Success;
+                PlayerPack playerPack = new PlayerPack();
+                playerPack.PlayerId = userData.PlayerId;
             }
             else
             {
