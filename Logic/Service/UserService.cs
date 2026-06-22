@@ -76,10 +76,11 @@ namespace MultiplayerGameServer.Logic.Service
             ServiceResult result = ServiceResult.Success();
             database.GetPlayers(user);
             long playerId = 0;
+
             if (user.Players.Count == 0)
             {
                 playerId = YitIdHelper.NextId();
-                database.InsertPlayer(user.UserId, playerId);
+                database.InsertPlayer(playerId, user.UserId);
                 database.SetPlayerActive(playerId, true);
             }
             else

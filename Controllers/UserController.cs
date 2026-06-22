@@ -58,9 +58,12 @@ namespace MultiplayerGameServer.Controllers
                 UserData userData = result.GetData<UserData>()!;
                 client.UserId = userData.UserId;
                 client.PlayerId = userData.PlayerId;
-                pack.ReturnCode = ReturnCode.Success;
+
                 PlayerPack playerPack = new PlayerPack();
                 playerPack.PlayerId = userData.PlayerId;
+
+                pack.ReturnCode = ReturnCode.Success;
+                pack.PlayerPack.Add(playerPack);
             }
             else
             {

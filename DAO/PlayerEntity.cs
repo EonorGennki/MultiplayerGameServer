@@ -8,7 +8,7 @@ namespace MultiplayerGameServer.DAO
 {
     public class PlayerEntity
     {
-        public int PlayerId { get; set; }
+        public long PlayerId { get; set; }
         public bool isActive { get; set; }
     }
 }

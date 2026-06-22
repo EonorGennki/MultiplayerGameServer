@@ -11,9 +11,9 @@ namespace MultiplayerGameServer.DAO
         {
             try
             {
-                var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").AddUserSecrets<Program>().Build();
+                var config = new ConfigurationBuilder().AddUserSecrets<Program>().Build();
 
-                var dbConfig = config.GetSection("Database").Get<DatabaseOptions>();
+                var dbConfig = config.GetSection("Database").Get<DatabaseOptions>()!;
 
                 var bulider = new MySqlConnectionStringBuilder
                 {

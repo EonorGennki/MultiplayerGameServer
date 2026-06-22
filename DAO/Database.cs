@@ -32,17 +32,24 @@ namespace MultiplayerGameServer.DAO
             }
         }
 
-        public void InsertPlayer(int playerId, long userId)
+        public void InsertPlayer(long playerId, int userId)
         {
-            using (MySqlConnection? connection = factory.ConnectMysql())
+            try
             {
-                string sql = "INSERT INTO players (player_id, user_id) VALUES(@playerId, @userId)";
-                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                using (MySqlConnection? connection = factory.ConnectMysql())
                 {
-                    cmd.Parameters.AddWithValue("@playerId", playerId);
-                    cmd.Parameters.AddWithValue("@_userId", userId);
-                    cmd.ExecuteNonQuery();
+                    string sql = "INSERT INTO players (player_id, user_id) VALUES(@playerId, @userId)";
+                    using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@playerId", playerId);
+                        cmd.Parameters.AddWithValue("@userId", userId);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -121,25 +128,34 @@ namespace MultiplayerGameServer.DAO
                 return;
             }
 
-            using (MySqlConnection? connection = factory.ConnectMysql())
+            try
             {
-                string sql = "SELECT * FROM players WHERE user_id = @user_id";
-                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                using (MySqlConnection? connection = factory.ConnectMysql())
                 {
-                    cmd.Parameters.AddWithValue("@userId", user.UserId);
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    string sql = "SELECT * FROM players WHERE user_id = @userId";
+                    using (MySqlCommand cmd = new MySqlCommand(sql, connection))
                     {
-                        while (reader.Read())
+                        cmd.Parameters.AddWithValue("@userId", user.UserId);
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            PlayerEntity playerEntity = new PlayerEntity
+                            while (reader.Read())
                             {
-                                PlayerId = Convert.ToInt32(reader["player_id"]),
-                            };
+                                PlayerEntity playerEntity = new PlayerEntity
+                                {
+                                    PlayerId = Convert.ToInt64(reader["player_id"]),
+                                    isActive = Convert.ToBoolean(reader["player_is_active"])
+                                };
 
-                            user.Players.Add(playerEntity);
+                                user.Players.Add(playerEntity);
+                            }
                         }
                     }
                 }
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return;
             }
         }
 
