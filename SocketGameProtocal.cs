@@ -33,7 +33,7 @@ namespace SocketGameProtocal {
             "EAoIaXNfUmVhZHkYAyABKAgSDgoGaGVhbHRoGAQgASgFEi0KCHBvc19wYWNr",
             "GAUgASgLMhsuU29ja2V0R2FtZVByb3RvY2FsLlBvc1BhY2sSDwoHdXNlcl9p",
             "ZBgGIAEoBSJJCgdQb3NQYWNrEg0KBXBvc194GAEgASgCEg0KBXBvc195GAIg",
-            "ASgCEg0KBXBvc196GAMgASgCEhEKCWd1bl9wb3NfehgEIAEoAiKDAwoITWFp",
+            "ASgCEg0KBXJvdF96GAMgASgCEhEKCWd1bl9yb3RfehgEIAEoAiKDAwoITWFp",
             "blBhY2sSNQoMcmVxdWVzdF9jb2RlGAEgASgOMh8uU29ja2V0R2FtZVByb3Rv",
             "Y2FsLlJlcXVlc3RDb2RlEjMKC2FjdGlvbl9jb2RlGAIgASgOMh4uU29ja2V0",
             "R2FtZVByb3RvY2FsLkFjdGlvbkNvZGUSMwoLcmV0dXJuX2NvZGUYAyABKA4y",
@@ -43,29 +43,29 @@ namespace SocketGameProtocal {
             "cm9vbV9wYWNrGAYgAygLMhwuU29ja2V0R2FtZVByb3RvY2FsLlJvb21QYWNr",
             "EjMKC3BsYXllcl9wYWNrGAcgAygLMh4uU29ja2V0R2FtZVByb3RvY2FsLlBs",
             "YXllclBhY2sSDAoEdGV4dBgJIAEoCSo4CgtSZXF1ZXN0Q29kZRILCgdSZXFO",
-            "b25lEAASCAoEVXNlchABEggKBFJvb20QAhIICgRHYW1lEAMq3gEKCkFjdGlv",
+            "b25lEAASCAoEVXNlchABEggKBFJvb20QAhIICgRHYW1lEAMq5gEKCkFjdGlv",
             "bkNvZGUSCwoHQWN0Tm9uZRAAEgwKCFJlZ2lzdGVyEAESCQoFTG9naW4QAhIK",
             "CgZMb2dvdXQQAxIOCgpDcmVhdGVSb29tEAQSDgoKU2VhcmNoUm9vbRAFEgwK",
             "CEpvaW5Sb29tEAYSDQoJTGVhdmVSb29tEAcSDQoJTGVhdmVHYW1lEAgSDwoL",
             "U2hvd1BsYXllcnMQCRIICgRDaGF0EAoSCQoFUmVhZHkQCxINCglTdGFydEdh",
-            "bWUQDBIMCghDYW5TdGFydBANEg8KC1VwZGF0ZVN0YXRlEA4qMwoKUmV0dXJu",
-            "Q29kZRILCgdSZXROb25lEAASCwoHU3VjY2VzcxABEgsKB0ZhaWx1cmUQAiq6",
-            "AgoJRXJyb3JDb2RlEg0KCUVycm9yTm9uZRAAEhEKDFVua25vd25FcnJvchDo",
-            "BxISCg1EYXRhYmFzZUVycm9yENEPEhoKFUludmFsaWRVc2VybmFtZUZvcm1h",
-            "dBDSDxIaChVJbnZhbGlkUGFzc3dvcmRGb3JtYXQQ0w8SFAoPSW52YWxpZFVz",
-            "ZXJuYW1lENQPEhQKD0ludmFsaWRQYXNzd29yZBDVDxIRCgxVc2VyTm90Rm91",
-            "bmQQ1g8SFgoRVXNlckFscmVhZHlFeGlzdHMQ1w8SEQoMUm9vbU5vdEZvdW5k",
-            "ELkXEhYKEVJvb21BbHJlYWR5RXhpc3RzELoXEhcKEkdhbWVBbHJlYWR5U3Rh",
-            "cnRlZBC7FxIPCgpSb29tSXNGdWxsELwXEhMKDlBsYXllck5vdFJlYWR5EL0X",
-            "Kj4KCVN0YXRlQ29kZRINCglTdGF0ZU5vbmUQABILCgdXYWl0aW5nEAESCAoE",
-            "RnVsbBACEgsKB1BsYXlpbmcQA2IGcHJvdG8z"));
+            "bWUQDBIMCghDYW5TdGFydBANEhcKE1VwZGF0ZUNoYXJhY3Rlckxpc3QQDioz",
+            "CgpSZXR1cm5Db2RlEgsKB1JldE5vbmUQABILCgdTdWNjZXNzEAESCwoHRmFp",
+            "bHVyZRACKroCCglFcnJvckNvZGUSDQoJRXJyb3JOb25lEAASEQoMVW5rbm93",
+            "bkVycm9yEOgHEhIKDURhdGFiYXNlRXJyb3IQ0Q8SGgoVSW52YWxpZFVzZXJu",
+            "YW1lRm9ybWF0ENIPEhoKFUludmFsaWRQYXNzd29yZEZvcm1hdBDTDxIUCg9J",
+            "bnZhbGlkVXNlcm5hbWUQ1A8SFAoPSW52YWxpZFBhc3N3b3JkENUPEhEKDFVz",
+            "ZXJOb3RGb3VuZBDWDxIWChFVc2VyQWxyZWFkeUV4aXN0cxDXDxIRCgxSb29t",
+            "Tm90Rm91bmQQuRcSFgoRUm9vbUFscmVhZHlFeGlzdHMQuhcSFwoSR2FtZUFs",
+            "cmVhZHlTdGFydGVkELsXEg8KClJvb21Jc0Z1bGwQvBcSEwoOUGxheWVyTm90",
+            "UmVhZHkQvRcqPgoJU3RhdGVDb2RlEg0KCVN0YXRlTm9uZRAAEgsKB1dhaXRp",
+            "bmcQARIICgRGdWxsEAISCwoHUGxheWluZxADYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::SocketGameProtocal.RequestCode), typeof(global::SocketGameProtocal.ActionCode), typeof(global::SocketGameProtocal.ReturnCode), typeof(global::SocketGameProtocal.ErrorCode), typeof(global::SocketGameProtocal.StateCode), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.AuthPack), global::SocketGameProtocal.AuthPack.Parser, new[]{ "Username", "Password" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.RoomPack), global::SocketGameProtocal.RoomPack.Parser, new[]{ "RoomName", "MaxNum", "CurrentNum", "StateCode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.PlayerPack), global::SocketGameProtocal.PlayerPack.Parser, new[]{ "PlayerId", "PlayerName", "IsReady", "Health", "PosPack", "UserId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.PosPack), global::SocketGameProtocal.PosPack.Parser, new[]{ "PosX", "PosY", "PosZ", "GunPosZ" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.PosPack), global::SocketGameProtocal.PosPack.Parser, new[]{ "PosX", "PosY", "RotZ", "GunRotZ" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.MainPack), global::SocketGameProtocal.MainPack.Parser, new[]{ "RequestCode", "ActionCode", "ReturnCode", "ErrorCode", "AuthPack", "RoomPack", "PlayerPack", "Text" }, null, null, null, null)
           }));
     }
@@ -144,9 +144,9 @@ namespace SocketGameProtocal {
     /// </summary>
     [pbr::OriginalName("CanStart")] CanStart = 13,
     /// <summary>
-    ///更新状态
+    ///更新角色列表
     /// </summary>
-    [pbr::OriginalName("UpdateState")] UpdateState = 14,
+    [pbr::OriginalName("UpdateCharacterList")] UpdateCharacterList = 14,
   }
 
   public enum ReturnCode {
@@ -926,6 +926,9 @@ namespace SocketGameProtocal {
     /// <summary>Field number for the "user_id" field.</summary>
     public const int UserIdFieldNumber = 6;
     private int userId_;
+    /// <summary>
+    ///用户ID
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int UserId {
@@ -1242,8 +1245,8 @@ namespace SocketGameProtocal {
     public PosPack(PosPack other) : this() {
       posX_ = other.posX_;
       posY_ = other.posY_;
-      posZ_ = other.posZ_;
-      gunPosZ_ = other.gunPosZ_;
+      rotZ_ = other.rotZ_;
+      gunRotZ_ = other.gunRotZ_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1280,30 +1283,30 @@ namespace SocketGameProtocal {
       }
     }
 
-    /// <summary>Field number for the "pos_z" field.</summary>
-    public const int PosZFieldNumber = 3;
-    private float posZ_;
+    /// <summary>Field number for the "rot_z" field.</summary>
+    public const int RotZFieldNumber = 3;
+    private float rotZ_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float PosZ {
-      get { return posZ_; }
+    public float RotZ {
+      get { return rotZ_; }
       set {
-        posZ_ = value;
+        rotZ_ = value;
       }
     }
 
-    /// <summary>Field number for the "gun_pos_z" field.</summary>
-    public const int GunPosZFieldNumber = 4;
-    private float gunPosZ_;
+    /// <summary>Field number for the "gun_rot_z" field.</summary>
+    public const int GunRotZFieldNumber = 4;
+    private float gunRotZ_;
     /// <summary>
     ///武器信息
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float GunPosZ {
-      get { return gunPosZ_; }
+    public float GunRotZ {
+      get { return gunRotZ_; }
       set {
-        gunPosZ_ = value;
+        gunRotZ_ = value;
       }
     }
 
@@ -1324,8 +1327,8 @@ namespace SocketGameProtocal {
       }
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(PosX, other.PosX)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(PosY, other.PosY)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(PosZ, other.PosZ)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(GunPosZ, other.GunPosZ)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(RotZ, other.RotZ)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(GunRotZ, other.GunRotZ)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1335,8 +1338,8 @@ namespace SocketGameProtocal {
       int hash = 1;
       if (PosX != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(PosX);
       if (PosY != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(PosY);
-      if (PosZ != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(PosZ);
-      if (GunPosZ != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(GunPosZ);
+      if (RotZ != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(RotZ);
+      if (GunRotZ != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(GunRotZ);
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1363,13 +1366,13 @@ namespace SocketGameProtocal {
         output.WriteRawTag(21);
         output.WriteFloat(PosY);
       }
-      if (PosZ != 0F) {
+      if (RotZ != 0F) {
         output.WriteRawTag(29);
-        output.WriteFloat(PosZ);
+        output.WriteFloat(RotZ);
       }
-      if (GunPosZ != 0F) {
+      if (GunRotZ != 0F) {
         output.WriteRawTag(37);
-        output.WriteFloat(GunPosZ);
+        output.WriteFloat(GunRotZ);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1389,13 +1392,13 @@ namespace SocketGameProtocal {
         output.WriteRawTag(21);
         output.WriteFloat(PosY);
       }
-      if (PosZ != 0F) {
+      if (RotZ != 0F) {
         output.WriteRawTag(29);
-        output.WriteFloat(PosZ);
+        output.WriteFloat(RotZ);
       }
-      if (GunPosZ != 0F) {
+      if (GunRotZ != 0F) {
         output.WriteRawTag(37);
-        output.WriteFloat(GunPosZ);
+        output.WriteFloat(GunRotZ);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -1413,10 +1416,10 @@ namespace SocketGameProtocal {
       if (PosY != 0F) {
         size += 1 + 4;
       }
-      if (PosZ != 0F) {
+      if (RotZ != 0F) {
         size += 1 + 4;
       }
-      if (GunPosZ != 0F) {
+      if (GunRotZ != 0F) {
         size += 1 + 4;
       }
       if (_unknownFields != null) {
@@ -1437,11 +1440,11 @@ namespace SocketGameProtocal {
       if (other.PosY != 0F) {
         PosY = other.PosY;
       }
-      if (other.PosZ != 0F) {
-        PosZ = other.PosZ;
+      if (other.RotZ != 0F) {
+        RotZ = other.RotZ;
       }
-      if (other.GunPosZ != 0F) {
-        GunPosZ = other.GunPosZ;
+      if (other.GunRotZ != 0F) {
+        GunRotZ = other.GunRotZ;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1471,11 +1474,11 @@ namespace SocketGameProtocal {
             break;
           }
           case 29: {
-            PosZ = input.ReadFloat();
+            RotZ = input.ReadFloat();
             break;
           }
           case 37: {
-            GunPosZ = input.ReadFloat();
+            GunRotZ = input.ReadFloat();
             break;
           }
         }
@@ -1506,11 +1509,11 @@ namespace SocketGameProtocal {
             break;
           }
           case 29: {
-            PosZ = input.ReadFloat();
+            RotZ = input.ReadFloat();
             break;
           }
           case 37: {
-            GunPosZ = input.ReadFloat();
+            GunRotZ = input.ReadFloat();
             break;
           }
         }

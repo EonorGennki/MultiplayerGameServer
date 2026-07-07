@@ -4,18 +4,15 @@ namespace MultiplayerGameServer.Logic.Service
 {
     internal class ServiceGroup
     {
-        public UserService userService { get; }
-        public RoomService roomService { get; }
-
-        public RoomService RoomService
-        {
-            get { return roomService; }
-        }
+        public UserService UserService { get; }
+        public RoomService RoomService { get; }
+        public GameService GameService { get; }
 
         public ServiceGroup(Database database, List<Room> roomList)
         {
-            userService = new UserService(database);
-            roomService = new RoomService(userService, roomList);
+            UserService = new UserService(database);
+            RoomService = new RoomService(UserService, roomList);
+            GameService = new GameService(roomList);
         }
     }
 }

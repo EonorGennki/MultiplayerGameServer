@@ -302,9 +302,9 @@ namespace MultiplayerGameServer.Controllers
         private void AddPlayerPack(PlayerInfo player, MainPack pack)
         {
             PlayerPack playerPack = new PlayerPack();
-            playerPack.PlayerId = player.playerId;
-            playerPack.PlayerName = player.playerName;
-            playerPack.IsReady = player.isReady;
+            playerPack.PlayerId = player.PlayerId;
+            playerPack.PlayerName = player.PlayerName;
+            playerPack.IsReady = player.IsReady;
             pack.PlayerPack.Add(playerPack);
         }
 
@@ -343,13 +343,23 @@ namespace MultiplayerGameServer.Controllers
                 server?.Broadcast(null, pack); //不可能为空
 
                 pack.ActionCode = ActionCode.CanStart;
+                foreach (var player in room.PlayerList)
+                {
+                    player.Health = 100;
+                    PlayerPack playerPack = new PlayerPack();
+                    playerPack.PlayerId = player.PlayerId;
+                    playerPack.PlayerName = player.PlayerName;
+                    playerPack.Health = player.Health;
+                    pack.PlayerPack.Add(playerPack);
+                }
+
                 server?.Broadcast(null, pack);
             }
             finally
             {
                 server = null;
-                roomService.OnCountDownTick += OnCountDownTick;
-                roomService.OnGameStart += OnGameStart;
+                roomService.OnCountDownTick -= OnCountDownTick;
+                roomService.OnGameStart -= OnGameStart;
             }
         }
     }

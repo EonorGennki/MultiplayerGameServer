@@ -16,10 +16,13 @@ namespace MultiplayerGameServer.Controllers
         
         public ControllerManager(Server server, ServiceGroup services)
         {
-            UserController userController = new UserController(services.userService);
-            RoomController roomController = new RoomController(services.roomService);
+            UserController userController = new UserController(services.UserService);
+            RoomController roomController = new RoomController(services.RoomService);
+            GameController gameController = new GameController(services.GameService);
+
             controlDic.Add(userController.RequestCode, userController);
             controlDic.Add(roomController.RequestCode, roomController);
+            controlDic.Add(gameController.RequestCode, gameController);
         }
 
         /// <summary>

@@ -41,6 +41,7 @@ namespace MultiplayerGameServer.Logic.Service
                 roomList.Add(room);
                 PlayerInfo player = GetPlayerInfo(playerId);
                 player.SetIsReady(true);
+                room.AddPlayer(player);
                 ServiceResult result = ServiceResult.Success();
                 result.Data = room;
                 return result;
@@ -111,7 +112,7 @@ namespace MultiplayerGameServer.Logic.Service
                 return ServiceResult.Failure(ServiceErrorCode.RoomNotFound);
             }
 
-            PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.playerName == GetPlayerInfo(playerId).playerName);
+            PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.PlayerName == GetPlayerInfo(playerId).PlayerName);
             if (player is null)
             {
                 return ServiceResult.Failure(ServiceErrorCode.UnknownError);
@@ -140,7 +141,7 @@ namespace MultiplayerGameServer.Logic.Service
         public ServiceResult Chat(long playerId, string text)
         {
             PlayerInfo player = GetPlayerInfo(playerId);
-            string chatText = player.playerName + "：" + text;
+            string chatText = player.PlayerName + "：" + text;
 
             ServiceResult result = ServiceResult.Success();
             result.Data = chatText;
@@ -159,14 +160,14 @@ namespace MultiplayerGameServer.Logic.Service
                 return ServiceResult.Failure(ServiceErrorCode.RoomNotFound);
             }
 
-            PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.playerId == playerId);
+            PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.PlayerId == playerId);
 
             if (player is null)
             {
                 return ServiceResult.Failure(ServiceErrorCode.UserNotFound);
             }
 
-            player.ToggleIsReady(player.isReady);
+            player.ToggleIsReady(player.IsReady);
             ServiceResult result = ServiceResult.Success();
             result.Data = player;
             return result;
@@ -186,12 +187,12 @@ namespace MultiplayerGameServer.Logic.Service
 
             if (room.PlayerList.Count <= 1)
             {
-
+                
             }
 
             foreach (var player in room.PlayerList)
             {
-                if (!player.isReady)
+                if (!player.IsReady)
                 {
                     return ServiceResult.Failure(ServiceErrorCode.PlayerNotReady);
                 }

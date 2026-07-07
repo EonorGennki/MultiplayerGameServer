@@ -1,4 +1,6 @@
-﻿namespace MultiplayerGameServer.Logic.Service
+﻿using System.Diagnostics;
+
+namespace MultiplayerGameServer.Logic.Service
 {
     internal class Room
     {
