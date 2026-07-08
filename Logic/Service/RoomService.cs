@@ -118,6 +118,7 @@ namespace MultiplayerGameServer.Logic.Service
                 return ServiceResult.Failure(ServiceErrorCode.UnknownError);
             }
 
+            //房主退出
             if (player == room.PlayerList[0])
             {
                 room.PlayerList.Clear();
@@ -236,7 +237,12 @@ namespace MultiplayerGameServer.Logic.Service
                 };
 
                 timer.Start();
-                timers.AddOrUpdate(room, timer, (room, timer) => timer);
+                timers.AddOrUpdate(room, timer, (room, olderTimer) =>
+                {
+                    olderTimer.Stop();
+                    olderTimer.Dispose();
+                    return timer;
+                    });
             }
             return ServiceResult.Success();
         }
@@ -260,6 +266,10 @@ namespace MultiplayerGameServer.Logic.Service
         {
             if (timers.TryRemove(room, out System.Timers.Timer? timer))
             {
+                if (timer is null)
+                {
+                    return;
+                }
                 timer.Stop();
                 timer.Dispose();
             }

@@ -21,6 +21,7 @@
             if (playerId == room.PlayerList[0].PlayerId)
             {
                 roomList.Remove(room);
+                room.isGameRunning = false;
                 return ServiceResult.Success();
             }
 

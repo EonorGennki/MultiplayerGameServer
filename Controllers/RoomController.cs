@@ -1,6 +1,7 @@
 ﻿using MultiplayerGameServer.Logic.Service;
 using MultiplayerGameServer.Network;
 using SocketGameProtocal;
+using System.Diagnostics;
 
 namespace MultiplayerGameServer.Controllers
 {
@@ -328,6 +329,7 @@ namespace MultiplayerGameServer.Controllers
             MainPack pack = new MainPack();
             pack.ActionCode = ActionCode.Chat;
             pack.Text = seconds.ToString() + "...";
+            Console.WriteLine(pack.Text);
 
             server?.Broadcast(null, pack); //不可能为空
         }
@@ -336,28 +338,30 @@ namespace MultiplayerGameServer.Controllers
         {
             try
             {
-                MainPack pack = new MainPack();
-                pack.ActionCode = ActionCode.Chat;
-                pack.Text = "游戏开始";
+                MainPack startPack = new MainPack();
+                startPack.ActionCode = ActionCode.Chat;
+                startPack.Text = "游戏开始";
 
-                server?.Broadcast(null, pack); //不可能为空
+                server?.Broadcast(null, startPack); //不可能为空
 
-                pack.ActionCode = ActionCode.CanStart;
+                MainPack newPack = new MainPack();
+                newPack.ActionCode = ActionCode.CanStart;
+                Console.WriteLine(room.PlayerList.Count);
                 foreach (var player in room.PlayerList)
                 {
                     player.Health = 100;
                     PlayerPack playerPack = new PlayerPack();
                     playerPack.PlayerId = player.PlayerId;
                     playerPack.PlayerName = player.PlayerName;
+                    Console.WriteLine(player.PlayerName);
                     playerPack.Health = player.Health;
-                    pack.PlayerPack.Add(playerPack);
+                    newPack.PlayerPack.Add(playerPack);
                 }
 
-                server?.Broadcast(null, pack);
+                server?.Broadcast(null, newPack);
             }
             finally
             {
-                server = null;
                 roomService.OnCountDownTick -= OnCountDownTick;
                 roomService.OnGameStart -= OnGameStart;
             }
