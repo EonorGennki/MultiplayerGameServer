@@ -47,7 +47,7 @@ namespace MultiplayerGameServer.Network
         /// </summary>
         /// <param name="client"></param>
         /// <param name="pack"></param>
-        public void Broadcast(Client? client, MainPack pack)
+        public void Broadcast(Client? client, List<Client> clientList , MainPack pack)
         {
             foreach (Client c in clientList)
             {
@@ -57,6 +57,11 @@ namespace MultiplayerGameServer.Network
                 }
                 c.Send(pack);
             }
+        }
+
+        public void newBroadcast(Client? client, MainPack pack, Room room)
+        {
+
         }
     }
 }

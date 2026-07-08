@@ -10,6 +10,7 @@ namespace MultiplayerGameServer.Controllers
         private RoomService roomService;
 
         private Server? server;
+        private Client? client;
 
         public RoomController(RoomService roomService)
         {
@@ -118,12 +119,19 @@ namespace MultiplayerGameServer.Controllers
         /// <returns></returns>
         public MainPack Chat(Server server, Client client, MainPack pack)
         {
+            if (client.CurrentRoom is null)
+            {
+                pack.ReturnCode = ReturnCode.Failure;
+                pack.ErrorCode = ErrorCode.RoomNotFound;
+                return pack;
+            }
+
             string text = pack.Text;
             ServiceResult result = roomService.Chat(client.PlayerId, text);
             pack.ReturnCode = ReturnCode.Success;
             pack.Text = result.GetData<string>();
 
-            server.Broadcast(client, pack);
+            client.CurrentRoom.Broadcast(client, pack, server);
             return pack;
         }
 
@@ -136,10 +144,17 @@ namespace MultiplayerGameServer.Controllers
         /// <returns></returns>
         public MainPack Ready(Server server, Client client, MainPack pack)
         {
+            if (client.CurrentRoom is null)
+            {
+                pack.ReturnCode = ReturnCode.Failure;
+                pack.ErrorCode = ErrorCode.RoomNotFound;
+                return pack;
+            }
+
             ServiceResult result = roomService.Ready(client.PlayerId, client.CurrentRoom);
             PlayerInfo player = result.GetData<PlayerInfo>()!;
             AddPlayerPack(player, pack);
-            server.Broadcast(client, pack);
+            client.CurrentRoom.Broadcast(client, pack, server);
 
             return pack;
         }
@@ -154,6 +169,7 @@ namespace MultiplayerGameServer.Controllers
         public MainPack StartGame(Server server, Client client, MainPack pack)
         {
             this.server = server;
+            this.client = client;
 
             roomService.OnCountDownTick += OnCountDownTick;
             roomService.OnGameStart += OnGameStart;
@@ -277,12 +293,17 @@ namespace MultiplayerGameServer.Controllers
         /// <param name="room"></param>
         private void UpdatePlayerList(Server server, Client client, Room room)
         {
+            if (client.CurrentRoom is null)
+            {
+                return;
+            }
+
             MainPack pack = new MainPack();
 
             if (room.PlayerList.Count <= 0)
             {
                 pack.ActionCode = ActionCode.LeaveRoom;
-                server.Broadcast(client, pack);
+                client.CurrentRoom.Broadcast(client, pack, server);
                 return;
             }
 
@@ -292,7 +313,7 @@ namespace MultiplayerGameServer.Controllers
             {
                 AddPlayerPack(player, pack);
             }
-            server.Broadcast(client, pack);
+            client.CurrentRoom.Broadcast(client, pack, server);
         }
 
         /// <summary>
@@ -326,12 +347,13 @@ namespace MultiplayerGameServer.Controllers
 
         private void OnCountDownTick(Room room, int seconds)
         {
+
             MainPack pack = new MainPack();
             pack.ActionCode = ActionCode.Chat;
             pack.Text = seconds.ToString() + "...";
             Console.WriteLine(pack.Text);
 
-            server?.Broadcast(null, pack); //不可能为空
+            client?.CurrentRoom!.Broadcast(null, pack, server!); //不可能为空
         }
 
         private void OnGameStart(Room room)
@@ -342,7 +364,7 @@ namespace MultiplayerGameServer.Controllers
                 startPack.ActionCode = ActionCode.Chat;
                 startPack.Text = "游戏开始";
 
-                server?.Broadcast(null, startPack); //不可能为空
+                client?.CurrentRoom!.Broadcast(null, startPack, server!); //不可能为空
 
                 MainPack newPack = new MainPack();
                 newPack.ActionCode = ActionCode.CanStart;
@@ -358,7 +380,7 @@ namespace MultiplayerGameServer.Controllers
                     newPack.PlayerPack.Add(playerPack);
                 }
 
-                server?.Broadcast(null, newPack);
+                client?.CurrentRoom!.Broadcast(null, newPack, server!);
             }
             finally
             {

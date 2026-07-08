@@ -8,8 +8,6 @@ namespace MultiplayerGameServer.Controllers
     {
         private GameService gameService;
 
-        private Server? server;
-
         public GameController(GameService gameService)
         {
             requestCode = RequestCode.Game;
@@ -37,7 +35,7 @@ namespace MultiplayerGameServer.Controllers
             if (result.Data is null)
             {
                 //房主退出
-                server.Broadcast(client, pack);
+                client.CurrentRoom.Broadcast(client, pack, server);
             }
             else
             {
@@ -48,6 +46,17 @@ namespace MultiplayerGameServer.Controllers
             return pack;
         }
 
+        public MainPack? UpdateCharacterState(Server server, Client client, MainPack pack)
+        {
+            if (client.CurrentRoom is null)
+            {
+                return null;
+            }
+
+            client.CurrentRoom.Broadcast(client, pack, server);
+            return null;
+        }
+
         /// <summary>
         /// 广播玩家列表
         /// </summary>
@@ -56,6 +65,11 @@ namespace MultiplayerGameServer.Controllers
         /// <param name="result"></param>
         private static void BroadcastPlayerList(Server server, Client client, ServiceResult result)
         {
+            if (client.CurrentRoom is null)
+            {
+                return;   
+            }
+
             List<PlayerInfo> playerList = result.GetData<List<PlayerInfo>>()!;
 
             MainPack newPack = new MainPack();
@@ -66,7 +80,7 @@ namespace MultiplayerGameServer.Controllers
             }
 
             newPack.ActionCode = ActionCode.UpdateCharacterList;
-            server.Broadcast(client, newPack);
+            client.CurrentRoom.Broadcast(client, newPack, server);
         }
 
         /// <summary>

@@ -13,7 +13,33 @@ namespace MultiplayerGameServer.Network
         public bool isClosing { get; private set; }
         public int UserId { get; set; }
         public long PlayerId { get; set; }
-        public Room? CurrentRoom { get; set; }
+
+        private Room? currentRoom;
+        public Room? CurrentRoom
+        {
+            get
+            {
+                if (currentRoom is not null)
+                {
+                    return currentRoom;
+                }
+
+                return null;
+            }
+            set
+            {
+                if (value is not null)
+                {
+                    currentRoom = value;
+                    currentRoom.AddClient(this);
+                }
+                else
+                {
+                    currentRoom?.RemoveClient(this);
+                    currentRoom = null;
+                }
+            }
+        }
 
         public Client(Socket socket, Server server)
         {

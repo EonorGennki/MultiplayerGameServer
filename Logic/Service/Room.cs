@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using MultiplayerGameServer.Network;
+using SocketGameProtocal;
+using System.Diagnostics;
 
 namespace MultiplayerGameServer.Logic.Service
 {
@@ -7,6 +9,7 @@ namespace MultiplayerGameServer.Logic.Service
         public RoomInfo RoomInfo { get; }
 
         //房间内所有玩家
+        private List<Client> clientList = new List<Client>();
         private List<PlayerInfo> playerList = new List<PlayerInfo>();
         public List<PlayerInfo> PlayerList
         {
@@ -35,6 +38,16 @@ namespace MultiplayerGameServer.Logic.Service
             SetRoomInfo();
         }
 
+        public void AddClient(Client client)
+        {
+            clientList.Add(client);
+        }
+
+        public void RemoveClient(Client client)
+        {
+            clientList.Remove(client);
+        }
+
         public void SetRoomState(RoomInfo roomInfo)
         {
             if (roomInfo.CurrentNum < roomInfo.MaxNum)
@@ -45,6 +58,11 @@ namespace MultiplayerGameServer.Logic.Service
             {
                 roomInfo.State = 2; //Full
             }
+        }
+
+        public void Broadcast(Client? client, MainPack pack, Server server)
+        {
+            server.Broadcast(client, clientList, pack);
         }
     }
 }
