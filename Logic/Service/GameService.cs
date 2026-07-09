@@ -32,7 +32,7 @@
 
             if (target is not null)
             {
-                room.PlayerList.Remove(target);
+                room.RemovePlayer(target);
                 playerList.Remove(target);
                 playerList.Insert(0, target);
             }

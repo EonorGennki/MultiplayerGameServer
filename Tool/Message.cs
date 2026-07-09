@@ -50,6 +50,7 @@ namespace MultiplayerGameServer.Tool
                 HandleRequest(pack);
                 Array.Copy(buffer, count + 4, buffer, 0, startIndex - count - 4);
                 startIndex -= count + 4;
+                count = BitConverter.ToInt32(buffer, 0);
             }
         }
 

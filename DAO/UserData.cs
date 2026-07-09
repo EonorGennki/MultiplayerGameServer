@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MultiplayerGameServer.Logic.Service
+namespace MultiplayerGameServer.DAO
 {
     internal class UserData
     {

@@ -100,7 +100,7 @@ namespace MultiplayerGameServer.Controllers
             }
 
             //连接断开处理
-            if (client.isClosing == true)
+            if (client.IsClosing == true)
             {
                 Room room = result.GetData<Room>()!;
                 UpdatePlayerList(server, client, room);
@@ -345,6 +345,11 @@ namespace MultiplayerGameServer.Controllers
             pack.RoomPack.Add(roomPack);
         }
 
+        /// <summary>
+        /// 发送倒计时
+        /// </summary>
+        /// <param name="room"></param>
+        /// <param name="seconds"></param>
         private void OnCountDownTick(Room room, int seconds)
         {
 
@@ -356,6 +361,10 @@ namespace MultiplayerGameServer.Controllers
             client?.CurrentRoom!.Broadcast(null, pack, server!); //不可能为空
         }
 
+        /// <summary>
+        /// 发送游戏开始指令
+        /// </summary>
+        /// <param name="room"></param>
         private void OnGameStart(Room room)
         {
             try
@@ -368,14 +377,12 @@ namespace MultiplayerGameServer.Controllers
 
                 MainPack newPack = new MainPack();
                 newPack.ActionCode = ActionCode.CanStart;
-                Console.WriteLine(room.PlayerList.Count);
                 foreach (var player in room.PlayerList)
                 {
                     player.Health = 100;
                     PlayerPack playerPack = new PlayerPack();
                     playerPack.PlayerId = player.PlayerId;
                     playerPack.PlayerName = player.PlayerName;
-                    Console.WriteLine(player.PlayerName);
                     playerPack.Health = player.Health;
                     newPack.PlayerPack.Add(playerPack);
                 }
