@@ -356,7 +356,6 @@ namespace MultiplayerGameServer.Controllers
             MainPack pack = new MainPack();
             pack.ActionCode = ActionCode.Chat;
             pack.Text = seconds.ToString() + "...";
-            Console.WriteLine(pack.Text);
 
             client?.CurrentRoom!.Broadcast(null, pack, server!); //不可能为空
         }
