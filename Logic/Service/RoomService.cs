@@ -118,16 +118,19 @@ namespace MultiplayerGameServer.Logic.Service
                 return ServiceResult.Failure(ServiceErrorCode.UnknownError);
             }
 
-            //房主退出
             if (player == room.PlayerList[0])
             {
+                //房主退出
                 room.PlayerList.Clear();
                 roomList.Remove(room);
             }
-
+            else
+            {
+                //成员退出
+                room.RemovePlayer(player);
+                room.SetRoomState(room.RoomInfo);
+            }
             player.SetIsReady(false);
-            room.RemovePlayer(player);
-            room.SetRoomState(room.RoomInfo);
             ServiceResult result = ServiceResult.Success();
             result.Data = room;
             return result;
@@ -188,7 +191,7 @@ namespace MultiplayerGameServer.Logic.Service
 
             if (room.PlayerList.Count <= 1)
             {
-                
+
             }
 
             foreach (var player in room.PlayerList)
@@ -242,7 +245,7 @@ namespace MultiplayerGameServer.Logic.Service
                     olderTimer.Stop();
                     olderTimer.Dispose();
                     return timer;
-                    });
+                });
             }
             return ServiceResult.Success();
         }

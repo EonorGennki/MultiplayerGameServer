@@ -21,7 +21,7 @@ namespace MultiplayerGameServer.Controllers
         /// <param name="client"></param>
         /// <param name="pack"></param>
         /// <returns></returns>
-        public MainPack LeaveGame(Server server, Client client, MainPack pack)
+        public MainPack? LeaveGame(Server server, Client client, MainPack pack)
         {
             if (client.CurrentRoom is null)
             {
@@ -36,11 +36,18 @@ namespace MultiplayerGameServer.Controllers
             {
                 //房主退出
                 client.CurrentRoom.Broadcast(client, pack, server);
+                client.CurrentRoom = null;
             }
             else
             {
                 //成员退出
                 BroadcastPlayerList(server, client, result);
+                client.CurrentRoom = null;
+            }
+
+            if (client.IsClosing)
+            {
+                return null;
             }
 
             return pack;
@@ -58,7 +65,7 @@ namespace MultiplayerGameServer.Controllers
         }
 
         /// <summary>
-        /// 广播玩家列表
+        /// 广播更新玩家列表
         /// </summary>
         /// <param name="server"></param>
         /// <param name="client"></param>
@@ -67,7 +74,7 @@ namespace MultiplayerGameServer.Controllers
         {
             if (client.CurrentRoom is null)
             {
-                return;   
+                return;
             }
 
             List<PlayerInfo> playerList = result.GetData<List<PlayerInfo>>()!;

@@ -94,16 +94,12 @@ namespace MultiplayerGameServer.Controllers
         {
             ServiceResult result = roomService.LeaveRoom(client.CurrentRoom, client.PlayerId);
 
-            if (result.IsSuccess)
-            {
-                client.CurrentRoom = null;
-            }
-
             //连接断开处理
             if (client.IsClosing == true)
             {
                 Room room = result.GetData<Room>()!;
                 UpdatePlayerList(server, client, room);
+                client.CurrentRoom = null;
                 return null;
             }
 
@@ -274,6 +270,7 @@ namespace MultiplayerGameServer.Controllers
             {
                 Room room = result.GetData<Room>()!;
                 UpdatePlayerList(server, client, room);
+                client.CurrentRoom = null;
                 pack.ReturnCode = ReturnCode.Success;
             }
             else

@@ -10,7 +10,7 @@ namespace MultiplayerGameServer.Network
         private Socket socket;
         private Server server;
         private Message message;
-        public bool IsClosing { get; private set; }
+        public bool IsClosing { get; private set; } = false;
         public int UserId { get; set; }
         public long PlayerId { get; set; }
 
@@ -89,6 +89,12 @@ namespace MultiplayerGameServer.Network
 
         private void Close()
         {
+            if (IsClosing)
+            {
+                return;
+            }
+
+            IsClosing = true;
             if (currentRoom is not null)
             {
                 MainPack pack = new MainPack();
@@ -98,11 +104,12 @@ namespace MultiplayerGameServer.Network
                     pack.ActionCode = ActionCode.LeaveGame;
                     HandleRequest(pack);
                 }
-
-                pack.RequestCode = RequestCode.Room;
-                pack.ActionCode = ActionCode.LeaveRoom;
-                HandleRequest(pack);
-                IsClosing = true;
+                else
+                {
+                    pack.RequestCode = RequestCode.Room;
+                    pack.ActionCode = ActionCode.LeaveRoom;
+                    HandleRequest(pack);
+                }
             }
 
             server.RemoveClient(this);
