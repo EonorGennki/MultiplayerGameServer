@@ -41,5 +41,21 @@
             result.Data = playerList;
             return result;
         }
+
+
+        public ServiceResult CalculateHealth(long playerId, int damage, Room room)
+        {
+            PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.PlayerId == playerId);
+
+            if (player is null)
+            {
+                return ServiceResult.Failure(ServiceErrorCode.UnknownError);
+            }
+
+            player.Health -= damage;
+            ServiceResult result = ServiceResult.Success();
+            result.Data = player.Health;
+            return result;
+        }
     }
 }

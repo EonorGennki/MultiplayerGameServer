@@ -1,6 +1,7 @@
 ﻿using MultiplayerGameServer.Logic.Service;
 using MultiplayerGameServer.Network;
 using SocketGameProtocal;
+using System.Diagnostics;
 
 namespace MultiplayerGameServer.Controllers
 {
@@ -53,6 +54,13 @@ namespace MultiplayerGameServer.Controllers
             return pack;
         }
 
+        /// <summary>
+        /// 位置同步
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="client"></param>
+        /// <param name="pack"></param>
+        /// <returns></returns>
         public MainPack? UpdateCharacterState(Server server, Client client, MainPack pack)
         {
             if (client.CurrentRoom is null)
@@ -62,6 +70,31 @@ namespace MultiplayerGameServer.Controllers
 
             client.CurrentRoom.Broadcast(client, pack, server);
             return null;
+        }
+
+        /// <summary>
+        /// 更新生命值
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="client"></param>
+        /// <param name="pack"></param>
+        /// <returns></returns>
+        public MainPack? UpdateHealth(Server server, Client client, MainPack pack)
+        {
+            if (client.CurrentRoom is null)
+            {
+                return null;
+            }
+
+            long playerId = pack.PlayerPack[0].PlayerId;
+            int damage = pack.PlayerPack[0].Damage;
+
+            ServiceResult result = gameService.CalculateHealth(playerId, damage, client.CurrentRoom);
+
+            pack.PlayerPack[0].Health = result.GetValue<int>();
+
+            client.CurrentRoom.Broadcast(client, pack, server);
+            return pack;
         }
 
         /// <summary>

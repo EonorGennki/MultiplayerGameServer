@@ -112,7 +112,7 @@ namespace MultiplayerGameServer.Logic.Service
                 return ServiceResult.Failure(ServiceErrorCode.RoomNotFound);
             }
 
-            PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.PlayerName == GetPlayerInfo(playerId).PlayerName);
+            PlayerInfo? player = room.PlayerList.FirstOrDefault(player => player.PlayerId == playerId);
             if (player is null)
             {
                 return ServiceResult.Failure(ServiceErrorCode.UnknownError);

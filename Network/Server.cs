@@ -58,10 +58,5 @@ namespace MultiplayerGameServer.Network
                 c.Send(pack);
             }
         }
-
-        public void newBroadcast(Client? client, MainPack pack, Room room)
-        {
-
-        }
     }
 }

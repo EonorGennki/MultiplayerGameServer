@@ -28,51 +28,51 @@ namespace SocketGameProtocal {
             "bCIuCghBdXRoUGFjaxIQCgh1c2VybmFtZRgDIAEoCRIQCghwYXNzd29yZBgE",
             "IAEoCSJ2CghSb29tUGFjaxIRCglyb29tX25hbWUYASABKAkSDwoHbWF4X251",
             "bRgCIAEoBRITCgtjdXJyZW50X251bRgDIAEoBRIxCgpzdGF0ZV9Db2RlGAQg",
-            "ASgOMh0uU29ja2V0R2FtZVByb3RvY2FsLlN0YXRlQ29kZSL/AQoKUGxheWVy",
+            "ASgOMh0uU29ja2V0R2FtZVByb3RvY2FsLlN0YXRlQ29kZSKPAgoKUGxheWVy",
             "UGFjaxIRCglwbGF5ZXJfaWQYASABKAMSEwoLcGxheWVyX25hbWUYAiABKAkS",
-            "EAoIaXNfUmVhZHkYAyABKAgSDgoGaGVhbHRoGAQgASgFEj4KEXBsYXllcl9z",
-            "dGF0ZV9wYWNrGAUgASgLMiMuU29ja2V0R2FtZVByb3RvY2FsLlBsYXllclN0",
-            "YXRlUGFjaxI0CgxndW5fcm90X3BhY2sYBiABKAsyHi5Tb2NrZXRHYW1lUHJv",
-            "dG9jYWwuR3VuUm90UGFjaxIxCgppbnB1dF9wYWNrGAcgASgLMh0uU29ja2V0",
-            "R2FtZVByb3RvY2FsLklucHV0UGFjayJ8Cg9QbGF5ZXJTdGF0ZVBhY2sSDQoF",
-            "cG9zX3gYASABKAISDQoFcG9zX3kYAiABKAISEgoKeF92ZWxvY2l0eRgDIAEo",
-            "AhISCgp5X3ZlbG9jaXR5GAQgASgCEhIKCmFuaW1lX25hbWUYBSABKAkSDwoH",
-            "aXNfZmxpcBgGIAEoCCIqCgpHdW5Sb3RQYWNrEg0KBXBvc194GAEgASgCEg0K",
-            "BXBvc195GAIgASgCIl0KCUlucHV0UGFjaxIOCgZ4SW5wdXQYASABKAISDgoG",
-            "eUlucHV0GAIgASgCEgwKBGp1bXAYAyABKAgSDwoHZmlyZVNlcRgEIAEoBRIR",
-            "Cglpc19maXJpbmcYBSABKAgigwMKCE1haW5QYWNrEjUKDHJlcXVlc3RfY29k",
-            "ZRgBIAEoDjIfLlNvY2tldEdhbWVQcm90b2NhbC5SZXF1ZXN0Q29kZRIzCgth",
-            "Y3Rpb25fY29kZRgCIAEoDjIeLlNvY2tldEdhbWVQcm90b2NhbC5BY3Rpb25D",
-            "b2RlEjMKC3JldHVybl9jb2RlGAMgASgOMh4uU29ja2V0R2FtZVByb3RvY2Fs",
-            "LlJldHVybkNvZGUSMQoKZXJyb3JfY29kZRgEIAEoDjIdLlNvY2tldEdhbWVQ",
-            "cm90b2NhbC5FcnJvckNvZGUSLwoJYXV0aF9wYWNrGAUgASgLMhwuU29ja2V0",
-            "R2FtZVByb3RvY2FsLkF1dGhQYWNrEi8KCXJvb21fcGFjaxgGIAMoCzIcLlNv",
-            "Y2tldEdhbWVQcm90b2NhbC5Sb29tUGFjaxIzCgtwbGF5ZXJfcGFjaxgHIAMo",
-            "CzIeLlNvY2tldEdhbWVQcm90b2NhbC5QbGF5ZXJQYWNrEgwKBHRleHQYCSAB",
-            "KAkqOAoLUmVxdWVzdENvZGUSCwoHUmVxTm9uZRAAEggKBFVzZXIQARIICgRS",
-            "b29tEAISCAoER2FtZRADKooCCgpBY3Rpb25Db2RlEgsKB0FjdE5vbmUQABIM",
-            "CghSZWdpc3RlchABEgkKBUxvZ2luEAISCgoGTG9nb3V0EAMSDgoKQ3JlYXRl",
-            "Um9vbRAEEg4KClNlYXJjaFJvb20QBRIMCghKb2luUm9vbRAGEg0KCUxlYXZl",
-            "Um9vbRAHEg0KCUxlYXZlR2FtZRAIEg8KC1Nob3dQbGF5ZXJzEAkSCAoEQ2hh",
-            "dBAKEgkKBVJlYWR5EAsSDQoJU3RhcnRHYW1lEAwSDAoIQ2FuU3RhcnQQDRIX",
-            "ChNVcGRhdGVDaGFyYWN0ZXJMaXN0EA4SGAoUVXBkYXRlQ2hhcmFjdGVyU3Rh",
-            "dGUQDxIICgRGaXJlEBAqMwoKUmV0dXJuQ29kZRILCgdSZXROb25lEAASCwoH",
-            "U3VjY2VzcxABEgsKB0ZhaWx1cmUQAiq6AgoJRXJyb3JDb2RlEg0KCUVycm9y",
-            "Tm9uZRAAEhEKDFVua25vd25FcnJvchDoBxISCg1EYXRhYmFzZUVycm9yENEP",
-            "EhoKFUludmFsaWRVc2VybmFtZUZvcm1hdBDSDxIaChVJbnZhbGlkUGFzc3dv",
-            "cmRGb3JtYXQQ0w8SFAoPSW52YWxpZFVzZXJuYW1lENQPEhQKD0ludmFsaWRQ",
-            "YXNzd29yZBDVDxIRCgxVc2VyTm90Rm91bmQQ1g8SFgoRVXNlckFscmVhZHlF",
-            "eGlzdHMQ1w8SEQoMUm9vbU5vdEZvdW5kELkXEhYKEVJvb21BbHJlYWR5RXhp",
-            "c3RzELoXEhcKEkdhbWVBbHJlYWR5U3RhcnRlZBC7FxIPCgpSb29tSXNGdWxs",
-            "ELwXEhMKDlBsYXllck5vdFJlYWR5EL0XKj4KCVN0YXRlQ29kZRINCglTdGF0",
-            "ZU5vbmUQABILCgdXYWl0aW5nEAESCAoERnVsbBACEgsKB1BsYXlpbmcQA2IG",
-            "cHJvdG8z"));
+            "EAoIaXNfUmVhZHkYAyABKAgSDgoGaGVhbHRoGAQgASgFEg4KBmRhbWFnZRgF",
+            "IAEoBRI+ChFwbGF5ZXJfc3RhdGVfcGFjaxgGIAEoCzIjLlNvY2tldEdhbWVQ",
+            "cm90b2NhbC5QbGF5ZXJTdGF0ZVBhY2sSNAoMZ3VuX3JvdF9wYWNrGAcgASgL",
+            "Mh4uU29ja2V0R2FtZVByb3RvY2FsLkd1blJvdFBhY2sSMQoKaW5wdXRfcGFj",
+            "axgIIAEoCzIdLlNvY2tldEdhbWVQcm90b2NhbC5JbnB1dFBhY2sifAoPUGxh",
+            "eWVyU3RhdGVQYWNrEg0KBXBvc194GAEgASgCEg0KBXBvc195GAIgASgCEhIK",
+            "CnhfdmVsb2NpdHkYAyABKAISEgoKeV92ZWxvY2l0eRgEIAEoAhISCgphbmlt",
+            "ZV9uYW1lGAUgASgJEg8KB2lzX2ZsaXAYBiABKAgiKgoKR3VuUm90UGFjaxIN",
+            "CgVwb3NfeBgBIAEoAhINCgVwb3NfeRgCIAEoAiJdCglJbnB1dFBhY2sSDgoG",
+            "eElucHV0GAEgASgCEg4KBnlJbnB1dBgCIAEoAhIMCgRqdW1wGAMgASgIEg8K",
+            "B2ZpcmVTZXEYBCABKAUSEQoJaXNfZmlyaW5nGAUgASgIIoMDCghNYWluUGFj",
+            "axI1CgxyZXF1ZXN0X2NvZGUYASABKA4yHy5Tb2NrZXRHYW1lUHJvdG9jYWwu",
+            "UmVxdWVzdENvZGUSMwoLYWN0aW9uX2NvZGUYAiABKA4yHi5Tb2NrZXRHYW1l",
+            "UHJvdG9jYWwuQWN0aW9uQ29kZRIzCgtyZXR1cm5fY29kZRgDIAEoDjIeLlNv",
+            "Y2tldEdhbWVQcm90b2NhbC5SZXR1cm5Db2RlEjEKCmVycm9yX2NvZGUYBCAB",
+            "KA4yHS5Tb2NrZXRHYW1lUHJvdG9jYWwuRXJyb3JDb2RlEi8KCWF1dGhfcGFj",
+            "axgFIAEoCzIcLlNvY2tldEdhbWVQcm90b2NhbC5BdXRoUGFjaxIvCglyb29t",
+            "X3BhY2sYBiADKAsyHC5Tb2NrZXRHYW1lUHJvdG9jYWwuUm9vbVBhY2sSMwoL",
+            "cGxheWVyX3BhY2sYByADKAsyHi5Tb2NrZXRHYW1lUHJvdG9jYWwuUGxheWVy",
+            "UGFjaxIMCgR0ZXh0GAkgASgJKjgKC1JlcXVlc3RDb2RlEgsKB1JlcU5vbmUQ",
+            "ABIICgRVc2VyEAESCAoEUm9vbRACEggKBEdhbWUQAyqcAgoKQWN0aW9uQ29k",
+            "ZRILCgdBY3ROb25lEAASDAoIUmVnaXN0ZXIQARIJCgVMb2dpbhACEgoKBkxv",
+            "Z291dBADEg4KCkNyZWF0ZVJvb20QBBIOCgpTZWFyY2hSb29tEAUSDAoISm9p",
+            "blJvb20QBhINCglMZWF2ZVJvb20QBxINCglMZWF2ZUdhbWUQCBIPCgtTaG93",
+            "UGxheWVycxAJEggKBENoYXQQChIJCgVSZWFkeRALEg0KCVN0YXJ0R2FtZRAM",
+            "EgwKCENhblN0YXJ0EA0SFwoTVXBkYXRlQ2hhcmFjdGVyTGlzdBAOEhgKFFVw",
+            "ZGF0ZUNoYXJhY3RlclN0YXRlEA8SCAoERmlyZRAQEhAKDFVwZGF0ZUhlYWx0",
+            "aBARKjMKClJldHVybkNvZGUSCwoHUmV0Tm9uZRAAEgsKB1N1Y2Nlc3MQARIL",
+            "CgdGYWlsdXJlEAIqugIKCUVycm9yQ29kZRINCglFcnJvck5vbmUQABIRCgxV",
+            "bmtub3duRXJyb3IQ6AcSEgoNRGF0YWJhc2VFcnJvchDRDxIaChVJbnZhbGlk",
+            "VXNlcm5hbWVGb3JtYXQQ0g8SGgoVSW52YWxpZFBhc3N3b3JkRm9ybWF0ENMP",
+            "EhQKD0ludmFsaWRVc2VybmFtZRDUDxIUCg9JbnZhbGlkUGFzc3dvcmQQ1Q8S",
+            "EQoMVXNlck5vdEZvdW5kENYPEhYKEVVzZXJBbHJlYWR5RXhpc3RzENcPEhEK",
+            "DFJvb21Ob3RGb3VuZBC5FxIWChFSb29tQWxyZWFkeUV4aXN0cxC6FxIXChJH",
+            "YW1lQWxyZWFkeVN0YXJ0ZWQQuxcSDwoKUm9vbUlzRnVsbBC8FxITCg5QbGF5",
+            "ZXJOb3RSZWFkeRC9Fyo+CglTdGF0ZUNvZGUSDQoJU3RhdGVOb25lEAASCwoH",
+            "V2FpdGluZxABEggKBEZ1bGwQAhILCgdQbGF5aW5nEANiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::SocketGameProtocal.RequestCode), typeof(global::SocketGameProtocal.ActionCode), typeof(global::SocketGameProtocal.ReturnCode), typeof(global::SocketGameProtocal.ErrorCode), typeof(global::SocketGameProtocal.StateCode), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.AuthPack), global::SocketGameProtocal.AuthPack.Parser, new[]{ "Username", "Password" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.RoomPack), global::SocketGameProtocal.RoomPack.Parser, new[]{ "RoomName", "MaxNum", "CurrentNum", "StateCode" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.PlayerPack), global::SocketGameProtocal.PlayerPack.Parser, new[]{ "PlayerId", "PlayerName", "IsReady", "Health", "PlayerStatePack", "GunRotPack", "InputPack" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.PlayerPack), global::SocketGameProtocal.PlayerPack.Parser, new[]{ "PlayerId", "PlayerName", "IsReady", "Health", "Damage", "PlayerStatePack", "GunRotPack", "InputPack" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.PlayerStatePack), global::SocketGameProtocal.PlayerStatePack.Parser, new[]{ "PosX", "PosY", "XVelocity", "YVelocity", "AnimeName", "IsFlip" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.GunRotPack), global::SocketGameProtocal.GunRotPack.Parser, new[]{ "PosX", "PosY" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.InputPack), global::SocketGameProtocal.InputPack.Parser, new[]{ "XInput", "YInput", "Jump", "FireSeq", "IsFiring" }, null, null, null, null),
@@ -165,6 +165,10 @@ namespace SocketGameProtocal {
     ///开火
     /// </summary>
     [pbr::OriginalName("Fire")] Fire = 16,
+    /// <summary>
+    ///更新生命值
+    /// </summary>
+    [pbr::OriginalName("UpdateHealth")] UpdateHealth = 17,
   }
 
   public enum ReturnCode {
@@ -855,6 +859,7 @@ namespace SocketGameProtocal {
       playerName_ = other.playerName_;
       isReady_ = other.isReady_;
       health_ = other.health_;
+      damage_ = other.damage_;
       playerStatePack_ = other.playerStatePack_ != null ? other.playerStatePack_.Clone() : null;
       gunRotPack_ = other.gunRotPack_ != null ? other.gunRotPack_.Clone() : null;
       inputPack_ = other.inputPack_ != null ? other.inputPack_.Clone() : null;
@@ -927,8 +932,23 @@ namespace SocketGameProtocal {
       }
     }
 
+    /// <summary>Field number for the "damage" field.</summary>
+    public const int DamageFieldNumber = 5;
+    private int damage_;
+    /// <summary>
+    ///伤害
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Damage {
+      get { return damage_; }
+      set {
+        damage_ = value;
+      }
+    }
+
     /// <summary>Field number for the "player_state_pack" field.</summary>
-    public const int PlayerStatePackFieldNumber = 5;
+    public const int PlayerStatePackFieldNumber = 6;
     private global::SocketGameProtocal.PlayerStatePack playerStatePack_;
     /// <summary>
     ///人物状态信息
@@ -943,7 +963,7 @@ namespace SocketGameProtocal {
     }
 
     /// <summary>Field number for the "gun_rot_pack" field.</summary>
-    public const int GunRotPackFieldNumber = 6;
+    public const int GunRotPackFieldNumber = 7;
     private global::SocketGameProtocal.GunRotPack gunRotPack_;
     /// <summary>
     ///武器旋转信息
@@ -958,7 +978,7 @@ namespace SocketGameProtocal {
     }
 
     /// <summary>Field number for the "input_pack" field.</summary>
-    public const int InputPackFieldNumber = 7;
+    public const int InputPackFieldNumber = 8;
     private global::SocketGameProtocal.InputPack inputPack_;
     /// <summary>
     ///玩家输入指令
@@ -991,6 +1011,7 @@ namespace SocketGameProtocal {
       if (PlayerName != other.PlayerName) return false;
       if (IsReady != other.IsReady) return false;
       if (Health != other.Health) return false;
+      if (Damage != other.Damage) return false;
       if (!object.Equals(PlayerStatePack, other.PlayerStatePack)) return false;
       if (!object.Equals(GunRotPack, other.GunRotPack)) return false;
       if (!object.Equals(InputPack, other.InputPack)) return false;
@@ -1005,6 +1026,7 @@ namespace SocketGameProtocal {
       if (PlayerName.Length != 0) hash ^= PlayerName.GetHashCode();
       if (IsReady != false) hash ^= IsReady.GetHashCode();
       if (Health != 0) hash ^= Health.GetHashCode();
+      if (Damage != 0) hash ^= Damage.GetHashCode();
       if (playerStatePack_ != null) hash ^= PlayerStatePack.GetHashCode();
       if (gunRotPack_ != null) hash ^= GunRotPack.GetHashCode();
       if (inputPack_ != null) hash ^= InputPack.GetHashCode();
@@ -1042,16 +1064,20 @@ namespace SocketGameProtocal {
         output.WriteRawTag(32);
         output.WriteInt32(Health);
       }
+      if (Damage != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(Damage);
+      }
       if (playerStatePack_ != null) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteMessage(PlayerStatePack);
       }
       if (gunRotPack_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(58);
         output.WriteMessage(GunRotPack);
       }
       if (inputPack_ != null) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(66);
         output.WriteMessage(InputPack);
       }
       if (_unknownFields != null) {
@@ -1080,16 +1106,20 @@ namespace SocketGameProtocal {
         output.WriteRawTag(32);
         output.WriteInt32(Health);
       }
+      if (Damage != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(Damage);
+      }
       if (playerStatePack_ != null) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteMessage(PlayerStatePack);
       }
       if (gunRotPack_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(58);
         output.WriteMessage(GunRotPack);
       }
       if (inputPack_ != null) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(66);
         output.WriteMessage(InputPack);
       }
       if (_unknownFields != null) {
@@ -1113,6 +1143,9 @@ namespace SocketGameProtocal {
       }
       if (Health != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Health);
+      }
+      if (Damage != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Damage);
       }
       if (playerStatePack_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(PlayerStatePack);
@@ -1146,6 +1179,9 @@ namespace SocketGameProtocal {
       }
       if (other.Health != 0) {
         Health = other.Health;
+      }
+      if (other.Damage != 0) {
+        Damage = other.Damage;
       }
       if (other.playerStatePack_ != null) {
         if (playerStatePack_ == null) {
@@ -1200,21 +1236,25 @@ namespace SocketGameProtocal {
             Health = input.ReadInt32();
             break;
           }
-          case 42: {
+          case 40: {
+            Damage = input.ReadInt32();
+            break;
+          }
+          case 50: {
             if (playerStatePack_ == null) {
               PlayerStatePack = new global::SocketGameProtocal.PlayerStatePack();
             }
             input.ReadMessage(PlayerStatePack);
             break;
           }
-          case 50: {
+          case 58: {
             if (gunRotPack_ == null) {
               GunRotPack = new global::SocketGameProtocal.GunRotPack();
             }
             input.ReadMessage(GunRotPack);
             break;
           }
-          case 58: {
+          case 66: {
             if (inputPack_ == null) {
               InputPack = new global::SocketGameProtocal.InputPack();
             }
@@ -1256,21 +1296,25 @@ namespace SocketGameProtocal {
             Health = input.ReadInt32();
             break;
           }
-          case 42: {
+          case 40: {
+            Damage = input.ReadInt32();
+            break;
+          }
+          case 50: {
             if (playerStatePack_ == null) {
               PlayerStatePack = new global::SocketGameProtocal.PlayerStatePack();
             }
             input.ReadMessage(PlayerStatePack);
             break;
           }
-          case 50: {
+          case 58: {
             if (gunRotPack_ == null) {
               GunRotPack = new global::SocketGameProtocal.GunRotPack();
             }
             input.ReadMessage(GunRotPack);
             break;
           }
-          case 58: {
+          case 66: {
             if (inputPack_ == null) {
               InputPack = new global::SocketGameProtocal.InputPack();
             }
