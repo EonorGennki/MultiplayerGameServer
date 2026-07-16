@@ -6,6 +6,8 @@
         public string PlayerName { get; }
         public bool IsReady { get; private set; } = false;
         public int Health { get; set; }
+        public int MaxHealth { get; set; }
+        public int Score {  get; set; }
         public float Pos_X { get; set; }
         public float Pos_Y { get; set; }
         public float Rot_Z { get; set; }

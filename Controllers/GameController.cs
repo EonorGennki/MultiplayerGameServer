@@ -8,11 +8,14 @@ namespace MultiplayerGameServer.Controllers
     internal class GameController : BaseController
     {
         private GameService gameService;
+        private Client? client;
+        private Server? server;
 
         public GameController(GameService gameService)
         {
             requestCode = RequestCode.Game;
             this.gameService = gameService;
+            gameService.OnScoreUpdate += OnScoreUpdate;
         }
 
         /// <summary>
@@ -81,20 +84,42 @@ namespace MultiplayerGameServer.Controllers
         /// <returns></returns>
         public MainPack? UpdateHealth(Server server, Client client, MainPack pack)
         {
+            this.client = client;
+            this.server = server;
+
             if (client.CurrentRoom is null)
             {
                 return null;
             }
 
             long playerId = pack.PlayerPack[0].PlayerId;
-            int damage = pack.PlayerPack[0].Damage;
+            int dealdaHealth = pack.PlayerPack[0].DeltaHealth;
+            long attackPlayerId = pack.PlayerPack[0].AttackPlayerId;
 
-            ServiceResult result = gameService.CalculateHealth(playerId, damage, client.CurrentRoom);
+            ServiceResult result = gameService.UpdateHealth(playerId, client.CurrentRoom, dealdaHealth, attackPlayerId);
 
-            pack.PlayerPack[0].Health = result.GetValue<int>();
+            BuildUpdateHealthResponse(pack, result);
 
             client.CurrentRoom.Broadcast(client, pack, server);
             return pack;
+        }
+
+
+        /// <summary>
+        /// 生命值更新结果打包
+        /// </summary>
+        /// <param name="pack"></param>
+        /// <param name="result"></param>
+        private void BuildUpdateHealthResponse(MainPack pack, ServiceResult result)
+        {
+            int health = result.GetValue<int>();
+
+            pack.PlayerPack[0].Health = health;
+
+            if (health <= 0)
+            {
+                pack.PlayerPack[0].IsDead = true;
+            }
         }
 
         /// <summary>
@@ -103,7 +128,7 @@ namespace MultiplayerGameServer.Controllers
         /// <param name="server"></param>
         /// <param name="client"></param>
         /// <param name="result"></param>
-        private static void BroadcastPlayerList(Server server, Client client, ServiceResult result)
+        private void BroadcastPlayerList(Server server, Client client, ServiceResult result)
         {
             if (client.CurrentRoom is null)
             {
@@ -128,13 +153,27 @@ namespace MultiplayerGameServer.Controllers
         /// </summary>
         /// <param name="pack"></param>
         /// <param name="player"></param>
-        private static void AddPlayerPack(MainPack pack, PlayerInfo player)
+        private void AddPlayerPack(MainPack pack, PlayerInfo player)
         {
             PlayerPack playerPack = new PlayerPack();
             playerPack.PlayerId = player.PlayerId;
             playerPack.PlayerName = player.PlayerName;
             playerPack.Health = player.Health;
             pack.PlayerPack.Add(playerPack);
+        }
+
+        private void OnScoreUpdate(PlayerInfo playerInfo)
+        {
+            MainPack pack = new MainPack();
+            pack.ActionCode = ActionCode.GainScore;
+
+            PlayerPack playerPack = new PlayerPack();
+            playerPack.AttackPlayerId = playerInfo.PlayerId;
+            playerPack.Score = playerInfo.Score;
+
+            pack.PlayerPack.Add(playerPack);
+
+            client?.CurrentRoom!.Broadcast(null, pack, server!);
         }
     }
 }

@@ -375,7 +375,8 @@ namespace MultiplayerGameServer.Controllers
                 newPack.ActionCode = ActionCode.CanStart;
                 foreach (var player in room.PlayerList)
                 {
-                    player.Health = 100;
+                    player.MaxHealth = 100;
+                    player.Health = player.MaxHealth;
                     PlayerPack playerPack = new PlayerPack();
                     playerPack.PlayerId = player.PlayerId;
                     playerPack.PlayerName = player.PlayerName;
