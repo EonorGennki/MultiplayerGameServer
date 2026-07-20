@@ -28,7 +28,7 @@ namespace SocketGameProtocal {
             "bCIuCghBdXRoUGFjaxIQCgh1c2VybmFtZRgDIAEoCRIQCghwYXNzd29yZBgE",
             "IAEoCSJ2CghSb29tUGFjaxIRCglyb29tX25hbWUYASABKAkSDwoHbWF4X251",
             "bRgCIAEoBRITCgtjdXJyZW50X251bRgDIAEoBRIxCgpzdGF0ZV9Db2RlGAQg",
-            "ASgOMh0uU29ja2V0R2FtZVByb3RvY2FsLlN0YXRlQ29kZSLNAgoKUGxheWVy",
+            "ASgOMh0uU29ja2V0R2FtZVByb3RvY2FsLlN0YXRlQ29kZSLgAgoKUGxheWVy",
             "UGFjaxIRCglwbGF5ZXJfaWQYASABKAMSEwoLcGxheWVyX25hbWUYAiABKAkS",
             "EAoIaXNfUmVhZHkYAyABKAgSDgoGaGVhbHRoGAQgASgFEhQKDGRlbHRhX2hl",
             "YWx0aBgFIAEoBRIPCgdpc19kZWFkGAYgASgIEj4KEXBsYXllcl9zdGF0ZV9w",
@@ -36,45 +36,46 @@ namespace SocketGameProtocal {
             "axI0CgxndW5fcm90X3BhY2sYCCABKAsyHi5Tb2NrZXRHYW1lUHJvdG9jYWwu",
             "R3VuUm90UGFjaxIxCgppbnB1dF9wYWNrGAkgASgLMh0uU29ja2V0R2FtZVBy",
             "b3RvY2FsLklucHV0UGFjaxIWCg5hdHRhY2tQbGF5ZXJJZBgKIAEoAxINCgVz",
-            "Y29yZRgLIAEoBSJ8Cg9QbGF5ZXJTdGF0ZVBhY2sSDQoFcG9zX3gYASABKAIS",
-            "DQoFcG9zX3kYAiABKAISEgoKeF92ZWxvY2l0eRgDIAEoAhISCgp5X3ZlbG9j",
-            "aXR5GAQgASgCEhIKCmFuaW1lX25hbWUYBSABKAkSDwoHaXNfZmxpcBgGIAEo",
-            "CCIqCgpHdW5Sb3RQYWNrEg0KBXBvc194GAEgASgCEg0KBXBvc195GAIgASgC",
-            "Il0KCUlucHV0UGFjaxIOCgZ4SW5wdXQYASABKAISDgoGeUlucHV0GAIgASgC",
-            "EgwKBGp1bXAYAyABKAgSDwoHZmlyZVNlcRgEIAEoBRIRCglpc19maXJpbmcY",
-            "BSABKAgigwMKCE1haW5QYWNrEjUKDHJlcXVlc3RfY29kZRgBIAEoDjIfLlNv",
-            "Y2tldEdhbWVQcm90b2NhbC5SZXF1ZXN0Q29kZRIzCgthY3Rpb25fY29kZRgC",
-            "IAEoDjIeLlNvY2tldEdhbWVQcm90b2NhbC5BY3Rpb25Db2RlEjMKC3JldHVy",
-            "bl9jb2RlGAMgASgOMh4uU29ja2V0R2FtZVByb3RvY2FsLlJldHVybkNvZGUS",
-            "MQoKZXJyb3JfY29kZRgEIAEoDjIdLlNvY2tldEdhbWVQcm90b2NhbC5FcnJv",
-            "ckNvZGUSLwoJYXV0aF9wYWNrGAUgASgLMhwuU29ja2V0R2FtZVByb3RvY2Fs",
-            "LkF1dGhQYWNrEi8KCXJvb21fcGFjaxgGIAMoCzIcLlNvY2tldEdhbWVQcm90",
-            "b2NhbC5Sb29tUGFjaxIzCgtwbGF5ZXJfcGFjaxgHIAMoCzIeLlNvY2tldEdh",
-            "bWVQcm90b2NhbC5QbGF5ZXJQYWNrEgwKBHRleHQYCSABKAkqOAoLUmVxdWVz",
-            "dENvZGUSCwoHUmVxTm9uZRAAEggKBFVzZXIQARIICgRSb29tEAISCAoER2Ft",
-            "ZRADKrsCCgpBY3Rpb25Db2RlEgsKB0FjdE5vbmUQABIMCghSZWdpc3RlchAB",
-            "EgkKBUxvZ2luEAISCgoGTG9nb3V0EAMSDgoKQ3JlYXRlUm9vbRAEEg4KClNl",
-            "YXJjaFJvb20QBRIMCghKb2luUm9vbRAGEg0KCUxlYXZlUm9vbRAHEg0KCUxl",
-            "YXZlR2FtZRAIEg8KC1Nob3dQbGF5ZXJzEAkSCAoEQ2hhdBAKEgkKBVJlYWR5",
-            "EAsSDQoJU3RhcnRHYW1lEAwSDAoIQ2FuU3RhcnQQDRIXChNVcGRhdGVDaGFy",
-            "YWN0ZXJMaXN0EA4SGAoUVXBkYXRlQ2hhcmFjdGVyU3RhdGUQDxIICgRGaXJl",
-            "EBASDgoKVGFrZURhbWFnZRAREhAKDFVwZGF0ZUhlYWx0aBASEg0KCUdhaW5T",
-            "Y29yZRATKjMKClJldHVybkNvZGUSCwoHUmV0Tm9uZRAAEgsKB1N1Y2Nlc3MQ",
-            "ARILCgdGYWlsdXJlEAIqugIKCUVycm9yQ29kZRINCglFcnJvck5vbmUQABIR",
-            "CgxVbmtub3duRXJyb3IQ6AcSEgoNRGF0YWJhc2VFcnJvchDRDxIaChVJbnZh",
-            "bGlkVXNlcm5hbWVGb3JtYXQQ0g8SGgoVSW52YWxpZFBhc3N3b3JkRm9ybWF0",
-            "ENMPEhQKD0ludmFsaWRVc2VybmFtZRDUDxIUCg9JbnZhbGlkUGFzc3dvcmQQ",
-            "1Q8SEQoMVXNlck5vdEZvdW5kENYPEhYKEVVzZXJBbHJlYWR5RXhpc3RzENcP",
-            "EhEKDFJvb21Ob3RGb3VuZBC5FxIWChFSb29tQWxyZWFkeUV4aXN0cxC6FxIX",
-            "ChJHYW1lQWxyZWFkeVN0YXJ0ZWQQuxcSDwoKUm9vbUlzRnVsbBC8FxITCg5Q",
-            "bGF5ZXJOb3RSZWFkeRC9Fyo+CglTdGF0ZUNvZGUSDQoJU3RhdGVOb25lEAAS",
-            "CwoHV2FpdGluZxABEggKBEZ1bGwQAhILCgdQbGF5aW5nEANiBnByb3RvMw=="));
+            "Y29yZRgLIAEoBRIRCglpc193aW5uZXIYDCABKAgifAoPUGxheWVyU3RhdGVQ",
+            "YWNrEg0KBXBvc194GAEgASgCEg0KBXBvc195GAIgASgCEhIKCnhfdmVsb2Np",
+            "dHkYAyABKAISEgoKeV92ZWxvY2l0eRgEIAEoAhISCgphbmltZV9uYW1lGAUg",
+            "ASgJEg8KB2lzX2ZsaXAYBiABKAgiKgoKR3VuUm90UGFjaxINCgVwb3NfeBgB",
+            "IAEoAhINCgVwb3NfeRgCIAEoAiJdCglJbnB1dFBhY2sSDgoGeElucHV0GAEg",
+            "ASgCEg4KBnlJbnB1dBgCIAEoAhIMCgRqdW1wGAMgASgIEg8KB2ZpcmVTZXEY",
+            "BCABKAUSEQoJaXNfZmlyaW5nGAUgASgIIoMDCghNYWluUGFjaxI1CgxyZXF1",
+            "ZXN0X2NvZGUYASABKA4yHy5Tb2NrZXRHYW1lUHJvdG9jYWwuUmVxdWVzdENv",
+            "ZGUSMwoLYWN0aW9uX2NvZGUYAiABKA4yHi5Tb2NrZXRHYW1lUHJvdG9jYWwu",
+            "QWN0aW9uQ29kZRIzCgtyZXR1cm5fY29kZRgDIAEoDjIeLlNvY2tldEdhbWVQ",
+            "cm90b2NhbC5SZXR1cm5Db2RlEjEKCmVycm9yX2NvZGUYBCABKA4yHS5Tb2Nr",
+            "ZXRHYW1lUHJvdG9jYWwuRXJyb3JDb2RlEi8KCWF1dGhfcGFjaxgFIAEoCzIc",
+            "LlNvY2tldEdhbWVQcm90b2NhbC5BdXRoUGFjaxIvCglyb29tX3BhY2sYBiAD",
+            "KAsyHC5Tb2NrZXRHYW1lUHJvdG9jYWwuUm9vbVBhY2sSMwoLcGxheWVyX3Bh",
+            "Y2sYByADKAsyHi5Tb2NrZXRHYW1lUHJvdG9jYWwuUGxheWVyUGFjaxIMCgR0",
+            "ZXh0GAkgASgJKjgKC1JlcXVlc3RDb2RlEgsKB1JlcU5vbmUQABIICgRVc2Vy",
+            "EAESCAoEUm9vbRACEggKBEdhbWUQAyrJAgoKQWN0aW9uQ29kZRILCgdBY3RO",
+            "b25lEAASDAoIUmVnaXN0ZXIQARIJCgVMb2dpbhACEgoKBkxvZ291dBADEg4K",
+            "CkNyZWF0ZVJvb20QBBIOCgpTZWFyY2hSb29tEAUSDAoISm9pblJvb20QBhIN",
+            "CglMZWF2ZVJvb20QBxINCglMZWF2ZUdhbWUQCBIPCgtTaG93UGxheWVycxAJ",
+            "EggKBENoYXQQChIJCgVSZWFkeRALEg0KCVN0YXJ0R2FtZRAMEgwKCENhblN0",
+            "YXJ0EA0SFwoTVXBkYXRlQ2hhcmFjdGVyTGlzdBAOEhgKFFVwZGF0ZUNoYXJh",
+            "Y3RlclN0YXRlEA8SCAoERmlyZRAQEg4KClRha2VEYW1hZ2UQERIQCgxVcGRh",
+            "dGVIZWFsdGgQEhINCglHYWluU2NvcmUQExIMCghHYW1lT3ZlchAUKjMKClJl",
+            "dHVybkNvZGUSCwoHUmV0Tm9uZRAAEgsKB1N1Y2Nlc3MQARILCgdGYWlsdXJl",
+            "EAIqugIKCUVycm9yQ29kZRINCglFcnJvck5vbmUQABIRCgxVbmtub3duRXJy",
+            "b3IQ6AcSEgoNRGF0YWJhc2VFcnJvchDRDxIaChVJbnZhbGlkVXNlcm5hbWVG",
+            "b3JtYXQQ0g8SGgoVSW52YWxpZFBhc3N3b3JkRm9ybWF0ENMPEhQKD0ludmFs",
+            "aWRVc2VybmFtZRDUDxIUCg9JbnZhbGlkUGFzc3dvcmQQ1Q8SEQoMVXNlck5v",
+            "dEZvdW5kENYPEhYKEVVzZXJBbHJlYWR5RXhpc3RzENcPEhEKDFJvb21Ob3RG",
+            "b3VuZBC5FxIWChFSb29tQWxyZWFkeUV4aXN0cxC6FxIXChJHYW1lQWxyZWFk",
+            "eVN0YXJ0ZWQQuxcSDwoKUm9vbUlzRnVsbBC8FxITCg5QbGF5ZXJOb3RSZWFk",
+            "eRC9Fyo+CglTdGF0ZUNvZGUSDQoJU3RhdGVOb25lEAASCwoHV2FpdGluZxAB",
+            "EggKBEZ1bGwQAhILCgdQbGF5aW5nEANiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::SocketGameProtocal.RequestCode), typeof(global::SocketGameProtocal.ActionCode), typeof(global::SocketGameProtocal.ReturnCode), typeof(global::SocketGameProtocal.ErrorCode), typeof(global::SocketGameProtocal.StateCode), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.AuthPack), global::SocketGameProtocal.AuthPack.Parser, new[]{ "Username", "Password" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.RoomPack), global::SocketGameProtocal.RoomPack.Parser, new[]{ "RoomName", "MaxNum", "CurrentNum", "StateCode" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.PlayerPack), global::SocketGameProtocal.PlayerPack.Parser, new[]{ "PlayerId", "PlayerName", "IsReady", "Health", "DeltaHealth", "IsDead", "PlayerStatePack", "GunRotPack", "InputPack", "AttackPlayerId", "Score" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.PlayerPack), global::SocketGameProtocal.PlayerPack.Parser, new[]{ "PlayerId", "PlayerName", "IsReady", "Health", "DeltaHealth", "IsDead", "PlayerStatePack", "GunRotPack", "InputPack", "AttackPlayerId", "Score", "IsWinner" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.PlayerStatePack), global::SocketGameProtocal.PlayerStatePack.Parser, new[]{ "PosX", "PosY", "XVelocity", "YVelocity", "AnimeName", "IsFlip" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.GunRotPack), global::SocketGameProtocal.GunRotPack.Parser, new[]{ "PosX", "PosY" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SocketGameProtocal.InputPack), global::SocketGameProtocal.InputPack.Parser, new[]{ "XInput", "YInput", "Jump", "FireSeq", "IsFiring" }, null, null, null, null),
@@ -179,6 +180,10 @@ namespace SocketGameProtocal {
     ///获得分数
     /// </summary>
     [pbr::OriginalName("GainScore")] GainScore = 19,
+    /// <summary>
+    ///游戏结束
+    /// </summary>
+    [pbr::OriginalName("GameOver")] GameOver = 20,
   }
 
   public enum ReturnCode {
@@ -876,6 +881,7 @@ namespace SocketGameProtocal {
       inputPack_ = other.inputPack_ != null ? other.inputPack_.Clone() : null;
       attackPlayerId_ = other.attackPlayerId_;
       score_ = other.score_;
+      isWinner_ = other.isWinner_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1050,6 +1056,21 @@ namespace SocketGameProtocal {
       }
     }
 
+    /// <summary>Field number for the "is_winner" field.</summary>
+    public const int IsWinnerFieldNumber = 12;
+    private bool isWinner_;
+    /// <summary>
+    ///是否胜利
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool IsWinner {
+      get { return isWinner_; }
+      set {
+        isWinner_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1076,6 +1097,7 @@ namespace SocketGameProtocal {
       if (!object.Equals(InputPack, other.InputPack)) return false;
       if (AttackPlayerId != other.AttackPlayerId) return false;
       if (Score != other.Score) return false;
+      if (IsWinner != other.IsWinner) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1094,6 +1116,7 @@ namespace SocketGameProtocal {
       if (inputPack_ != null) hash ^= InputPack.GetHashCode();
       if (AttackPlayerId != 0L) hash ^= AttackPlayerId.GetHashCode();
       if (Score != 0) hash ^= Score.GetHashCode();
+      if (IsWinner != false) hash ^= IsWinner.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1156,6 +1179,10 @@ namespace SocketGameProtocal {
         output.WriteRawTag(88);
         output.WriteInt32(Score);
       }
+      if (IsWinner != false) {
+        output.WriteRawTag(96);
+        output.WriteBool(IsWinner);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1210,6 +1237,10 @@ namespace SocketGameProtocal {
         output.WriteRawTag(88);
         output.WriteInt32(Score);
       }
+      if (IsWinner != false) {
+        output.WriteRawTag(96);
+        output.WriteBool(IsWinner);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1252,6 +1283,9 @@ namespace SocketGameProtocal {
       }
       if (Score != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Score);
+      }
+      if (IsWinner != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1306,6 +1340,9 @@ namespace SocketGameProtocal {
       }
       if (other.Score != 0) {
         Score = other.Score;
+      }
+      if (other.IsWinner != false) {
+        IsWinner = other.IsWinner;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1379,6 +1416,10 @@ namespace SocketGameProtocal {
             Score = input.ReadInt32();
             break;
           }
+          case 96: {
+            IsWinner = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -1449,6 +1490,10 @@ namespace SocketGameProtocal {
           }
           case 88: {
             Score = input.ReadInt32();
+            break;
+          }
+          case 96: {
+            IsWinner = input.ReadBool();
             break;
           }
         }

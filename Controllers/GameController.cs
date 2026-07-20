@@ -1,7 +1,6 @@
 ﻿using MultiplayerGameServer.Logic.Service;
 using MultiplayerGameServer.Network;
 using SocketGameProtocal;
-using System.Diagnostics;
 
 namespace MultiplayerGameServer.Controllers
 {
@@ -104,6 +103,28 @@ namespace MultiplayerGameServer.Controllers
             return pack;
         }
 
+        /// <summary>
+        /// 游戏结束
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="client"></param>
+        /// <param name="pack"></param>
+        private MainPack GameOver(Server server, Client client, MainPack pack)
+        {
+            if (client.CurrentRoom is null)
+            {
+                pack.ReturnCode = ReturnCode.Failure;
+                return pack;
+            }
+
+            long playerId = pack.PlayerPack[0].PlayerId;
+
+            ServiceResult result = gameService.WhoisWinner(client.CurrentRoom, playerId);
+
+            pack.PlayerPack[0].IsWinner = result.GetValue<bool>();
+
+            return pack;
+        }
 
         /// <summary>
         /// 生命值更新结果打包

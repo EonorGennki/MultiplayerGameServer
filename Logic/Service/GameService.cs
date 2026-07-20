@@ -93,5 +93,29 @@
             attackPlayer.Score++;
             OnScoreUpdate?.Invoke(attackPlayer);
         }
+
+        /// <summary>
+        /// 是否胜利
+        /// </summary>
+        public ServiceResult WhoisWinner(Room room, long playerId)
+        {
+            PlayerInfo? winner = room.PlayerList.OrderByDescending(player => player.Score).FirstOrDefault();
+
+            if (winner is null)
+            {
+                return ServiceResult.Failure(ServiceErrorCode.UnknownError);
+            }
+
+            ServiceResult result = ServiceResult.Success();
+
+            if (winner.PlayerId == playerId)
+            {
+                result.Data = true;
+                return result;
+            }
+
+            result.Data = false;
+            return result;
+        }
     }
 }
